@@ -1,0 +1,45 @@
+# M11 — Pretérito perfecto: Reisen, Urlaub, Erfahrungen (Plan/01)
+
+nouns:
+  - { lemma: viaje, gender: m, de: { noun: Reise, g: f, plural: Reisen }, tags: [event], level: A2, module: M11, notes_de: "el viaje — maskulin (die Reise!)" }
+  - { lemma: vacaciones, gender: f, plural: vacaciones, de: { noun: Urlaub, g: m, plural: Urlaube }, tags: [event, time-expr], level: A2, module: M11, notes_de: "nur Plural: las vacaciones" }
+  - { lemma: maleta, gender: f, de: { noun: Koffer, g: m, plural: Koffer }, tags: [thing], level: A2, module: M11 }
+  - { lemma: playa, gender: f, de: { noun: Strand, g: m, plural: Strände }, tags: [place], level: A2, module: M11 }
+  - { lemma: montaña, gender: f, de: { noun: Berg, g: m, plural: Berge }, tags: [place], level: A2, module: M11 }
+  - { lemma: mar, gender: m, de: { noun: Meer, g: n, plural: Meere }, tags: [place], level: A2, module: M11, notes_de: "el mar — maskulin (das Meer!)" }
+  - { lemma: isla, gender: f, de: { noun: Insel, g: f, plural: Inseln }, tags: [place], level: A2, module: M11 }
+  - { lemma: aeropuerto, gender: m, de: { noun: Flughafen, g: m, plural: Flughäfen }, tags: [place], level: A2, module: M11 }
+  - { lemma: avión, gender: m, de: { noun: Flugzeug, g: n, plural: Flugzeuge }, tags: [vehicle], level: A2, module: M11 }
+  - { lemma: tren, gender: m, de: { noun: Zug, g: m, plural: Züge }, tags: [vehicle], level: A2, module: M11 }
+  - { lemma: billete, gender: m, de: { noun: Fahrkarte, g: f, plural: Fahrkarten }, tags: [thing], level: A2, module: M11, notes_de: "auch: Geldschein; in Lateinamerika: boleto" }
+  - { lemma: camping, gender: m, de: { noun: Campingplatz, g: m, plural: Campingplätze }, tags: [place], level: A2, module: M11 }
+  - { lemma: pasaporte, gender: m, de: { noun: Reisepass, g: m, plural: Reisepässe }, tags: [thing], level: A2, module: M11 }
+  - { lemma: mapa, gender: m, de: { noun: Landkarte, g: f, plural: Landkarten }, tags: [thing], level: A2, module: M11, gender_trap: true, notes_de: "el mapa — maskulin trotz -a!" }
+  - { lemma: turista, gender: mf, de: { noun: Tourist, g: m, plural: Touristen }, tags: [human], level: A2, module: M11, notes_de: "el/la turista — gleiche Form" }
+  - { lemma: extranjero, gender: m, de: { noun: Ausland, g: n }, tags: [place], level: A2, module: M11, notes_de: "en el extranjero = im Ausland; auch: der Ausländer (fem. extranjera)" }
+  - { lemma: reserva, gender: f, de: { noun: Reservierung, g: f, plural: Reservierungen }, tags: [abstract], level: A2, module: M11 }
+  - { lemma: llegada, gender: f, de: { noun: Ankunft, g: f, plural: Ankünfte }, tags: [event], level: A2, module: M11, notes_de: "Gegenteil: la salida = die Abfahrt" }
+  - { lemma: museo, gender: m, de: { noun: Museum, g: n, plural: Museen }, tags: [place], level: A2, module: M11 }
+
+adjectives:
+  - lemma: largo
+    agreement: o/a
+    copula: ser
+    senses: [{ copula: ser, de: lang, applies_to: [thing, event] }]
+    level: A2
+    module: M11
+    notes_de: "falscher Freund: largo = lang, NICHT groß (groß = grande)"
+  - lemma: corto
+    agreement: o/a
+    copula: ser
+    senses: [{ copula: ser, de: kurz, applies_to: [thing, event] }]
+    level: A2
+    module: M11
+
+chunks:
+  - { es: ir de vacaciones, de: in den Urlaub fahren, level: A2, module: M11 }
+  - { es: hacer la maleta, de: den Koffer packen, level: A2, module: M11 }
+  - { es: alguna vez, de: schon einmal, level: A2, module: M11, notes_de: "Signalwort für das pretérito perfecto" }
+  - { es: todavía no, de: noch nicht, level: A2, module: M11, notes_de: "Signalwort für das pretérito perfecto" }
+  - { es: acabar de + infinitivo, de: gerade etwas getan haben, level: A2, module: M11, notes_de: "acabo de llegar = ich bin gerade angekommen" }
+  - { es: ¡buen viaje!, de: gute Reise!, level: A2, module: M11 }

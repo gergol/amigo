@@ -1,0 +1,46 @@
+# M04 — Unregelmäßige Verben & nahe Zukunft: Uhrzeit, Monate, Jahreszeiten, Orte in der Stadt;
+# tener-Wendungen als Chunks (Plan/01)
+
+nouns:
+  - { lemma: hora, gender: f, de: { noun: Stunde, g: f, plural: Stunden }, tags: [time-expr], level: A1, module: M04, notes_de: "¿qué hora es? = wie spät ist es?" }
+  - { lemma: minuto, gender: m, de: { noun: Minute, g: f, plural: Minuten }, tags: [time-expr], level: A1, module: M04 }
+  - { lemma: reloj, gender: m, de: { noun: Uhr, g: f, plural: Uhren }, tags: [thing], level: A1, module: M04 }
+  - { lemma: mañana, gender: f, de: { noun: Morgen, g: m }, tags: [time-expr], level: A1, module: M04, notes_de: "la mañana = der Morgen/Vormittag; mañana (Adverb) = morgen" }
+  - { lemma: tarde, gender: f, de: { noun: Nachmittag, g: m, plural: Nachmittage }, tags: [time-expr], level: A1, module: M04, notes_de: "auch: früher Abend; tarde (Adverb) = spät" }
+  - { lemma: noche, gender: f, de: { noun: Nacht, g: f, plural: Nächte }, tags: [time-expr], level: A1, module: M04 }
+  - { lemma: mes, gender: m, de: { noun: Monat, g: m, plural: Monate }, tags: [time-expr], level: A1, module: M04 }
+  - { lemma: año, gender: m, de: { noun: Jahr, g: n, plural: Jahre }, tags: [time-expr], level: A1, module: M04 }
+  - { lemma: estación, gender: f, de: { noun: Bahnhof, g: m, plural: Bahnhöfe }, tags: [place], level: A1, module: M04, notes_de: "auch: Jahreszeit" }
+  - { lemma: enero, gender: m, de: { noun: Januar, g: m }, tags: [time-expr], level: A1, module: M04, notes_de: "Monatsnamen klein und ohne Artikel: en enero = im Januar" }
+  - { lemma: febrero, gender: m, de: { noun: Februar, g: m }, tags: [time-expr], level: A1, module: M04 }
+  - { lemma: marzo, gender: m, de: { noun: März, g: m }, tags: [time-expr], level: A1, module: M04 }
+  - { lemma: abril, gender: m, de: { noun: April, g: m }, tags: [time-expr], level: A1, module: M04 }
+  - { lemma: mayo, gender: m, de: { noun: Mai, g: m }, tags: [time-expr], level: A1, module: M04 }
+  - { lemma: junio, gender: m, de: { noun: Juni, g: m }, tags: [time-expr], level: A1, module: M04 }
+  - { lemma: julio, gender: m, de: { noun: Juli, g: m }, tags: [time-expr], level: A1, module: M04 }
+  - { lemma: agosto, gender: m, de: { noun: August, g: m }, tags: [time-expr], level: A1, module: M04 }
+  - { lemma: septiembre, gender: m, de: { noun: September, g: m }, tags: [time-expr], level: A1, module: M04 }
+  - { lemma: octubre, gender: m, de: { noun: Oktober, g: m }, tags: [time-expr], level: A1, module: M04 }
+  - { lemma: noviembre, gender: m, de: { noun: November, g: m }, tags: [time-expr], level: A1, module: M04 }
+  - { lemma: diciembre, gender: m, de: { noun: Dezember, g: m }, tags: [time-expr], level: A1, module: M04 }
+  - { lemma: primavera, gender: f, de: { noun: Frühling, g: m }, tags: [time-expr], level: A1, module: M04 }
+  - { lemma: verano, gender: m, de: { noun: Sommer, g: m }, tags: [time-expr], level: A1, module: M04 }
+  - { lemma: otoño, gender: m, de: { noun: Herbst, g: m }, tags: [time-expr], level: A1, module: M04 }
+  - { lemma: invierno, gender: m, de: { noun: Winter, g: m }, tags: [time-expr], level: A1, module: M04 }
+  - { lemma: banco, gender: m, de: { noun: Bank, g: f, plural: Banken }, tags: [place], level: A1, module: M04, notes_de: "auch: Sitzbank (Plural dann: die Bänke)" }
+  - { lemma: escuela, gender: f, de: { noun: Schule, g: f, plural: Schulen }, tags: [place], level: A1, module: M04 }
+  - { lemma: mercado, gender: m, de: { noun: Markt, g: m, plural: Märkte }, tags: [place], level: A1, module: M04 }
+  - { lemma: farmacia, gender: f, de: { noun: Apotheke, g: f, plural: Apotheken }, tags: [place], level: A1, module: M04 }
+  - { lemma: hospital, gender: m, de: { noun: Krankenhaus, g: n, plural: Krankenhäuser }, tags: [place], level: A1, module: M04 }
+  - { lemma: biblioteca, gender: f, de: { noun: Bibliothek, g: f, plural: Bibliotheken }, tags: [place], level: A1, module: M04, notes_de: "falscher Freund: la librería = die Buchhandlung" }
+
+chunks:
+  - { es: tener hambre, de: Hunger haben, level: A1, module: M04, notes_de: "wörtlich 'Hunger haben' — nicht 'hungrig sein'!" }
+  - { es: tener sed, de: Durst haben, level: A1, module: M04 }
+  - { es: tener frío, de: frieren (jemandem ist kalt), level: A1, module: M04 }
+  - { es: tener calor, de: jemandem ist warm/heiß, level: A1, module: M04 }
+  - { es: tener sueño, de: müde/schläfrig sein, level: A1, module: M04 }
+  - { es: tener … años, de: … Jahre alt sein, level: A1, module: M04, notes_de: "haben statt sein: tengo 30 años = ich BIN 30" }
+  - { es: ¿qué hora es?, de: wie spät ist es?, level: A1, module: M04 }
+  - { es: son las dos, de: es ist zwei Uhr, level: A1, module: M04, notes_de: "nur bei 1 Uhr Singular: es la una" }
+  - { es: a las tres, de: um drei Uhr, level: A1, module: M04 }

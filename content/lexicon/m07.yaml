@@ -1,0 +1,59 @@
+# M07 — gustar & Co.: Hobbys, Sport, Musik, Körperteile (für doler) (Plan/01)
+
+nouns:
+  - { lemma: deporte, gender: m, de: { noun: Sport, g: m }, tags: [activity], level: A1, module: M07 }
+  - { lemma: fútbol, gender: m, de: { noun: Fußball, g: m }, tags: [activity], level: A1, module: M07 }
+  - { lemma: baloncesto, gender: m, de: { noun: Basketball, g: m }, tags: [activity], level: A1, module: M07 }
+  - { lemma: tenis, gender: m, de: { noun: Tennis, g: n }, tags: [activity], level: A1, module: M07 }
+  - { lemma: música, gender: f, de: { noun: Musik, g: f }, tags: [abstract, activity], level: A1, module: M07 }
+  - { lemma: canción, gender: f, de: { noun: Lied, g: n, plural: Lieder }, tags: [thing], level: A1, module: M07 }
+  - { lemma: guitarra, gender: f, de: { noun: Gitarre, g: f, plural: Gitarren }, tags: [thing], level: A1, module: M07 }
+  - { lemma: piano, gender: m, de: { noun: Klavier, g: n, plural: Klaviere }, tags: [thing], level: A1, module: M07 }
+  - { lemma: cine, gender: m, de: { noun: Kino, g: n, plural: Kinos }, tags: [place], level: A1, module: M07 }
+  - { lemma: película, gender: f, de: { noun: Film, g: m, plural: Filme }, tags: [thing], level: A1, module: M07 }
+  - { lemma: teatro, gender: m, de: { noun: Theater, g: n, plural: Theater }, tags: [place], level: A1, module: M07 }
+  - { lemma: libro, gender: m, de: { noun: Buch, g: n, plural: Bücher }, tags: [thing], level: A1, module: M07 }
+  - { lemma: revista, gender: f, de: { noun: Zeitschrift, g: f, plural: Zeitschriften }, tags: [thing], level: A1, module: M07 }
+  - { lemma: periódico, gender: m, de: { noun: Zeitung, g: f, plural: Zeitungen }, tags: [thing], level: A1, module: M07 }
+  - { lemma: foto, gender: f, de: { noun: Foto, g: n, plural: Fotos }, tags: [thing], level: A1, module: M07, gender_trap: true, notes_de: "la foto (von la fotografía) — feminin trotz -o!" }
+  - { lemma: bicicleta, gender: f, de: { noun: Fahrrad, g: n, plural: Fahrräder }, tags: [vehicle, thing], level: A1, module: M07 }
+  - { lemma: cabeza, gender: f, de: { noun: Kopf, g: m, plural: Köpfe }, tags: [bodypart], level: A1, module: M07 }
+  - { lemma: ojo, gender: m, de: { noun: Auge, g: n, plural: Augen }, tags: [bodypart], level: A1, module: M07 }
+  - { lemma: oreja, gender: f, de: { noun: Ohr, g: n, plural: Ohren }, tags: [bodypart], level: A1, module: M07 }
+  - { lemma: nariz, gender: f, plural: narices, de: { noun: Nase, g: f, plural: Nasen }, tags: [bodypart], level: A1, module: M07 }
+  - { lemma: boca, gender: f, de: { noun: Mund, g: m, plural: Münder }, tags: [bodypart], level: A1, module: M07 }
+  - { lemma: mano, gender: f, de: { noun: Hand, g: f, plural: Hände }, tags: [bodypart], level: A1, module: M07, gender_trap: true, notes_de: "la mano — feminin trotz -o!" }
+  - { lemma: brazo, gender: m, de: { noun: Arm, g: m, plural: Arme }, tags: [bodypart], level: A1, module: M07 }
+  - { lemma: pierna, gender: f, de: { noun: Bein, g: n, plural: Beine }, tags: [bodypart], level: A1, module: M07 }
+  - { lemma: pie, gender: m, de: { noun: Fuß, g: m, plural: Füße }, tags: [bodypart], level: A1, module: M07, notes_de: "a pie = zu Fuß" }
+  - { lemma: espalda, gender: f, de: { noun: Rücken, g: m, plural: Rücken }, tags: [bodypart], level: A1, module: M07 }
+  - { lemma: estómago, gender: m, de: { noun: Magen, g: m, plural: Mägen }, tags: [bodypart], level: A1, module: M07 }
+  - { lemma: diente, gender: m, de: { noun: Zahn, g: m, plural: Zähne }, tags: [bodypart], level: A1, module: M07 }
+  - { lemma: pelo, gender: m, de: { noun: Haar, g: n, plural: Haare }, tags: [bodypart], level: A1, module: M07, notes_de: "meist Singular: el pelo = die Haare" }
+
+adjectives:
+  - lemma: rápido
+    agreement: o/a
+    copula: ser
+    senses: [{ copula: ser, de: schnell, applies_to: [human, animal, thing, vehicle] }]
+    level: A1
+    module: M07
+  - lemma: lento
+    agreement: o/a
+    copula: ser
+    senses: [{ copula: ser, de: langsam, applies_to: [human, animal, thing, vehicle] }]
+    level: A1
+    module: M07
+  - lemma: divertido
+    agreement: o/a
+    copula: ser
+    senses: [{ copula: ser, de: lustig, applies_to: [human, thing, event, activity] }]
+    level: A1
+    module: M07
+
+chunks:
+  - { es: tocar la guitarra, de: Gitarre spielen, level: A1, module: M07, notes_de: "Instrumente: tocar, Spiele/Sport: jugar" }
+  - { es: montar en bicicleta, de: Fahrrad fahren, level: A1, module: M07 }
+  - { es: hacer deporte, de: Sport treiben, level: A1, module: M07 }
+  - { es: a mí también, de: ich auch, level: A1, module: M07 }
+  - { es: a mí tampoco, de: ich auch nicht, level: A1, module: M07 }

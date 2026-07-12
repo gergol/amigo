@@ -103,6 +103,7 @@ export interface Adjective {
   senses: AdjSense[] // 1 for ser/estar-only, 1 shared for both, 2 for shift
   gradable?: boolean // default true
   gender?: Gender // gender-restricted (embarazada)
+  tags?: Tag[] // classification for slot filters (nationality …)
   level: Level
   module: ModuleId
   notes_de?: string
@@ -164,6 +165,8 @@ export interface NounSlot {
 export interface AdjSlot {
   type: 'adj'
   copula?: 'ser' | 'estar' // filter senses; omit = any (template's verb decides)
+  tags?: Tag[] // only adjectives carrying one of these tags (e.g. nationality)
+  shiftOnly?: boolean // only meaning-shift adjectives (ser/estar drills)
 }
 
 export interface VerbSlot {
@@ -186,7 +189,13 @@ export interface TimeSlot { type: 'time' }
 
 export interface TimeExpr { es: string; de: string; tenses: Tense[] }
 
-export type Slot = SubjSlot | NounSlot | AdjSlot | VerbSlot | CliticSlot | TimeSlot
+// Fixed es/de pairs the template picks from (tener hambre/Hunger haben, me gustaría/ich würde gern)
+export interface LitSlot { type: 'lit'; options: { es: string; de: string }[] }
+
+// Infinitive complement (querer/poder + inf)
+export interface InfSlot { type: 'inf'; lemmas: string[] }
+
+export type Slot = SubjSlot | NounSlot | AdjSlot | VerbSlot | CliticSlot | TimeSlot | LitSlot | InfSlot
 
 export interface Template {
   id: string

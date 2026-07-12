@@ -1,0 +1,59 @@
+# M03 — Regelmäßiges Präsens: Alltagsaktivitäten, Zahlen 0–100, Wochentage (Plan/01)
+
+nouns:
+  - { lemma: trabajo, gender: m, de: { noun: Arbeit, g: f, plural: Arbeiten }, tags: [activity, abstract], level: A1, module: M03 }
+  - { lemma: oficina, gender: f, de: { noun: Büro, g: n, plural: Büros }, tags: [place], level: A1, module: M03 }
+  - { lemma: universidad, gender: f, de: { noun: Universität, g: f, plural: Universitäten }, tags: [place], level: A1, module: M03 }
+  - { lemma: clase, gender: f, de: { noun: Unterricht, g: m }, tags: [event, place], level: A1, module: M03, notes_de: "auch: Klasse, Klassenzimmer" }
+  - { lemma: curso, gender: m, de: { noun: Kurs, g: m, plural: Kurse }, tags: [event], level: A1, module: M03 }
+  - { lemma: palabra, gender: f, de: { noun: Wort, g: n, plural: Wörter }, tags: [abstract], level: A1, module: M03 }
+  - { lemma: pregunta, gender: f, de: { noun: Frage, g: f, plural: Fragen }, tags: [abstract], level: A1, module: M03 }
+  - { lemma: respuesta, gender: f, de: { noun: Antwort, g: f, plural: Antworten }, tags: [abstract], level: A1, module: M03 }
+  - { lemma: idioma, gender: m, de: { noun: Sprache, g: f, plural: Sprachen }, tags: [abstract], level: A1, module: M03, gender_trap: true, notes_de: "el idioma — maskulin trotz -a!" }
+  - { lemma: número, gender: m, de: { noun: Zahl, g: f, plural: Zahlen }, tags: [abstract], level: A1, module: M03, notes_de: "auch: Nummer" }
+  - { lemma: semana, gender: f, de: { noun: Woche, g: f, plural: Wochen }, tags: [time-expr], level: A1, module: M03 }
+  - { lemma: día, gender: m, de: { noun: Tag, g: m, plural: Tage }, tags: [time-expr], level: A1, module: M03, gender_trap: true, notes_de: "el día — maskulin trotz -a!" }
+  - { lemma: fin de semana, gender: m, de: { noun: Wochenende, g: n, plural: Wochenenden }, tags: [time-expr], level: A1, module: M03 }
+  - { lemma: lunes, gender: m, plural: lunes, de: { noun: Montag, g: m }, tags: [time-expr], level: A1, module: M03, notes_de: "unveränderlich: el lunes = am Montag, los lunes = montags" }
+  - { lemma: martes, gender: m, plural: martes, de: { noun: Dienstag, g: m }, tags: [time-expr], level: A1, module: M03 }
+  - { lemma: miércoles, gender: m, plural: miércoles, de: { noun: Mittwoch, g: m }, tags: [time-expr], level: A1, module: M03 }
+  - { lemma: jueves, gender: m, plural: jueves, de: { noun: Donnerstag, g: m }, tags: [time-expr], level: A1, module: M03 }
+  - { lemma: viernes, gender: m, plural: viernes, de: { noun: Freitag, g: m }, tags: [time-expr], level: A1, module: M03 }
+  - { lemma: sábado, gender: m, de: { noun: Samstag, g: m }, tags: [time-expr], level: A1, module: M03 }
+  - { lemma: domingo, gender: m, de: { noun: Sonntag, g: m }, tags: [time-expr], level: A1, module: M03 }
+
+adjectives:
+  - lemma: fácil
+    agreement: cons
+    copula: ser
+    senses: [{ copula: ser, de: einfach, applies_to: [thing, abstract, activity] }]
+    level: A1
+    module: M03
+  - lemma: difícil
+    agreement: cons
+    copula: ser
+    senses: [{ copula: ser, de: schwierig, applies_to: [thing, abstract, activity] }]
+    level: A1
+    module: M03
+  - lemma: importante
+    agreement: e
+    copula: ser
+    senses: [{ copula: ser, de: wichtig, applies_to: [thing, abstract, human, event] }]
+    level: A1
+    module: M03
+
+chunks:
+  - { es: cero, de: "null", level: A1, module: M03 }
+  - { es: uno, de: eins, level: A1, module: M03 }
+  - { es: dos, de: zwei, level: A1, module: M03 }
+  - { es: tres, de: drei, level: A1, module: M03 }
+  - { es: cuatro, de: vier, level: A1, module: M03 }
+  - { es: cinco, de: fünf, level: A1, module: M03 }
+  - { es: seis, de: sechs, level: A1, module: M03 }
+  - { es: siete, de: sieben, level: A1, module: M03 }
+  - { es: ocho, de: acht, level: A1, module: M03 }
+  - { es: nueve, de: neun, level: A1, module: M03 }
+  - { es: diez, de: zehn, level: A1, module: M03 }
+  - { es: veinte, de: zwanzig, level: A1, module: M03 }
+  - { es: treinta, de: dreißig, level: A1, module: M03 }
+  - { es: cien, de: (ein)hundert, level: A1, module: M03 }

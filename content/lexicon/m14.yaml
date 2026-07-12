@@ -1,0 +1,42 @@
+# M14 — Imperfecto: Kindheit, Schule, Erinnerungen (Plan/01)
+
+nouns:
+  - { lemma: infancia, gender: f, de: { noun: Kindheit, g: f }, tags: [abstract, time-expr], level: A2, module: M14 }
+  - { lemma: colegio, gender: m, de: { noun: Schule, g: f, plural: Schulen }, tags: [place], level: A2, module: M14, notes_de: "falscher Freund: colegio = Schule, nicht Kolleg!" }
+  - { lemma: instituto, gender: m, de: { noun: Gymnasium, g: n, plural: Gymnasien }, tags: [place], level: A2, module: M14, notes_de: "weiterführende Schule, nicht Institut!" }
+  - { lemma: alumno, gender: m, fem: alumna, de: { noun: Schüler, g: m, plural: Schüler }, tags: [human], level: A2, module: M14 }
+  - { lemma: maestro, gender: m, fem: maestra, de: { noun: Grundschullehrer, g: m, plural: Grundschullehrer }, tags: [human, profession], level: A2, module: M14 }
+  - { lemma: deberes, gender: m, plural: deberes, de: { noun: Hausaufgabe, g: f, plural: Hausaufgaben }, tags: [activity], level: A2, module: M14, notes_de: "nur Plural: hacer los deberes = Hausaufgaben machen" }
+  - { lemma: examen, gender: m, plural: exámenes, de: { noun: Prüfung, g: f, plural: Prüfungen }, tags: [event], level: A2, module: M14, notes_de: "Plural mit Akzent: exámenes" }
+  - { lemma: nota, gender: f, de: { noun: Note, g: f, plural: Noten }, tags: [abstract], level: A2, module: M14, notes_de: "auch: Notiz" }
+  - { lemma: recreo, gender: m, de: { noun: Pause, g: f, plural: Pausen }, tags: [event], level: A2, module: M14, notes_de: "Schulpause; sonst: la pausa/el descanso" }
+  - { lemma: juguete, gender: m, de: { noun: Spielzeug, g: n, plural: Spielzeuge }, tags: [thing], level: A2, module: M14 }
+  - { lemma: muñeca, gender: f, de: { noun: Puppe, g: f, plural: Puppen }, tags: [thing], level: A2, module: M14, notes_de: "auch: Handgelenk" }
+  - { lemma: cuento, gender: m, de: { noun: Märchen, g: n, plural: Märchen }, tags: [thing], level: A2, module: M14, notes_de: "auch: kurze Geschichte; nicht verwechseln mit la cuenta = Rechnung" }
+  - { lemma: perro, gender: m, fem: perra, de: { noun: Hund, g: m, plural: Hunde }, tags: [animal], level: A2, module: M14 }
+  - { lemma: gato, gender: m, fem: gata, de: { noun: Katze, g: f, plural: Katzen }, tags: [animal], level: A2, module: M14, notes_de: "el gato — die Katze" }
+  - { lemma: patio, gender: m, de: { noun: Hof, g: m, plural: Höfe }, tags: [place], level: A2, module: M14, notes_de: "patio del colegio = Schulhof" }
+  - { lemma: pizarra, gender: f, de: { noun: Tafel, g: f, plural: Tafeln }, tags: [thing], level: A2, module: M14 }
+  - { lemma: lápiz, gender: m, plural: lápices, de: { noun: Bleistift, g: m, plural: Bleistifte }, tags: [thing], level: A2, module: M14, notes_de: "Plural: lápices (z → c)" }
+  - { lemma: cuaderno, gender: m, de: { noun: Heft, g: n, plural: Hefte }, tags: [thing], level: A2, module: M14 }
+  - { lemma: mochila, gender: f, de: { noun: Rucksack, g: m, plural: Rucksäcke }, tags: [thing], level: A2, module: M14 }
+  - { lemma: recuerdo, gender: m, de: { noun: Erinnerung, g: f, plural: Erinnerungen }, tags: [abstract], level: A2, module: M14, notes_de: "auch: Souvenir" }
+
+adjectives:
+  - lemma: travieso
+    agreement: o/a
+    copula: ser
+    senses: [{ copula: ser, de: frech, applies_to: [human, animal] }]
+    level: A2
+    module: M14
+  - lemma: estricto
+    agreement: o/a
+    copula: ser
+    senses: [{ copula: ser, de: streng, applies_to: [human] }]
+    level: A2
+    module: M14
+
+chunks:
+  - { es: de pequeño, de: als kleines Kind, level: A2, module: M14, notes_de: "Signalwort für das imperfecto; weiblich: de pequeña" }
+  - { es: en aquella época, de: damals, level: A2, module: M14, notes_de: "Signalwort für das imperfecto" }
+  - { es: una vez, de: einmal, level: A2, module: M14 }

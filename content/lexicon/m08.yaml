@@ -1,0 +1,187 @@
+# M08 — ser vs. estar mit Adjektiven: Charakter, Aussehen, Gefühle, Wetter (Plan/01)
+# Hier wohnen die klassischen Bedeutungs-Shifter (aburrido, listo, rico, malo, bueno).
+
+nouns:
+  - { lemma: sol, gender: m, de: { noun: Sonne, g: f }, tags: [weather], level: A1, module: M08, notes_de: "el sol — die Sonne" }
+  - { lemma: lluvia, gender: f, de: { noun: Regen, g: m }, tags: [weather], level: A1, module: M08 }
+  - { lemma: nieve, gender: f, de: { noun: Schnee, g: m }, tags: [weather], level: A1, module: M08 }
+  - { lemma: viento, gender: m, de: { noun: Wind, g: m, plural: Winde }, tags: [weather], level: A1, module: M08 }
+  - { lemma: tiempo, gender: m, de: { noun: Wetter, g: n }, tags: [weather, abstract], level: A1, module: M08, notes_de: "auch: Zeit (no tengo tiempo = ich habe keine Zeit)" }
+
+adjectives:
+  - lemma: aburrido
+    agreement: o/a
+    copula: shift
+    senses:
+      - { copula: ser, de: langweilig, applies_to: [human, thing, event] }
+      - { copula: estar, de: gelangweilt, applies_to: [human] }
+    level: A1
+    module: M08
+    notes_de: "ser aburrido = langweilig SEIN, estar aburrido = sich langweilen"
+  - lemma: listo
+    agreement: o/a
+    copula: shift
+    senses:
+      - { copula: ser, de: schlau, applies_to: [human] }
+      - { copula: estar, de: bereit, applies_to: [human, thing] }
+    level: A1
+    module: M08
+  - lemma: rico
+    agreement: o/a
+    copula: shift
+    senses:
+      - { copula: ser, de: reich, applies_to: [human] }
+      - { copula: estar, de: lecker, applies_to: [food, drink] }
+    level: A1
+    module: M08
+  - lemma: malo
+    agreement: o/a
+    copula: shift
+    senses:
+      - { copula: ser, de: schlecht, applies_to: [human, thing, event] }
+      - { copula: estar, de: krank, applies_to: [human] }
+    level: A1
+    module: M08
+    notes_de: "vor maskulinem Nomen: mal (un mal día)"
+  - lemma: bueno
+    agreement: o/a
+    copula: shift
+    senses:
+      - { copula: ser, de: gut, applies_to: [human, thing, event] }
+      - { copula: estar, de: lecker, applies_to: [food, drink] }
+    level: A1
+    module: M08
+    notes_de: "vor maskulinem Nomen: buen (un buen amigo)"
+  - lemma: contento
+    agreement: o/a
+    copula: estar
+    senses: [{ copula: estar, de: zufrieden, applies_to: [human] }]
+    level: A1
+    module: M08
+  - lemma: cansado
+    agreement: o/a
+    copula: estar
+    senses: [{ copula: estar, de: müde, applies_to: [human, animal] }]
+    level: A1
+    module: M08
+  - lemma: enfadado
+    agreement: o/a
+    copula: estar
+    senses: [{ copula: estar, de: wütend, applies_to: [human] }]
+    level: A1
+    module: M08
+  - lemma: ocupado
+    agreement: o/a
+    copula: estar
+    senses: [{ copula: estar, de: beschäftigt, applies_to: [human] }]
+    level: A1
+    module: M08
+  - lemma: preocupado
+    agreement: o/a
+    copula: estar
+    senses: [{ copula: estar, de: besorgt, applies_to: [human] }]
+    level: A1
+    module: M08
+  - lemma: guapo
+    agreement: o/a
+    copula: both
+    senses: [{ copula: ser, de: gutaussehend, applies_to: [human] }]
+    level: A1
+    module: M08
+    notes_de: "estar guapo = (heute) gut aussehen — beides richtig"
+  - lemma: tranquilo
+    agreement: o/a
+    copula: both
+    senses: [{ copula: ser, de: ruhig, applies_to: [human, place] }]
+    level: A1
+    module: M08
+  - lemma: nervioso
+    agreement: o/a
+    copula: both
+    senses: [{ copula: ser, de: nervös, applies_to: [human] }]
+    level: A1
+    module: M08
+  - lemma: triste
+    agreement: e
+    copula: both
+    senses: [{ copula: ser, de: traurig, applies_to: [human] }]
+    level: A1
+    module: M08
+  - lemma: feliz
+    agreement: cons
+    copula: both
+    senses: [{ copula: ser, de: glücklich, applies_to: [human] }]
+    level: A1
+    module: M08
+  - lemma: gordo
+    agreement: o/a
+    copula: both
+    senses: [{ copula: ser, de: dick, applies_to: [human, animal] }]
+    level: A1
+    module: M08
+  - lemma: delgado
+    agreement: o/a
+    copula: both
+    senses: [{ copula: ser, de: schlank, applies_to: [human, animal] }]
+    level: A1
+    module: M08
+  - lemma: amable
+    agreement: e
+    copula: ser
+    senses: [{ copula: ser, de: freundlich, applies_to: [human] }]
+    level: A1
+    module: M08
+  - lemma: serio
+    agreement: o/a
+    copula: ser
+    senses: [{ copula: ser, de: ernst, applies_to: [human] }]
+    level: A1
+    module: M08
+  - lemma: trabajador
+    agreement: nat
+    copula: ser
+    senses: [{ copula: ser, de: fleißig, applies_to: [human] }]
+    level: A1
+    module: M08
+    notes_de: "feminin: trabajadora; auch Nomen: der Arbeiter"
+  - lemma: rubio
+    agreement: o/a
+    copula: ser
+    senses: [{ copula: ser, de: blond, applies_to: [human] }]
+    level: A1
+    module: M08
+  - lemma: moreno
+    agreement: o/a
+    copula: ser
+    senses: [{ copula: ser, de: dunkelhaarig, applies_to: [human] }]
+    level: A1
+    module: M08
+  - lemma: fuerte
+    agreement: e
+    copula: ser
+    senses: [{ copula: ser, de: stark, applies_to: [human, animal] }]
+    level: A1
+    module: M08
+  - lemma: tímido
+    agreement: o/a
+    copula: ser
+    senses: [{ copula: ser, de: schüchtern, applies_to: [human] }]
+    level: A1
+    module: M08
+  - lemma: feo
+    agreement: o/a
+    copula: ser
+    senses: [{ copula: ser, de: hässlich, applies_to: [human, thing, place] }]
+    level: A1
+    module: M08
+
+chunks:
+  - { es: hace frío, de: es ist kalt, level: A1, module: M08, notes_de: "Wetter mit hacer: wörtlich 'es macht Kälte'" }
+  - { es: hace calor, de: es ist heiß, level: A1, module: M08 }
+  - { es: hace sol, de: die Sonne scheint, level: A1, module: M08 }
+  - { es: hace buen tiempo, de: das Wetter ist schön, level: A1, module: M08 }
+  - { es: hace mal tiempo, de: das Wetter ist schlecht, level: A1, module: M08 }
+  - { es: está nublado, de: es ist bewölkt, level: A1, module: M08 }
+  - { es: llueve, de: es regnet, level: A1, module: M08 }
+  - { es: nieva, de: es schneit, level: A1, module: M08 }
+  - { es: tener miedo, de: Angst haben, level: A1, module: M08 }

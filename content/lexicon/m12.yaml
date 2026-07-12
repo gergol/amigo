@@ -1,0 +1,33 @@
+# M12 — Pretérito indefinido (regelmäßig): Biografie, Lebensereignisse, Jahre (Plan/01)
+
+nouns:
+  - { lemma: vida, gender: f, de: { noun: Leben, g: n }, tags: [abstract], level: A2, module: M12 }
+  - { lemma: edad, gender: f, de: { noun: Alter, g: n }, tags: [abstract], level: A2, module: M12 }
+  - { lemma: juventud, gender: f, de: { noun: Jugend, g: f }, tags: [abstract, time-expr], level: A2, module: M12 }
+  - { lemma: empresa, gender: f, de: { noun: Firma, g: f, plural: Firmen }, tags: [place], level: A2, module: M12 }
+  - { lemma: carrera, gender: f, de: { noun: Studium, g: n, plural: Studiengänge }, tags: [abstract], level: A2, module: M12, notes_de: "auch: Karriere, Rennen" }
+  - { lemma: siglo, gender: m, de: { noun: Jahrhundert, g: n, plural: Jahrhunderte }, tags: [time-expr], level: A2, module: M12 }
+  - { lemma: momento, gender: m, de: { noun: Moment, g: m, plural: Momente }, tags: [time-expr], level: A2, module: M12 }
+  - { lemma: historia, gender: f, de: { noun: Geschichte, g: f, plural: Geschichten }, tags: [abstract], level: A2, module: M12, notes_de: "Historie UND Erzählung" }
+  - { lemma: persona, gender: f, de: { noun: Person, g: f, plural: Personen }, tags: [human], level: A2, module: M12, notes_de: "immer feminin, auch für Männer: Juan es una persona amable" }
+  - { lemma: pasado, gender: m, de: { noun: Vergangenheit, g: f }, tags: [abstract, time-expr], level: A2, module: M12 }
+  - { lemma: abogado, gender: m, fem: abogada, de: { noun: Anwalt, g: m, plural: Anwälte }, tags: [human, profession], level: A2, module: M12 }
+  - { lemma: escritor, gender: m, fem: escritora, de: { noun: Schriftsteller, g: m, plural: Schriftsteller }, tags: [human, profession], level: A2, module: M12 }
+  - { lemma: artista, gender: mf, de: { noun: Künstler, g: m, plural: Künstler }, tags: [human, profession], level: A2, module: M12, notes_de: "el/la artista — gleiche Form" }
+
+adjectives:
+  - lemma: famoso
+    agreement: o/a
+    copula: ser
+    senses: [{ copula: ser, de: berühmt, applies_to: [human, place, thing] }]
+    level: A2
+    module: M12
+
+chunks:
+  - { es: quinientos, de: fünfhundert, level: A2, module: M12 }
+  - { es: mil, de: tausend, level: A2, module: M12, notes_de: "ohne un: mil novecientos = 1900" }
+  - { es: dos mil, de: zweitausend, level: A2, module: M12 }
+  - { es: después, de: danach, level: A2, module: M12 }
+  - { es: luego, de: dann, level: A2, module: M12 }
+  - { es: más tarde, de: später, level: A2, module: M12 }
+  - { es: hace … años, de: vor … Jahren, level: A2, module: M12, notes_de: "Signalwort für das indefinido" }

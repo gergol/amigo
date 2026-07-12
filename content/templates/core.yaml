@@ -1,0 +1,294 @@
+# Template sentences (Plan/05). One authored template ⇒ hundreds of generated
+# sentence pairs; tense axes grow as grammar unlocks (M11+ needs no new templates).
+# de patterns are written in Präsens-V2 order; the engine moves verb parts per tense.
+
+templates:
+  # ---------- M01: ser + identity ----------
+  - id: tpl.ser.adj
+    module: M01
+    requires: [copula.ser.identity, adj.agreement]
+    es: "{subj} {v} {adj}"
+    de: "{subj} {v} {nicht} {adj}"
+    polarity: true
+    slots:
+      subj: { type: subj, nouns: [human] }
+      v: { type: verb, lemmas: [ser] }
+      adj: { type: adj, copula: ser }
+    notes_de: "ser für Eigenschaften: Was jemand IST, nicht wie er sich fühlt."
+
+  - id: tpl.ser.nationality
+    module: M01
+    requires: [copula.ser.identity]
+    es: "{subj} {v} {adj}"
+    de: "{subj} {v} {adj}"
+    slots:
+      subj: { type: subj }
+      v: { type: verb, lemmas: [ser] }
+      adj: { type: adj, copula: ser, tags: [nationality] }
+    notes_de: "Nationalität ohne Artikel: soy alemán (nicht 'un alemán')."
+
+  # ---------- M02: estar location, hay ----------
+  - id: tpl.estar.location
+    module: M02
+    requires: [copula.estar.location, prep.place]
+    es: "{subj} {v} en {n}"
+    de: "{subj} {v} {nicht} in {n}"
+    polarity: true
+    slots:
+      subj: { type: subj, nouns: [human] }
+      v: { type: verb, lemmas: [estar] }
+      n: { type: noun, tags: [place], article: def, deCase: dat }
+    notes_de: "Ort → immer estar, nie ser."
+
+  - id: tpl.estar.location.q
+    module: M02
+    requires: [copula.estar.location, questions]
+    es: "¿dónde {v} {subj}?"
+    de: "wo {v} {subj}?"
+    slots:
+      subj: { type: subj, persons: [3s], nouns: [human, thing] }
+      v: { type: verb, lemmas: [estar] }
+
+  - id: tpl.hay
+    module: M02
+    requires: [hay]
+    es: "en {n2} hay {n}"
+    de: "in {n2} {v} {n}"
+    slots:
+      n: { type: noun, tags: [place, thing], article: indef, deCase: akk }
+      n2: { type: noun, tags: [place], article: def, deCase: dat }
+      v: { type: verb, lemmas: [hay], tense: presente }
+    notes_de: "hay = es gibt (unbestimmt). Wo etwas Bestimmtes ist → está."
+
+  # ---------- M03: regular presente (tense axes grow through A2) ----------
+  - id: tpl.act.intrans
+    module: M03
+    requires: [presente.regular]
+    es: "{subj} {v} {t}"
+    de: "{subj} {v} {t} {nicht}"
+    polarity: true
+    tenses: [presente, perfecto, indefinido, imperfecto, futuro, ir-a-inf]
+    slots:
+      subj: { type: subj, nouns: [human] }
+      v: { type: verb, lemmas: [trabajar, bailar, cantar, nadar, caminar, descansar, viajar, desayunar, cenar] }
+      t: { type: time }
+
+  - id: tpl.act.trans
+    module: M03
+    requires: [presente.regular]
+    es: "{subj} {v} {n} {t}"
+    de: "{subj} {v} {t} {n}"
+    tenses: [presente, perfecto, indefinido, futuro, ir-a-inf]
+    slots:
+      subj: { type: subj, nouns: [human] }
+      v: { type: verb, lemmas: [comer, beber, comprar, buscar, leer, ver, escuchar, necesitar, vender, tomar] }
+      n: { type: noun, tags: [food, drink, thing], article: indef, deCase: akk, role: do }
+      t: { type: time }
+
+  # ---------- M04: tener idioms, ir a + place ----------
+  - id: tpl.tener.idiom
+    module: M04
+    requires: [tener.idioms]
+    es: "{subj} {v} {lit}"
+    de: "{subj} {v} {lit}"
+    tenses: [presente]
+    slots:
+      subj: { type: subj, nouns: [human] }
+      v: { type: verb, lemmas: [tener] }
+      lit:
+        type: lit
+        options:
+          - { es: hambre, de: Hunger }
+          - { es: sed, de: Durst }
+          - { es: miedo, de: Angst }
+          - { es: razón, de: recht }
+    notes_de: "Spanisch HAT Hunger/Durst/Angst — nicht 'ist hungrig'. (tener frío/calor/sueño: siehe Vokabeln)"
+
+  - id: tpl.ir.place
+    module: M04
+    requires: [presente.irregular, prep.place]
+    es: "{subj} {v} a {n} {t}"
+    de: "{subj} {v} {t} in {n}"
+    tenses: [presente, perfecto, indefinido, imperfecto, futuro]
+    slots:
+      subj: { type: subj, nouns: [human] }
+      v: { type: verb, lemmas: [ir] }
+      n: { type: noun, tags: [place], article: def, deCase: akk }
+      t: { type: time }
+    notes_de: "a + el = al. Indefinido von ir: fui, fuiste, fue …"
+
+  # ---------- M05: modals + infinitive ----------
+  - id: tpl.modal.inf
+    module: M05
+    requires: [modal-inf]
+    es: "{subj} {v} {inf} {t}"
+    de: "{subj} {v} {t} {nicht} {inf}"
+    polarity: true
+    tenses: [presente]
+    slots:
+      subj: { type: subj, nouns: [human] }
+      v: { type: verb, lemmas: [querer, poder] }
+      inf: { type: inf, lemmas: [bailar, nadar, dormir, comer, leer, trabajar, cantar, cocinar, salir, venir] }
+      t: { type: time }
+
+  # ---------- M06: reflexive routine ----------
+  - id: tpl.reflexive
+    module: M06
+    requires: [verb.reflexive]
+    es: "{subj} {v} {t}"
+    de: "{subj} {v} {t}"
+    tenses: [presente, perfecto, indefinido, imperfecto, futuro]
+    slots:
+      subj: { type: subj, nouns: [human] }
+      v: { type: verb, reflexive: true }
+      t: { type: time }
+    notes_de: "Pronomen VOR dem konjugierten Verb: me levanto."
+
+  # ---------- M07: gustar ----------
+  - id: tpl.gustar
+    module: M07
+    requires: [gustar]
+    es: "{v} {n}"
+    de: "{subj} {v} {n} {nicht}"
+    polarity: true
+    tenses: [presente]
+    slots:
+      subj: { type: subj }
+      v: { type: verb, lemmas: [gustar, encantar], valence: gustar }
+      n: { type: noun, tags: [thing, food, drink, activity], article: def, deCase: nom, number: both }
+    notes_de: "Wie 'gefallen': me gusta = mir gefällt. Mehrzahl → gustan!"
+
+  # ---------- M08: estar states, ser/estar contrast ----------
+  - id: tpl.estar.state
+    module: M08
+    requires: [copula.estar.state]
+    es: "{subj} {v} {adj} {t}"
+    de: "{subj} {v} {t} {nicht} {adj}"
+    polarity: true
+    tenses: [presente, imperfecto]
+    slots:
+      subj: { type: subj, nouns: [human] }
+      v: { type: verb, lemmas: [estar] }
+      adj: { type: adj, copula: estar }
+      t: { type: time }
+    notes_de: "Zustände/Befinden → estar."
+
+  - id: tpl.copula.shift.ser
+    module: M08
+    requires: [copula.contrast]
+    es: "{subj} {v} {adj}"
+    de: "{subj} {v} {adj}"
+    slots:
+      subj: { type: subj, nouns: [human, thing] }
+      v: { type: verb, lemmas: [ser] }
+      adj: { type: adj, copula: ser, shiftOnly: true }
+    notes_de: "Bedeutungswechsel! ser aburrido = langweilig SEIN, estar aburrido = gelangweilt sein."
+
+  - id: tpl.copula.shift.estar
+    module: M08
+    requires: [copula.contrast]
+    es: "{subj} {v} {adj}"
+    de: "{subj} {v} {adj}"
+    slots:
+      subj: { type: subj, nouns: [human] }
+      v: { type: verb, lemmas: [estar] }
+      adj: { type: adj, copula: estar, shiftOnly: true }
+    notes_de: "Bedeutungswechsel! estar listo = bereit sein, ser listo = schlau sein."
+
+  # ---------- M09: progressive, DO clitics ----------
+  - id: tpl.progressive
+    module: M09
+    requires: [gerundio.estar]
+    es: "{subj} {v} {t}"
+    de: "{subj} {v} {t}"
+    tenses: [estar+ger]
+    slots:
+      subj: { type: subj, nouns: [human] }
+      v: { type: verb, lemmas: [trabajar, comer, leer, dormir, bailar, cantar, cocinar, escribir, nadar] }
+      t: { type: time }
+    notes_de: "Deutsch hat keine Verlaufsform → 'gerade'."
+
+  - id: tpl.pron.do
+    module: M09
+    requires: [pron.do]
+    es: "{subj} {v}"
+    de: "{subj} {v} {c} {nicht}"
+    polarity: true
+    tenses: [presente, perfecto, indefinido, futuro]
+    slots:
+      subj: { type: subj }
+      v: { type: verb, lemmas: [ver, escuchar, buscar, entender] }
+      c: { type: clitic, role: do }
+    notes_de: "Objektpronomen VOR dem Verb: te veo = ich sehe dich."
+
+  # ---------- M16: me gustaría ----------
+  - id: tpl.gustaria
+    module: M16
+    requires: [gustaria]
+    es: "{lit} {inf}"
+    de: "{lit} {inf}"
+    slots:
+      lit:
+        type: lit
+        options:
+          - { es: me gustaría, de: ich würde gern }
+          - { es: te gustaría, de: du würdest gern }
+          - { es: nos gustaría, de: wir würden gern }
+      inf: { type: inf, lemmas: [viajar, bailar, dormir, salir, nadar, leer, cocinar] }
+
+  # ---------- M17: imperative ----------
+  - id: tpl.imperativo
+    module: M17
+    requires: [imperativo.afirmativo]
+    es: "¡{v} {n}!"
+    de: "{v} {n}!"
+    tenses: [imperativo]
+    slots:
+      subj: { type: subj, persons: [2s, 2p] }
+      v: { type: verb, lemmas: [comprar, leer, abrir, buscar, tomar] }
+      n: { type: noun, tags: [thing, food, drink], article: def, deCase: akk, role: do }
+
+  - id: tpl.imperativo.reflexive
+    module: M17
+    requires: [imperativo.clitic]
+    es: "¡{v}!"
+    de: "{v}!"
+    tenses: [imperativo]
+    slots:
+      subj: { type: subj, persons: [2s, 2p] }
+      v: { type: verb, reflexive: true }
+    notes_de: "Pronomen hängt am Imperativ: ¡levántate! — Akzent beachten (Anzeige)."
+
+  # ---------- M18: IO clitics ----------
+  - id: tpl.pron.io
+    module: M18
+    requires: [pron.io]
+    es: "{subj} {v} {n}"
+    de: "{subj} {v} {c} {n}"
+    tenses: [presente, perfecto, indefinido, futuro]
+    slots:
+      subj: { type: subj }
+      v: { type: verb, lemmas: [comprar, dar, escribir] }
+      n: { type: noun, tags: [thing, food], article: indef, deCase: akk }
+      c: { type: clitic, role: io }
+    notes_de: "te compro un libro = ich kaufe DIR ein Buch."
+
+  # ---------- M20: desde hace ----------
+  - id: tpl.desde-hace
+    module: M20
+    requires: [desde-hace]
+    es: "{subj} {v} en {n} {lit}"
+    de: "{subj} {v} {lit} in {n}"
+    tenses: [presente]
+    slots:
+      subj: { type: subj, nouns: [human] }
+      v: { type: verb, lemmas: [vivir, trabajar] }
+      n: { type: noun, tags: [place], article: def, deCase: dat }
+      lit:
+        type: lit
+        options:
+          - { es: desde hace dos años, de: seit zwei Jahren }
+          - { es: desde hace tres meses, de: seit drei Monaten }
+          - { es: desde hace una semana, de: seit einer Woche }
+          - { es: desde hace mucho tiempo, de: seit langem }
+    notes_de: "Deutsch: Präsens + seit ↔ Spanisch: presente + desde hace. NICHT Perfekt!"

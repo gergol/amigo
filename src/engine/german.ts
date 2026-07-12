@@ -47,7 +47,9 @@ function dePraesens(v: Verb, p: Person): string {
   if (irregular) return irregular
   const base = v.de.prefix ? v.de.inf.slice(v.de.prefix.length) : v.de.inf
   let s = base.replace(/e?n$/, '')
-  if (/[tdmn]$/.test(s) && /^(st|t)$/.test(DE_ENDINGS[p]) && !/[lr][mn]$/.test(s)) s += 'e' // arbeitest
+  // e-insertion (arbeitest, atmest) — after t/d, or m/n preceded by a hard consonant
+  const needsE = /[td]$/.test(s) || (/[mn]$/.test(s) && !/[aeiouäöülrmnh][mn]$/.test(s))
+  if (needsE && /^(st|t)$/.test(DE_ENDINGS[p])) s += 'e'
   if (/[sßxz]$/.test(s) && p === '2s') return s + 't' // heißt
   return s + DE_ENDINGS[p]
 }
@@ -97,7 +99,7 @@ export function deVerb(v: Verb, tense: Tense, p: Person): DeVerbForm {
         const st = v.de.imperativ2s ?? base(v).replace(/e?n$/, '')
         return { finite: st + impRefl, tail: v.de.prefix ?? '' }
       }
-      if (p === '2p') return { finite: base(v).replace(/e?n$/, '') + 't' + (v.de.reflexive ? ' euch' : ''), tail: v.de.prefix ?? '' }
+      if (p === '2p') return { finite: dePraesens(v, '2p') + (v.de.reflexive ? ' euch' : ''), tail: v.de.prefix ?? '' }
       return { finite: v.de.inf + ' Sie' + (v.de.reflexive ? ' sich' : ''), tail: '' } // usted(es) → Sie
     }
   }

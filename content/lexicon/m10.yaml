@@ -1,0 +1,32 @@
+# M10 — Begleiter & erste Vergleiche: Feste, Einladungen, Ordnungszahlen (Plan/01)
+# Ordnungszahlen und irreguläre Komparative als Chunks — sie füllen keine Adjektiv-Slots.
+
+nouns:
+  - { lemma: fiesta, gender: f, de: { noun: Fest, g: n, plural: Feste }, tags: [event], level: A1, module: M10, notes_de: "auch: Party, Feiertag" }
+  - { lemma: cumpleaños, gender: m, plural: cumpleaños, de: { noun: Geburtstag, g: m, plural: Geburtstage }, tags: [event], level: A1, module: M10, notes_de: "unveränderlich: el/los cumpleaños" }
+  - { lemma: invitación, gender: f, de: { noun: Einladung, g: f, plural: Einladungen }, tags: [thing, event], level: A1, module: M10 }
+  - { lemma: boda, gender: f, de: { noun: Hochzeit, g: f, plural: Hochzeiten }, tags: [event], level: A1, module: M10 }
+  - { lemma: tarta, gender: f, de: { noun: Torte, g: f, plural: Torten }, tags: [food], level: A1, module: M10 }
+  - { lemma: fecha, gender: f, de: { noun: Datum, g: n, plural: Daten }, tags: [time-expr, abstract], level: A1, module: M10 }
+  - { lemma: invitado, gender: m, fem: invitada, de: { noun: Gast, g: m, plural: Gäste }, tags: [human], level: A1, module: M10 }
+  - { lemma: Navidad, gender: f, de: { noun: Weihnachten, g: n }, tags: [event], level: A1, module: M10 }
+
+chunks:
+  - { es: primero, de: erste(r), level: A1, module: M10, notes_de: "vor maskulinem Nomen: primer (el primer día)" }
+  - { es: segundo, de: zweite(r), level: A1, module: M10 }
+  - { es: tercero, de: dritte(r), level: A1, module: M10, notes_de: "vor maskulinem Nomen: tercer (el tercer piso)" }
+  - { es: cuarto, de: vierte(r), level: A1, module: M10 }
+  - { es: quinto, de: fünfte(r), level: A1, module: M10 }
+  - { es: sexto, de: sechste(r), level: A1, module: M10 }
+  - { es: séptimo, de: siebte(r), level: A1, module: M10 }
+  - { es: octavo, de: achte(r), level: A1, module: M10 }
+  - { es: noveno, de: neunte(r), level: A1, module: M10 }
+  - { es: décimo, de: zehnte(r), level: A1, module: M10 }
+  - { es: mejor, de: besser, level: A1, module: M10, notes_de: "nie 'más bueno': mejor que = besser als" }
+  - { es: peor, de: schlechter, level: A1, module: M10 }
+  - { es: mayor, de: älter / größer, level: A1, module: M10, notes_de: "mi hermano mayor = mein großer Bruder" }
+  - { es: menor, de: jünger / kleiner, level: A1, module: M10 }
+  - { es: ¡feliz cumpleaños!, de: alles Gute zum Geburtstag!, level: A1, module: M10 }
+  - { es: ¡felicidades!, de: herzlichen Glückwunsch!, level: A1, module: M10 }
+  - { es: ¡feliz Navidad!, de: frohe Weihnachten!, level: A1, module: M10 }
+  - { es: ¿quieres venir a mi fiesta?, de: willst du zu meiner Party kommen?, level: A1, module: M10 }

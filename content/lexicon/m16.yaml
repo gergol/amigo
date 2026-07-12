@@ -1,0 +1,33 @@
+# M16 — Futur & höfliche Wünsche: Wetterbericht, Pläne, Termine (Plan/01)
+
+nouns:
+  - { lemma: temperatura, gender: f, de: { noun: Temperatur, g: f, plural: Temperaturen }, tags: [weather, abstract], level: A2, module: M16 }
+  - { lemma: grado, gender: m, de: { noun: Grad, g: m, plural: Grad }, tags: [weather, abstract], level: A2, module: M16 }
+  - { lemma: cielo, gender: m, de: { noun: Himmel, g: m }, tags: [weather], level: A2, module: M16 }
+  - { lemma: tormenta, gender: f, de: { noun: Gewitter, g: n, plural: Gewitter }, tags: [weather], level: A2, module: M16 }
+  - { lemma: niebla, gender: f, de: { noun: Nebel, g: m }, tags: [weather], level: A2, module: M16 }
+  - { lemma: nube, gender: f, de: { noun: Wolke, g: f, plural: Wolken }, tags: [weather], level: A2, module: M16 }
+  - { lemma: plan, gender: m, de: { noun: Plan, g: m, plural: Pläne }, tags: [abstract], level: A2, module: M16 }
+  - { lemma: cita, gender: f, de: { noun: Termin, g: m, plural: Termine }, tags: [event], level: A2, module: M16, notes_de: "auch: Verabredung, Date" }
+  - { lemma: calendario, gender: m, de: { noun: Kalender, g: m, plural: Kalender }, tags: [thing], level: A2, module: M16 }
+  - { lemma: agenda, gender: f, de: { noun: Terminkalender, g: m, plural: Terminkalender }, tags: [thing], level: A2, module: M16 }
+  - { lemma: reunión, gender: f, de: { noun: Besprechung, g: f, plural: Besprechungen }, tags: [event], level: A2, module: M16, notes_de: "auch: Treffen, Meeting" }
+  - { lemma: propósito, gender: m, de: { noun: Vorsatz, g: m, plural: Vorsätze }, tags: [abstract], level: A2, module: M16, notes_de: "propósitos de Año Nuevo = gute Vorsätze" }
+  - { lemma: futuro, gender: m, de: { noun: Zukunft, g: f }, tags: [abstract, time-expr], level: A2, module: M16 }
+
+adjectives:
+  - lemma: libre
+    agreement: e
+    copula: estar
+    senses: [{ copula: estar, de: frei, applies_to: [human, thing] }]
+    level: A2
+    module: M16
+    notes_de: "¿estás libre mañana? = hast du morgen Zeit?"
+
+chunks:
+  - { es: me gustaría + infinitivo, de: ich würde gern …, level: A2, module: M16, notes_de: "höfliche Wünsche: me gustaría reservar una mesa" }
+  - { es: la semana que viene, de: nächste Woche, level: A2, module: M16 }
+  - { es: el mes que viene, de: nächsten Monat, level: A2, module: M16 }
+  - { es: ¿tienes tiempo?, de: hast du Zeit?, level: A2, module: M16 }
+  - { es: va a llover, de: es wird regnen, level: A2, module: M16 }
+  - { es: quedar con alguien, de: sich mit jemandem verabreden, level: A2, module: M16, notes_de: "he quedado con Ana = ich bin mit Ana verabredet" }

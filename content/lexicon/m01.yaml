@@ -1,0 +1,100 @@
+# M01 — Identität: Personen, Familie, Berufe, Nationalitäten (Plan/01, Plan/02)
+# Exemplar für alle Lexikon-Dateien: nouns / adjectives / chunks (Verben → verbs.yaml).
+
+nouns:
+  - { lemma: hombre, gender: m, de: { noun: Mann, g: m, plural: Männer }, tags: [human], level: A1, module: M01 }
+  - { lemma: mujer, gender: f, de: { noun: Frau, g: f, plural: Frauen }, tags: [human], level: A1, module: M01 }
+  - { lemma: niño, gender: m, fem: niña, de: { noun: Kind, g: n, plural: Kinder }, tags: [human, family-role], level: A1, module: M01 }
+  - { lemma: chico, gender: m, fem: chica, de: { noun: Junge, g: m, plural: Jungen }, tags: [human], level: A1, module: M01, notes_de: "chica = Mädchen" }
+  - { lemma: amigo, gender: m, fem: amiga, de: { noun: Freund, g: m, plural: Freunde }, tags: [human], level: A1, module: M01 }
+  - { lemma: señor, gender: m, fem: señora, de: { noun: Herr, g: m, plural: Herren }, tags: [human], level: A1, module: M01, notes_de: "señora = Frau (Anrede)" }
+  - { lemma: estudiante, gender: mf, de: { noun: Student, g: m, plural: Studenten }, tags: [human, profession], level: A1, module: M01, notes_de: "el/la estudiante — gleiche Form" }
+  - { lemma: padre, gender: m, de: { noun: Vater, g: m, plural: Väter }, tags: [human, family-role], level: A1, module: M01, notes_de: "los padres = die Eltern" }
+  - { lemma: madre, gender: f, de: { noun: Mutter, g: f, plural: Mütter }, tags: [human, family-role], level: A1, module: M01 }
+  - { lemma: hermano, gender: m, fem: hermana, de: { noun: Bruder, g: m, plural: Brüder }, tags: [human, family-role], level: A1, module: M01, notes_de: "hermana = Schwester" }
+  - { lemma: hijo, gender: m, fem: hija, de: { noun: Sohn, g: m, plural: Söhne }, tags: [human, family-role], level: A1, module: M01, notes_de: "hija = Tochter" }
+  - { lemma: abuelo, gender: m, fem: abuela, de: { noun: Großvater, g: m, plural: Großväter }, tags: [human, family-role], level: A1, module: M01 }
+  - { lemma: familia, gender: f, de: { noun: Familie, g: f, plural: Familien }, tags: [human, abstract], level: A1, module: M01 }
+  - { lemma: médico, gender: m, fem: médica, de: { noun: Arzt, g: m, plural: Ärzte }, tags: [human, profession], level: A1, module: M01 }
+  - { lemma: profesor, gender: m, fem: profesora, de: { noun: Lehrer, g: m, plural: Lehrer }, tags: [human, profession], level: A1, module: M01 }
+  - { lemma: camarero, gender: m, fem: camarera, de: { noun: Kellner, g: m, plural: Kellner }, tags: [human, profession], level: A1, module: M01 }
+  - { lemma: cocinero, gender: m, fem: cocinera, de: { noun: Koch, g: m, plural: Köche }, tags: [human, profession], level: A1, module: M01 }
+  - { lemma: periodista, gender: mf, de: { noun: Journalist, g: m, plural: Journalisten }, tags: [human, profession], level: A1, module: M01, gender_trap: true, notes_de: "el periodista — trotz -a maskulin möglich" }
+  - { lemma: nombre, gender: m, de: { noun: Name, g: m, plural: Namen }, tags: [abstract], level: A1, module: M01 }
+  - { lemma: país, gender: m, de: { noun: Land, g: n, plural: Länder }, tags: [place], level: A1, module: M01 }
+  - { lemma: ciudad, gender: f, de: { noun: Stadt, g: f, plural: Städte }, tags: [place], level: A1, module: M01 }
+
+adjectives:
+  - lemma: alemán
+    agreement: nat
+    copula: ser
+    tags: [nationality]
+    senses: [{ copula: ser, de: deutsch, applies_to: [human, thing] }]
+    level: A1
+    module: M01
+  - lemma: español
+    agreement: nat
+    copula: ser
+    tags: [nationality]
+    senses: [{ copula: ser, de: spanisch, applies_to: [human, thing] }]
+    level: A1
+    module: M01
+  - lemma: inglés
+    agreement: nat
+    copula: ser
+    tags: [nationality]
+    senses: [{ copula: ser, de: englisch, applies_to: [human, thing] }]
+    level: A1
+    module: M01
+  - lemma: francés
+    agreement: nat
+    copula: ser
+    tags: [nationality]
+    senses: [{ copula: ser, de: französisch, applies_to: [human, thing] }]
+    level: A1
+    module: M01
+  - lemma: simpático
+    agreement: o/a
+    copula: ser
+    senses: [{ copula: ser, de: sympathisch, applies_to: [human] }]
+    level: A1
+    module: M01
+  - lemma: inteligente
+    agreement: e
+    copula: ser
+    senses: [{ copula: ser, de: intelligent, applies_to: [human] }]
+    level: A1
+    module: M01
+  - lemma: alto
+    agreement: o/a
+    copula: ser
+    senses: [{ copula: ser, de: groß, applies_to: [human] }]
+    level: A1
+    module: M01
+    notes_de: "alto = groß gewachsen; grande = groß (Sache)"
+  - lemma: bajo
+    agreement: o/a
+    copula: ser
+    senses: [{ copula: ser, de: klein, applies_to: [human] }]
+    level: A1
+    module: M01
+  - lemma: joven
+    agreement: cons
+    copula: ser
+    senses: [{ copula: ser, de: jung, applies_to: [human] }]
+    level: A1
+    module: M01
+
+chunks:
+  - { es: hola, de: hallo, level: A1, module: M01 }
+  - { es: buenos días, de: guten Morgen / guten Tag, level: A1, module: M01 }
+  - { es: buenas tardes, de: guten Tag (nachmittags), level: A1, module: M01 }
+  - { es: buenas noches, de: guten Abend / gute Nacht, level: A1, module: M01 }
+  - { es: adiós, de: tschüss / auf Wiedersehen, level: A1, module: M01 }
+  - { es: hasta luego, de: bis später, level: A1, module: M01 }
+  - { es: gracias, de: danke, level: A1, module: M01 }
+  - { es: por favor, de: bitte (Bitte äußern), level: A1, module: M01 }
+  - { es: de nada, de: gern geschehen, level: A1, module: M01 }
+  - { es: ¿qué tal?, de: wie geht's?, level: A1, module: M01 }
+  - { es: me llamo …, de: ich heiße …, level: A1, module: M01 }
+  - { es: mucho gusto, de: freut mich, level: A1, module: M01 }

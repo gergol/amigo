@@ -1,0 +1,39 @@
+# Names for subject slots; time expressions that cue tenses (Plan/05: the German
+# side of a time expression is what makes past/future prompts unambiguous).
+# Time expressions are deliberately disjoint across tenses.
+
+names:
+  - { name: María, gender: f }
+  - { name: Ana, gender: f }
+  - { name: Lucía, gender: f }
+  - { name: Carmen, gender: f }
+  - { name: Elena, gender: f }
+  - { name: Juan, gender: m }
+  - { name: Pedro, gender: m }
+  - { name: Pablo, gender: m }
+  - { name: Carlos, gender: m }
+  - { name: Miguel, gender: m }
+
+times:
+  - { es: todos los días, de: jeden Tag, tenses: [presente] }
+  - { es: normalmente, de: normalerweise, tenses: [presente] }
+  - { es: a menudo, de: oft, tenses: [presente] }
+  - { es: los lunes, de: montags, tenses: [presente] }
+  - { es: ahora mismo, de: gerade, tenses: [estar+ger] }
+  - { es: hoy, de: heute, tenses: [perfecto] }
+  - { es: esta mañana, de: heute Morgen, tenses: [perfecto] }
+  - { es: esta semana, de: diese Woche, tenses: [perfecto] }
+  - { es: ayer, de: gestern, tenses: [indefinido] }
+  - { es: anoche, de: gestern Abend, tenses: [indefinido] }
+  - { es: la semana pasada, de: letzte Woche, tenses: [indefinido] }
+  - { es: el año pasado, de: letztes Jahr, tenses: [indefinido] }
+  - { es: hace dos años, de: vor zwei Jahren, tenses: [indefinido] }
+  - { es: antes, de: früher, tenses: [imperfecto] }
+  - { es: antes siempre, de: früher immer, tenses: [imperfecto] }
+  - { es: de niño, de: als Kind, tenses: [imperfecto] }
+  - { es: mañana, de: morgen, tenses: [futuro] }
+  - { es: el año que viene, de: nächstes Jahr, tenses: [futuro] }
+  - { es: pronto, de: bald, tenses: [futuro] }
+  - { es: esta noche, de: heute Abend, tenses: [ir-a-inf] }
+  - { es: esta tarde, de: heute Nachmittag, tenses: [ir-a-inf] }
+  - { es: ayer a las ocho, de: gestern um acht, tenses: [estaba+ger] }

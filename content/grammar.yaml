@@ -1,0 +1,140 @@
+# Grammar point graph (Plan/01). Each point: id, de (learner-facing name), prereqs.
+# Module order is the default learning path; points can be checked directly in settings.
+
+modules:
+  - id: M01
+    title: "Identität: ser + Nomen & Artikel"
+    level: A1
+    points:
+      - { id: noun.gender, de: "Genus & Plural der Nomen", prereqs: [] }
+      - { id: articles, de: "Bestimmter & unbestimmter Artikel", prereqs: [noun.gender] }
+      - { id: adj.agreement, de: "Adjektiv-Angleichung (Genus/Numerus)", prereqs: [noun.gender] }
+      - { id: copula.ser.identity, de: "ser: Identität, Herkunft, Beruf", prereqs: [] }
+      - { id: pron.subject, de: "Subjektpronomen (und ihr Weglassen)", prereqs: [] }
+  - id: M02
+    title: "Ort & Existenz: estar + hay"
+    level: A1
+    points:
+      - { id: copula.estar.location, de: "estar: Ort", prereqs: [copula.ser.identity] }
+      - { id: hay, de: "hay vs. está", prereqs: [copula.estar.location] }
+      - { id: prep.place, de: "Ortspräpositionen, al/del", prereqs: [articles] }
+  - id: M03
+    title: "Regelmäßiges Präsens"
+    level: A1
+    points:
+      - { id: presente.regular, de: "Präsens -ar/-er/-ir", prereqs: [pron.subject] }
+      - { id: negation, de: "Verneinung mit no", prereqs: [presente.regular] }
+      - { id: questions, de: "Fragewörter & Fragesätze", prereqs: [presente.regular] }
+  - id: M04
+    title: "Wichtige unregelmäßige Verben"
+    level: A1
+    points:
+      - { id: presente.irregular, de: "Unregelmäßige Verben (tener, ir, hacer …)", prereqs: [presente.regular] }
+      - { id: tener.idioms, de: "tener-Wendungen (hambre, años …)", prereqs: [presente.irregular] }
+      - { id: ir-a-inf, de: "ir a + Infinitiv (nahe Zukunft)", prereqs: [presente.irregular] }
+      - { id: obligation, de: "tener que / hay que + Infinitiv", prereqs: [presente.irregular] }
+  - id: M05
+    title: "Verben mit Stammwechsel"
+    level: A1
+    points:
+      - { id: presente.stemchange, de: "Stammwechsel e→ie, o→ue, e→i, u→ue", prereqs: [presente.regular] }
+      - { id: modal-inf, de: "querer/poder/preferir + Infinitiv", prereqs: [presente.stemchange] }
+  - id: M06
+    title: "Reflexive Verben & Tagesablauf"
+    level: A1
+    points:
+      - { id: verb.reflexive, de: "Reflexive Verben (levantarse …)", prereqs: [presente.regular] }
+      - { id: time.clock, de: "Uhrzeit & Tageszeiten", prereqs: [] }
+      - { id: adv.frequency, de: "Häufigkeitsadverbien (siempre, nunca …)", prereqs: [presente.regular] }
+  - id: M07
+    title: "gustar & Co."
+    level: A1
+    points:
+      - { id: gustar, de: "gustar/encantar + Objektpronomen", prereqs: [presente.regular] }
+      - { id: pron.prepositional, de: "Pronomen nach Präposition (a mí, conmigo)", prereqs: [gustar] }
+  - id: M08
+    title: "ser vs. estar bei Adjektiven"
+    level: A1
+    points:
+      - { id: copula.estar.state, de: "estar: Zustände", prereqs: [copula.estar.location, adj.agreement] }
+      - { id: copula.contrast, de: "ser vs. estar (Bedeutungswechsel)", prereqs: [copula.estar.state, copula.ser.identity] }
+      - { id: muy-mucho, de: "muy vs. mucho", prereqs: [] }
+      - { id: weather, de: "Wetter (hace/está/hay)", prereqs: [hay] }
+  - id: M09
+    title: "Verlaufsform & direkte Objekte"
+    level: A1
+    points:
+      - { id: gerundio.estar, de: "estar + gerundio", prereqs: [copula.estar.location, presente.irregular] }
+      - { id: pron.do, de: "Direkte Objektpronomen (lo/la …)", prereqs: [presente.regular] }
+      - { id: personal-a, de: "Personales a", prereqs: [presente.regular] }
+  - id: M10
+    title: "Begleiter & erste Vergleiche"
+    level: A1
+    points:
+      - { id: possessives, de: "Possessivbegleiter", prereqs: [noun.gender] }
+      - { id: demonstratives, de: "Demonstrativa (este/ese/aquel)", prereqs: [noun.gender] }
+      - { id: comparative.basic, de: "Vergleich: más/menos … que", prereqs: [adj.agreement] }
+      - { id: dates, de: "Datum & Ordnungszahlen", prereqs: [] }
+  - id: M11
+    title: "Pretérito perfecto"
+    level: A2
+    points:
+      - { id: perfecto.regular, de: "Perfekt: haber + Partizip", prereqs: [presente.irregular] }
+      - { id: perfecto.participio.irregular, de: "Unregelmäßige Partizipien (hecho, visto …)", prereqs: [perfecto.regular] }
+      - { id: acabar-de, de: "acabar de + Infinitiv", prereqs: [presente.regular] }
+  - id: M12
+    title: "Pretérito indefinido (regelmäßig)"
+    level: A2
+    points:
+      - { id: indefinido.regular, de: "Indefinido -ar/-er/-ir", prereqs: [presente.regular] }
+      - { id: indefinido.markers, de: "Zeitangaben der Vergangenheit (ayer …)", prereqs: [indefinido.regular] }
+  - id: M13
+    title: "Indefinido: unregelmäßige Verben"
+    level: A2
+    points:
+      - { id: indefinido.irregular, de: "Starke Indefinido-Formen (tuve, hice, fui …)", prereqs: [indefinido.regular] }
+  - id: M14
+    title: "Imperfecto"
+    level: A2
+    points:
+      - { id: imperfecto.regular, de: "Imperfecto (Beschreibung, Gewohnheit)", prereqs: [indefinido.regular] }
+  - id: M15
+    title: "Indefinido vs. Imperfecto"
+    level: A2
+    points:
+      - { id: past.contrast, de: "Indefinido vs. Imperfecto", prereqs: [indefinido.irregular, imperfecto.regular] }
+  - id: M16
+    title: "Futur & höfliche Wünsche"
+    level: A2
+    points:
+      - { id: futuro.regular, de: "Futuro simple", prereqs: [presente.regular] }
+      - { id: futuro.irregular, de: "Unregelmäßige Futurstämme (tendré …)", prereqs: [futuro.regular] }
+      - { id: gustaria, de: "me gustaría + Infinitiv", prereqs: [gustar] }
+  - id: M17
+    title: "Imperativ & Wegbeschreibung"
+    level: A2
+    points:
+      - { id: imperativo.afirmativo, de: "Bejahter Imperativ (tú/usted/vosotros/ustedes)", prereqs: [presente.stemchange, presente.irregular] }
+      - { id: imperativo.clitic, de: "Imperativ + Pronomen (dímelo, levántate)", prereqs: [imperativo.afirmativo, pron.do] }
+  - id: M18
+    title: "Doppelte Objektpronomen"
+    level: A2
+    points:
+      - { id: pron.io, de: "Indirekte Objektpronomen (me/te/le …)", prereqs: [pron.do] }
+      - { id: pron.double, de: "Kombination (se lo), Stellung", prereqs: [pron.io] }
+  - id: M19
+    title: "Vergleich, Adverbien, Gewohnheiten"
+    level: A2
+    points:
+      - { id: comparative.full, de: "Superlativ, -ísimo, irreguläre Vergleichsformen", prereqs: [comparative.basic] }
+      - { id: adv.mente, de: "Adverbien auf -mente", prereqs: [adj.agreement] }
+      - { id: soler, de: "soler + Infinitiv", prereqs: [presente.stemchange] }
+      - { id: indefinites, de: "algo/nada/alguien/nadie, doppelte Verneinung", prereqs: [negation] }
+  - id: M20
+    title: "Konnektoren & komplexe Sätze"
+    level: A2
+    points:
+      - { id: connectors, de: "porque, cuando, si + Präsens", prereqs: [presente.regular] }
+      - { id: que-clauses, de: "creo que / pienso que + Indikativ", prereqs: [presente.regular] }
+      - { id: relative.que, de: "Relativsätze mit que", prereqs: [presente.regular] }
+      - { id: desde-hace, de: "desde / desde hace / hace … que", prereqs: [presente.regular] }

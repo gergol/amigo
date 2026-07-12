@@ -1,0 +1,27 @@
+# M17 — Imperativ & Wegbeschreibung: Stadt, Navigation, Rezepte (Plan/01)
+
+nouns:
+  - { lemma: esquina, gender: f, de: { noun: Ecke, g: f, plural: Ecken }, tags: [place], level: A2, module: M17, notes_de: "en la esquina = an der (Straßen-)Ecke" }
+  - { lemma: semáforo, gender: m, de: { noun: Ampel, g: f, plural: Ampeln }, tags: [thing], level: A2, module: M17 }
+  - { lemma: cruce, gender: m, de: { noun: Kreuzung, g: f, plural: Kreuzungen }, tags: [place], level: A2, module: M17 }
+  - { lemma: avenida, gender: f, de: { noun: Allee, g: f, plural: Alleen }, tags: [place], level: A2, module: M17, notes_de: "breite Straße, Boulevard" }
+  - { lemma: puente, gender: m, de: { noun: Brücke, g: f, plural: Brücken }, tags: [place, thing], level: A2, module: M17, notes_de: "el puente — maskulin (die Brücke!)" }
+  - { lemma: centro, gender: m, de: { noun: Zentrum, g: n, plural: Zentren }, tags: [place], level: A2, module: M17, notes_de: "el centro (de la ciudad) = die Innenstadt" }
+  - { lemma: metro, gender: m, de: { noun: U-Bahn, g: f, plural: U-Bahnen }, tags: [vehicle], level: A2, module: M17, notes_de: "auch: Meter" }
+  - { lemma: autobús, gender: m, de: { noun: Bus, g: m, plural: Busse }, tags: [vehicle], level: A2, module: M17 }
+  - { lemma: parada, gender: f, de: { noun: Haltestelle, g: f, plural: Haltestellen }, tags: [place], level: A2, module: M17 }
+  - { lemma: plano, gender: m, de: { noun: Stadtplan, g: m, plural: Stadtpläne }, tags: [thing], level: A2, module: M17, notes_de: "plano = Stadtplan, mapa = Landkarte" }
+  - { lemma: receta, gender: f, de: { noun: Rezept, g: n, plural: Rezepte }, tags: [thing], level: A2, module: M17, notes_de: "Kochrezept UND ärztliches Rezept" }
+  - { lemma: ingrediente, gender: m, de: { noun: Zutat, g: f, plural: Zutaten }, tags: [food], level: A2, module: M17 }
+  - { lemma: cebolla, gender: f, de: { noun: Zwiebel, g: f, plural: Zwiebeln }, tags: [food], level: A2, module: M17 }
+  - { lemma: ajo, gender: m, de: { noun: Knoblauch, g: m }, tags: [food], level: A2, module: M17 }
+  - { lemma: sartén, gender: f, de: { noun: Pfanne, g: f, plural: Pfannen }, tags: [thing], level: A2, module: M17, notes_de: "in Spanien feminin: la sartén" }
+  - { lemma: horno, gender: m, de: { noun: Backofen, g: m, plural: Backöfen }, tags: [thing], level: A2, module: M17 }
+
+chunks:
+  - { es: todo recto, de: geradeaus, level: A2, module: M17, notes_de: "sigue todo recto = geh geradeaus weiter" }
+  - { es: a la derecha, de: nach rechts, level: A2, module: M17 }
+  - { es: a la izquierda, de: nach links, level: A2, module: M17 }
+  - { es: ¿cómo llego a …?, de: wie komme ich zu …?, level: A2, module: M17 }
+  - { es: perdone, de: Entschuldigung (jemanden ansprechen), level: A2, module: M17, notes_de: "usted-Imperativ von perdonar; unter Freunden: perdona" }
+  - { es: a fuego lento, de: bei schwacher Hitze, level: A2, module: M17 }

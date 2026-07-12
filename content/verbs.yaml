@@ -1,0 +1,700 @@
+# Verb database (Plan/04): class + patterns generate all forms; overrides win.
+# de: German rendering data (praesens/partizip/aux/praeteritum only where irregular).
+
+verbs:
+  # ---------- fully irregular core ----------
+  - lemma: ser
+    class: er
+    module: M01
+    level: A1
+    gloss_de: sein (Eigenschaft, Herkunft)
+    overrides:
+      presente.1s: soy
+      presente.2s: eres
+      presente.3s: es
+      presente.1p: somos
+      presente.2p: sois
+      presente.3p: son
+      indefinido.1s: fui
+      indefinido.2s: fuiste
+      indefinido.3s: fue
+      indefinido.1p: fuimos
+      indefinido.2p: fuisteis
+      indefinido.3p: fueron
+      imperfecto.1s: era
+      imperfecto.2s: eras
+      imperfecto.3s: era
+      imperfecto.1p: éramos
+      imperfecto.2p: erais
+      imperfecto.3p: eran
+      imperativo.2s: sé
+      imperativo.3s: sea
+      imperativo.2p: sed
+      imperativo.3p: sean
+    valence: { subject: [human, thing] }
+    de:
+      inf: sein
+      aux: sein
+      partizip: gewesen
+      imperativ2s: sei
+      praesens: { 1s: bin, 2s: bist, 3s: ist, 1p: sind, 2p: seid, 3p: sind }
+      praeteritum: { 1s: war, 2s: warst, 3s: war, 1p: waren, 2p: wart, 3p: waren }
+    notes_de: "ser vs. estar: Deutsch hat nur 'sein'!"
+  - lemma: estar
+    class: ar
+    module: M02
+    level: A1
+    gloss_de: sein (Ort, Zustand)
+    patterns: [strong-pret]
+    pretStem: estuv
+    overrides:
+      presente.1s: estoy
+      presente.2s: estás
+      presente.3s: está
+      presente.3p: están
+      imperativo.2s: está
+      imperativo.3s: esté
+      imperativo.3p: estén
+    valence: { subject: [human, thing] }
+    de:
+      inf: sein
+      aux: sein
+      partizip: gewesen
+      imperativ2s: sei
+      praesens: { 1s: bin, 2s: bist, 3s: ist, 1p: sind, 2p: seid, 3p: sind }
+      praeteritum: { 1s: war, 2s: warst, 3s: war, 1p: waren, 2p: wart, 3p: waren }
+    notes_de: "ser vs. estar: Deutsch hat nur 'sein'!"
+  - lemma: ir
+    class: ir
+    module: M04
+    level: A1
+    gloss_de: gehen, fahren
+    gerund: yendo
+    overrides:
+      presente.1s: voy
+      presente.2s: vas
+      presente.3s: va
+      presente.1p: vamos
+      presente.2p: vais
+      presente.3p: van
+      indefinido.1s: fui
+      indefinido.2s: fuiste
+      indefinido.3s: fue
+      indefinido.1p: fuimos
+      indefinido.2p: fuisteis
+      indefinido.3p: fueron
+      imperfecto.1s: iba
+      imperfecto.2s: ibas
+      imperfecto.3s: iba
+      imperfecto.1p: íbamos
+      imperfecto.2p: ibais
+      imperfecto.3p: iban
+      imperativo.2s: ve
+      imperativo.3s: vaya
+      imperativo.2p: id
+      imperativo.3p: vayan
+    valence: { subject: [human], prep: { prep: a, tags: [place] } }
+    de: { inf: gehen, aux: sein, partizip: gegangen }
+    notes_de: "Indefinido von ser und ir ist identisch (fui)!"
+  - lemma: hay
+    class: er
+    module: M02
+    level: A1
+    gloss_de: es gibt
+    overrides:
+      presente.3s: hay
+      indefinido.3s: hubo
+      imperfecto.3s: había
+      futuro.3s: habrá
+    valence: { subject: [thing, place] }
+    de: { inf: geben, partizip: gegeben, praesens: { 3s: gibt es } }
+    notes_de: "hay = es gibt (unveränderlich); está = befindet sich"
+  - lemma: tener
+    class: er
+    module: M04
+    level: A1
+    gloss_de: haben
+    patterns: [e>ie, strong-pret]
+    pretStem: tuv
+    futStem: tendr
+    overrides: { presente.1s: tengo, imperativo.2s: ten }
+    valence: { subject: [human], object: { tags: [thing, animal] } }
+    de:
+      inf: haben
+      partizip: gehabt
+      praesens: { 2s: hast, 3s: hat }
+      praeteritum: { 1s: hatte, 2s: hattest, 3s: hatte, 1p: hatten, 2p: hattet, 3p: hatten }
+  - lemma: hacer
+    class: er
+    module: M04
+    level: A1
+    gloss_de: machen, tun
+    patterns: [strong-pret]
+    pretStem: hic
+    futStem: har
+    participle: hecho
+    overrides: { presente.1s: hago, indefinido.3s: hizo, imperativo.2s: haz }
+    valence: { subject: [human], object: { tags: [thing, activity] } }
+    de: { inf: machen }
+  - lemma: ver
+    class: er
+    module: M04
+    level: A1
+    gloss_de: sehen
+    participle: visto
+    overrides:
+      presente.1s: veo
+      indefinido.1s: vi
+      indefinido.3s: vio
+      imperfecto.1s: veía
+      imperfecto.2s: veías
+      imperfecto.3s: veía
+      imperfecto.1p: veíamos
+      imperfecto.2p: veíais
+      imperfecto.3p: veían
+    valence: { subject: [human], object: { tags: [human, thing, place] } }
+    de:
+      inf: sehen
+      partizip: gesehen
+      imperativ2s: sieh
+      praesens: { 2s: siehst, 3s: sieht }
+  - lemma: dar
+    class: ar
+    module: M18
+    level: A2
+    gloss_de: geben
+    overrides:
+      presente.1s: doy
+      indefinido.1s: di
+      indefinido.2s: diste
+      indefinido.3s: dio
+      indefinido.1p: dimos
+      indefinido.2p: disteis
+      indefinido.3p: dieron
+      imperativo.3s: dé
+    valence: { subject: [human], object: { tags: [thing, food, drink] }, io: true }
+    de:
+      inf: geben
+      partizip: gegeben
+      imperativ2s: gib
+      praesens: { 2s: gibst, 3s: gibt }
+  - lemma: saber
+    class: er
+    module: M04
+    level: A1
+    gloss_de: wissen, können (gelernt)
+    patterns: [strong-pret]
+    pretStem: sup
+    futStem: sabr
+    overrides: { presente.1s: sé, imperativo.3s: sepa }
+    valence: { subject: [human], inf: true }
+    de: { inf: wissen, partizip: gewusst, praesens: { 1s: weiß, 2s: weißt, 3s: weiß } }
+    notes_de: "saber = Fakten/Fähigkeiten, conocer = Personen/Orte kennen"
+  - lemma: conocer
+    class: er
+    module: M09
+    level: A1
+    gloss_de: kennen, kennenlernen
+    overrides: { presente.1s: conozco }
+    valence: { subject: [human], object: { tags: [human, place] } }
+    de: { inf: kennen, partizip: gekannt, praeteritum: { 1s: kannte, 2s: kanntest, 3s: kannte, 1p: kannten, 2p: kanntet, 3p: kannten } }
+    notes_de: "saber = Fakten/Fähigkeiten, conocer = Personen/Orte kennen"
+  - lemma: decir
+    class: ir
+    module: M04
+    level: A1
+    gloss_de: sagen
+    patterns: [e>i, strong-pret]
+    pretStem: dij
+    futStem: dir
+    gerund: diciendo
+    participle: dicho
+    overrides: { presente.1s: digo, imperativo.2s: di }
+    valence: { subject: [human], object: { tags: [abstract] }, io: true }
+    de: { inf: sagen }
+  - lemma: venir
+    class: ir
+    module: M04
+    level: A1
+    gloss_de: kommen
+    patterns: [e>ie, strong-pret]
+    pretStem: vin
+    futStem: vendr
+    gerund: viniendo
+    overrides: { presente.1s: vengo, imperativo.2s: ven }
+    valence: { subject: [human] }
+    de: { inf: kommen, aux: sein, partizip: gekommen }
+  - lemma: poner
+    class: er
+    module: M04
+    level: A1
+    gloss_de: stellen, legen, setzen
+    patterns: [strong-pret]
+    pretStem: pus
+    futStem: pondr
+    participle: puesto
+    overrides: { presente.1s: pongo, imperativo.2s: pon }
+    valence: { subject: [human], object: { tags: [thing] } }
+    de: { inf: stellen }
+  - lemma: salir
+    class: ir
+    module: M04
+    level: A1
+    gloss_de: ausgehen, verlassen, losgehen
+    futStem: saldr
+    overrides: { presente.1s: salgo, imperativo.2s: sal }
+    valence: { subject: [human] }
+    de: { inf: ausgehen, prefix: aus, aux: sein, partizip: gegangen }
+  - lemma: oír
+    class: ir
+    module: M09
+    level: A1
+    gloss_de: hören
+    gerund: oyendo
+    participle: oído
+    overrides:
+      presente.1s: oigo
+      presente.2s: oyes
+      presente.3s: oye
+      presente.1p: oímos
+      presente.2p: oís
+      presente.3p: oyen
+      imperativo.2s: oye
+    valence: { subject: [human], object: { tags: [thing, human] } }
+    de: { inf: hören }
+
+  # ---------- stem changers ----------
+  - lemma: querer
+    class: er
+    module: M05
+    level: A1
+    gloss_de: wollen; lieben
+    patterns: [e>ie, strong-pret]
+    pretStem: quis
+    futStem: querr
+    valence: { subject: [human], object: { tags: [thing, food, drink] }, inf: true }
+    de: { inf: wollen, partizip: gewollt, praesens: { 1s: will, 2s: willst, 3s: will }, praeteritum: { 1s: wollte, 2s: wolltest, 3s: wollte, 1p: wollten, 2p: wolltet, 3p: wollten } }
+  - lemma: poder
+    class: er
+    module: M05
+    level: A1
+    gloss_de: können
+    patterns: [o>ue, strong-pret]
+    pretStem: pud
+    futStem: podr
+    gerund: pudiendo
+    valence: { subject: [human], inf: true }
+    de: { inf: können, partizip: gekonnt, praesens: { 1s: kann, 2s: kannst, 3s: kann }, praeteritum: { 1s: konnte, 2s: konntest, 3s: konnte, 1p: konnten, 2p: konntet, 3p: konnten } }
+  - lemma: preferir
+    class: ir
+    module: M05
+    level: A1
+    gloss_de: vorziehen, lieber mögen
+    patterns: [e>ie]
+    valence: { subject: [human], object: { tags: [thing, food, drink] }, inf: true }
+    de: { inf: vorziehen, prefix: vor, partizip: gezogen }
+  - lemma: empezar
+    class: ar
+    module: M05
+    level: A1
+    gloss_de: anfangen, beginnen
+    patterns: [e>ie]
+    valence: { subject: [human] }
+    de: { inf: anfangen, prefix: an, partizip: gefangen, praesens: { 2s: fängst an, 3s: fängt an }, imperativ2s: fang }
+  - lemma: entender
+    class: er
+    module: M05
+    level: A1
+    gloss_de: verstehen
+    patterns: [e>ie]
+    valence: { subject: [human], object: { tags: [human, abstract] } }
+    de: { inf: verstehen, partizip: verstanden }
+  - lemma: dormir
+    class: ir
+    module: M05
+    level: A1
+    gloss_de: schlafen
+    patterns: [o>ue]
+    valence: { subject: [human, animal] }
+    de: { inf: schlafen, partizip: geschlafen, praesens: { 2s: schläfst, 3s: schläft }, imperativ2s: schlaf }
+  - lemma: volver
+    class: er
+    module: M05
+    level: A1
+    gloss_de: zurückkommen
+    patterns: [o>ue]
+    participle: vuelto
+    valence: { subject: [human] }
+    de: { inf: zurückkommen, prefix: zurück, aux: sein, partizip: gekommen }
+  - lemma: pedir
+    class: ir
+    module: M05
+    level: A1
+    gloss_de: bestellen; bitten um
+    patterns: [e>i]
+    valence: { subject: [human], object: { tags: [food, drink, thing] } }
+    de: { inf: bestellen, partizip: bestellt }
+    notes_de: "pedir = bestellen/bitten, preguntar = fragen"
+  - lemma: jugar
+    class: ar
+    module: M07
+    level: A1
+    gloss_de: spielen
+    patterns: [u>ue]
+    valence: { subject: [human] }
+    de: { inf: spielen }
+  - lemma: encontrar
+    class: ar
+    module: M09
+    level: A1
+    gloss_de: finden
+    patterns: [o>ue]
+    valence: { subject: [human], object: { tags: [thing, human, place] } }
+    de: { inf: finden, partizip: gefunden }
+  - lemma: costar
+    class: ar
+    module: M05
+    level: A1
+    gloss_de: kosten
+    patterns: [o>ue]
+    valence: { subject: [thing] }
+    de: { inf: kosten }
+
+  # ---------- regular -ar ----------
+  - lemma: hablar
+    class: ar
+    module: M03
+    level: A1
+    gloss_de: sprechen, reden
+    valence: { subject: [human] }
+    de: { inf: sprechen, partizip: gesprochen, praesens: { 2s: sprichst, 3s: spricht }, imperativ2s: sprich }
+  - lemma: trabajar
+    class: ar
+    module: M03
+    level: A1
+    gloss_de: arbeiten
+    valence: { subject: [human] }
+    de: { inf: arbeiten }
+  - lemma: estudiar
+    class: ar
+    module: M03
+    level: A1
+    gloss_de: studieren, lernen
+    valence: { subject: [human] }
+    de: { inf: lernen }
+  - lemma: comprar
+    class: ar
+    module: M09
+    level: A1
+    gloss_de: kaufen
+    valence: { subject: [human], object: { tags: [thing, food, drink, clothing] } }
+    de: { inf: kaufen }
+  - lemma: escuchar
+    class: ar
+    module: M07
+    level: A1
+    gloss_de: (zu)hören
+    valence: { subject: [human], object: { tags: [thing, human] } }
+    de: { inf: hören }
+  - lemma: mirar
+    class: ar
+    module: M09
+    level: A1
+    gloss_de: anschauen
+    valence: { subject: [human], object: { tags: [thing, human] } }
+    de: { inf: anschauen, prefix: an, partizip: geschaut }
+  - lemma: buscar
+    class: ar
+    module: M09
+    level: A1
+    gloss_de: suchen
+    valence: { subject: [human], object: { tags: [thing, human, place] } }
+    de: { inf: suchen }
+  - lemma: llegar
+    class: ar
+    module: M12
+    level: A1
+    gloss_de: ankommen
+    valence: { subject: [human] }
+    de: { inf: ankommen, prefix: an, aux: sein, partizip: gekommen }
+  - lemma: llevar
+    class: ar
+    module: M09
+    level: A1
+    gloss_de: tragen; mitnehmen
+    valence: { subject: [human], object: { tags: [clothing, thing] } }
+    de: { inf: tragen, partizip: getragen, praesens: { 2s: trägst, 3s: trägt } }
+  - lemma: necesitar
+    class: ar
+    module: M09
+    level: A1
+    gloss_de: brauchen
+    valence: { subject: [human], object: { tags: [thing, food, drink] } }
+    de: { inf: brauchen }
+  - lemma: tomar
+    class: ar
+    module: M05
+    level: A1
+    gloss_de: nehmen; trinken
+    valence: { subject: [human], object: { tags: [drink, food, thing] } }
+    de: { inf: nehmen, partizip: genommen, praesens: { 2s: nimmst, 3s: nimmt }, imperativ2s: nimm }
+  - lemma: pagar
+    class: ar
+    module: M09
+    level: A1
+    gloss_de: (be)zahlen
+    valence: { subject: [human], object: { tags: [thing, food, drink] } }
+    de: { inf: bezahlen, partizip: bezahlt }
+  - lemma: esperar
+    class: ar
+    module: M09
+    level: A1
+    gloss_de: warten auf; hoffen
+    valence: { subject: [human], object: { tags: [human, thing] } }
+    de: { inf: warten auf }
+  - lemma: ayudar
+    class: ar
+    module: M09
+    level: A1
+    gloss_de: helfen
+    valence: { subject: [human], object: { tags: [human] } }
+    de: { inf: helfen, partizip: geholfen, praesens: { 2s: hilfst, 3s: hilft }, imperativ2s: hilf }
+  - lemma: cocinar
+    class: ar
+    module: M05
+    level: A1
+    gloss_de: kochen
+    valence: { subject: [human], object: { tags: [food], optional: true } }
+    de: { inf: kochen }
+  - lemma: desayunar
+    class: ar
+    module: M06
+    level: A1
+    gloss_de: frühstücken
+    valence: { subject: [human] }
+    de: { inf: frühstücken, partizip: gefrühstückt }
+  - lemma: cenar
+    class: ar
+    module: M06
+    level: A1
+    gloss_de: zu Abend essen
+    valence: { subject: [human] }
+    de: { inf: zu Abend essen, partizip: zu Abend gegessen, praesens: { 1s: esse zu Abend, 2s: isst zu Abend, 3s: isst zu Abend, 1p: essen zu Abend, 2p: esst zu Abend, 3p: essen zu Abend } }
+  - lemma: viajar
+    class: ar
+    module: M11
+    level: A1
+    gloss_de: reisen
+    valence: { subject: [human] }
+    de: { inf: reisen, aux: sein, partizip: gereist }
+  - lemma: visitar
+    class: ar
+    module: M11
+    level: A1
+    gloss_de: besuchen
+    valence: { subject: [human], object: { tags: [human, place] } }
+    de: { inf: besuchen, partizip: besucht }
+  - lemma: bailar
+    class: ar
+    module: M07
+    level: A1
+    gloss_de: tanzen
+    valence: { subject: [human] }
+    de: { inf: tanzen }
+  - lemma: cantar
+    class: ar
+    module: M07
+    level: A1
+    gloss_de: singen
+    valence: { subject: [human] }
+    de: { inf: singen, partizip: gesungen }
+  - lemma: nadar
+    class: ar
+    module: M07
+    level: A1
+    gloss_de: schwimmen
+    valence: { subject: [human] }
+    de: { inf: schwimmen, aux: sein, partizip: geschwommen }
+  - lemma: caminar
+    class: ar
+    module: M06
+    level: A1
+    gloss_de: (zu Fuß) gehen, laufen
+    valence: { subject: [human] }
+    de: { inf: laufen, aux: sein, partizip: gelaufen, praesens: { 2s: läufst, 3s: läuft }, imperativ2s: lauf }
+  - lemma: descansar
+    class: ar
+    module: M06
+    level: A1
+    gloss_de: sich ausruhen
+    valence: { subject: [human] }
+    de: { inf: ausruhen, prefix: aus, partizip: geruht, reflexive: true }
+
+  # ---------- regular -er / -ir ----------
+  - lemma: comer
+    class: er
+    module: M03
+    level: A1
+    gloss_de: essen
+    valence: { subject: [human], object: { tags: [food], optional: true } }
+    de: { inf: essen, partizip: gegessen, praesens: { 2s: isst, 3s: isst }, imperativ2s: iss }
+  - lemma: beber
+    class: er
+    module: M05
+    level: A1
+    gloss_de: trinken
+    valence: { subject: [human], object: { tags: [drink] } }
+    de: { inf: trinken, partizip: getrunken }
+  - lemma: leer
+    class: er
+    module: M07
+    level: A1
+    gloss_de: lesen
+    valence: { subject: [human], object: { tags: [thing], optional: true } }
+    de: { inf: lesen, partizip: gelesen, praesens: { 2s: liest, 3s: liest }, imperativ2s: lies }
+  - lemma: aprender
+    class: er
+    module: M03
+    level: A1
+    gloss_de: lernen
+    valence: { subject: [human], object: { tags: [abstract] } }
+    de: { inf: lernen }
+  - lemma: vender
+    class: er
+    module: M09
+    level: A1
+    gloss_de: verkaufen
+    valence: { subject: [human], object: { tags: [thing, food] } }
+    de: { inf: verkaufen, partizip: verkauft }
+  - lemma: vivir
+    class: ir
+    module: M03
+    level: A1
+    gloss_de: wohnen, leben
+    valence: { subject: [human] }
+    de: { inf: wohnen }
+  - lemma: escribir
+    class: ir
+    module: M07
+    level: A1
+    gloss_de: schreiben
+    participle: escrito
+    valence: { subject: [human], object: { tags: [thing], optional: true } }
+    de: { inf: schreiben, partizip: geschrieben }
+  - lemma: abrir
+    class: ir
+    module: M09
+    level: A1
+    gloss_de: öffnen, aufmachen
+    participle: abierto
+    valence: { subject: [human], object: { tags: [thing] } }
+    de: { inf: öffnen, partizip: geöffnet }
+  - lemma: recibir
+    class: ir
+    module: M11
+    level: A2
+    gloss_de: bekommen, erhalten
+    valence: { subject: [human], object: { tags: [thing] } }
+    de: { inf: bekommen, partizip: bekommen }
+
+  # ---------- reflexives ----------
+  - lemma: llamarse
+    class: ar
+    module: M06
+    level: A1
+    gloss_de: heißen
+    reflexive: true
+    valence: { subject: [human] }
+    de: { inf: heißen, partizip: geheißen }
+  - lemma: levantarse
+    class: ar
+    module: M06
+    level: A1
+    gloss_de: aufstehen
+    reflexive: true
+    valence: { subject: [human] }
+    de: { inf: aufstehen, prefix: auf, aux: sein, partizip: gestanden, imperativ2s: steh }
+  - lemma: ducharse
+    class: ar
+    module: M06
+    level: A1
+    gloss_de: (sich) duschen
+    reflexive: true
+    valence: { subject: [human] }
+    de: { inf: duschen, reflexive: true }
+  - lemma: lavarse
+    class: ar
+    module: M06
+    level: A1
+    gloss_de: sich waschen
+    reflexive: true
+    valence: { subject: [human] }
+    de: { inf: waschen, partizip: gewaschen, praesens: { 2s: wäschst, 3s: wäscht }, reflexive: true }
+  - lemma: acostarse
+    class: ar
+    module: M06
+    level: A1
+    gloss_de: ins Bett gehen, sich hinlegen
+    reflexive: true
+    patterns: [o>ue]
+    valence: { subject: [human] }
+    de: { inf: ins Bett gehen, aux: sein, partizip: ins Bett gegangen, imperativ2s: geh ins Bett, praesens: { 1s: gehe ins Bett, 2s: gehst ins Bett, 3s: geht ins Bett, 1p: gehen ins Bett, 2p: geht ins Bett, 3p: gehen ins Bett } }
+  - lemma: despertarse
+    class: ar
+    module: M06
+    level: A1
+    gloss_de: aufwachen
+    reflexive: true
+    patterns: [e>ie]
+    valence: { subject: [human] }
+    de: { inf: aufwachen, prefix: auf, aux: sein, partizip: gewacht }
+  - lemma: vestirse
+    class: ir
+    module: M06
+    level: A1
+    gloss_de: sich anziehen
+    reflexive: true
+    patterns: [e>i]
+    valence: { subject: [human] }
+    de: { inf: anziehen, prefix: an, partizip: gezogen, reflexive: true }
+  - lemma: quedarse
+    class: ar
+    module: M11
+    level: A2
+    gloss_de: bleiben
+    reflexive: true
+    valence: { subject: [human] }
+    de: { inf: bleiben, aux: sein, partizip: geblieben }
+
+  # ---------- gustar-type ----------
+  - lemma: gustar
+    class: ar
+    module: M07
+    level: A1
+    gloss_de: gefallen
+    valence: { subject: [thing, activity, food, drink], gustar: true }
+    de: { inf: gefallen, partizip: gefallen, praesens: { 3s: gefällt, 3p: gefallen } }
+    notes_de: "wie 'gefallen': me gusta = mir gefällt"
+  - lemma: encantar
+    class: ar
+    module: M07
+    level: A1
+    gloss_de: sehr gefallen, begeistern
+    valence: { subject: [thing, activity, food, drink], gustar: true }
+    de: { inf: sehr gefallen, partizip: sehr gefallen, praesens: { 3s: gefällt sehr, 3p: gefallen sehr } }
+  - lemma: interesar
+    class: ar
+    module: M07
+    level: A1
+    gloss_de: interessieren
+    valence: { subject: [thing, abstract], gustar: true }
+    de: { inf: interessieren, partizip: interessiert }
+  - lemma: doler
+    class: er
+    module: M07
+    level: A1
+    gloss_de: wehtun
+    patterns: [o>ue]
+    valence: { subject: [bodypart], gustar: true }
+    de: { inf: wehtun, prefix: weh, partizip: getan, praesens: { 3s: tut weh, 3p: tun weh } }
+    notes_de: "wie 'wehtun': me duele = mir tut … weh"

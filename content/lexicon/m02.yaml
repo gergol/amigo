@@ -1,0 +1,78 @@
+# M02 — Ort & Existenz: Wohnung, Möbel, Stadt-Orte; Ortspräpositionen als Chunks (Plan/01)
+
+nouns:
+  - { lemma: casa, gender: f, de: { noun: Haus, g: n, plural: Häuser }, tags: [place], level: A1, module: M02 }
+  - { lemma: piso, gender: m, de: { noun: Wohnung, g: f, plural: Wohnungen }, tags: [place], level: A1, module: M02, notes_de: "auch: Stockwerk (el primer piso = der erste Stock)" }
+  - { lemma: habitación, gender: f, de: { noun: Zimmer, g: n, plural: Zimmer }, tags: [place], level: A1, module: M02 }
+  - { lemma: cocina, gender: f, de: { noun: Küche, g: f, plural: Küchen }, tags: [place], level: A1, module: M02 }
+  - { lemma: baño, gender: m, de: { noun: Bad, g: n, plural: Bäder }, tags: [place], level: A1, module: M02, notes_de: "auch: Toilette (¿dónde está el baño?)" }
+  - { lemma: salón, gender: m, de: { noun: Wohnzimmer, g: n, plural: Wohnzimmer }, tags: [place], level: A1, module: M02 }
+  - { lemma: dormitorio, gender: m, de: { noun: Schlafzimmer, g: n, plural: Schlafzimmer }, tags: [place], level: A1, module: M02 }
+  - { lemma: mesa, gender: f, de: { noun: Tisch, g: m, plural: Tische }, tags: [thing], level: A1, module: M02 }
+  - { lemma: silla, gender: f, de: { noun: Stuhl, g: m, plural: Stühle }, tags: [thing], level: A1, module: M02 }
+  - { lemma: cama, gender: f, de: { noun: Bett, g: n, plural: Betten }, tags: [thing], level: A1, module: M02 }
+  - { lemma: armario, gender: m, de: { noun: Schrank, g: m, plural: Schränke }, tags: [thing], level: A1, module: M02 }
+  - { lemma: sofá, gender: m, de: { noun: Sofa, g: n, plural: Sofas }, tags: [thing], level: A1, module: M02, gender_trap: true, notes_de: "el sofá — maskulin trotz -a!" }
+  - { lemma: lámpara, gender: f, de: { noun: Lampe, g: f, plural: Lampen }, tags: [thing], level: A1, module: M02 }
+  - { lemma: puerta, gender: f, de: { noun: Tür, g: f, plural: Türen }, tags: [thing], level: A1, module: M02 }
+  - { lemma: ventana, gender: f, de: { noun: Fenster, g: n, plural: Fenster }, tags: [thing], level: A1, module: M02 }
+  - { lemma: nevera, gender: f, de: { noun: Kühlschrank, g: m, plural: Kühlschränke }, tags: [thing], level: A1, module: M02 }
+  - { lemma: televisión, gender: f, de: { noun: Fernseher, g: m, plural: Fernseher }, tags: [thing], level: A1, module: M02, notes_de: "eigentlich: das Fernsehen; das Gerät auch: el televisor" }
+  - { lemma: calle, gender: f, de: { noun: Straße, g: f, plural: Straßen }, tags: [place], level: A1, module: M02 }
+  - { lemma: plaza, gender: f, de: { noun: Platz, g: m, plural: Plätze }, tags: [place], level: A1, module: M02 }
+  - { lemma: parque, gender: m, de: { noun: Park, g: m, plural: Parks }, tags: [place], level: A1, module: M02 }
+  - { lemma: tienda, gender: f, de: { noun: Laden, g: m, plural: Läden }, tags: [place], level: A1, module: M02, notes_de: "Geschäft; tienda de campaña = Zelt" }
+  - { lemma: supermercado, gender: m, de: { noun: Supermarkt, g: m, plural: Supermärkte }, tags: [place], level: A1, module: M02 }
+  - { lemma: restaurante, gender: m, de: { noun: Restaurant, g: n, plural: Restaurants }, tags: [place], level: A1, module: M02 }
+  - { lemma: hotel, gender: m, de: { noun: Hotel, g: n, plural: Hotels }, tags: [place], level: A1, module: M02 }
+  - { lemma: jardín, gender: m, de: { noun: Garten, g: m, plural: Gärten }, tags: [place], level: A1, module: M02 }
+
+adjectives:
+  - lemma: grande
+    agreement: e
+    copula: ser
+    senses: [{ copula: ser, de: groß (Sache), applies_to: [thing, place] }]
+    level: A1
+    module: M02
+    notes_de: "grande = groß (Sache); alto = groß gewachsen (Person)"
+  - lemma: pequeño
+    agreement: o/a
+    copula: ser
+    senses: [{ copula: ser, de: klein (Sache), applies_to: [thing, place, animal] }]
+    level: A1
+    module: M02
+  - lemma: nuevo
+    agreement: o/a
+    copula: ser
+    senses: [{ copula: ser, de: neu, applies_to: [thing, place] }]
+    level: A1
+    module: M02
+  - lemma: viejo
+    agreement: o/a
+    copula: ser
+    senses: [{ copula: ser, de: alt, applies_to: [thing, place, human] }]
+    level: A1
+    module: M02
+  - lemma: bonito
+    agreement: o/a
+    copula: ser
+    senses: [{ copula: ser, de: schön, applies_to: [thing, place] }]
+    level: A1
+    module: M02
+  - lemma: moderno
+    agreement: o/a
+    copula: ser
+    senses: [{ copula: ser, de: modern, applies_to: [thing, place] }]
+    level: A1
+    module: M02
+
+chunks:
+  - { es: al lado de …, de: neben …, level: A1, module: M02 }
+  - { es: debajo de …, de: unter …, level: A1, module: M02 }
+  - { es: encima de …, de: auf / über …, level: A1, module: M02 }
+  - { es: delante de …, de: vor … (örtlich), level: A1, module: M02 }
+  - { es: detrás de …, de: hinter …, level: A1, module: M02 }
+  - { es: entre, de: zwischen, level: A1, module: M02 }
+  - { es: cerca de …, de: in der Nähe von …, level: A1, module: M02 }
+  - { es: lejos de …, de: weit weg von …, level: A1, module: M02 }
+  - { es: ¿dónde está …?, de: wo ist …?, level: A1, module: M02 }

@@ -1,0 +1,58 @@
+# M05 — Verben mit Stammwechsel: Essen, Trinken, Restaurant (Plan/01)
+
+nouns:
+  - { lemma: pan, gender: m, de: { noun: Brot, g: n, plural: Brote }, tags: [food], level: A1, module: M05 }
+  - { lemma: agua, gender: f, de: { noun: Wasser, g: n }, tags: [drink], level: A1, module: M05, notes_de: "feminin, aber Artikel el: el agua, las aguas" }
+  - { lemma: leche, gender: f, de: { noun: Milch, g: f }, tags: [drink], level: A1, module: M05 }
+  - { lemma: café, gender: m, de: { noun: Kaffee, g: m, plural: Kaffees }, tags: [drink], level: A1, module: M05, notes_de: "auch: Café (Lokal)" }
+  - { lemma: té, gender: m, de: { noun: Tee, g: m, plural: Tees }, tags: [drink], level: A1, module: M05 }
+  - { lemma: cerveza, gender: f, de: { noun: Bier, g: n, plural: Biere }, tags: [drink], level: A1, module: M05 }
+  - { lemma: vino, gender: m, de: { noun: Wein, g: m, plural: Weine }, tags: [drink], level: A1, module: M05 }
+  - { lemma: zumo, gender: m, de: { noun: Saft, g: m, plural: Säfte }, tags: [drink], level: A1, module: M05, notes_de: "in Spanien zumo, in Lateinamerika jugo" }
+  - { lemma: fruta, gender: f, de: { noun: Obst, g: n }, tags: [food], level: A1, module: M05 }
+  - { lemma: manzana, gender: f, de: { noun: Apfel, g: m, plural: Äpfel }, tags: [food], level: A1, module: M05 }
+  - { lemma: naranja, gender: f, de: { noun: Orange, g: f, plural: Orangen }, tags: [food], level: A1, module: M05, notes_de: "auch Farbadjektiv: naranja = orange (unveränderlich)" }
+  - { lemma: tomate, gender: m, de: { noun: Tomate, g: f, plural: Tomaten }, tags: [food], level: A1, module: M05, gender_trap: true, notes_de: "el tomate — maskulin (die Tomate!)" }
+  - { lemma: patata, gender: f, de: { noun: Kartoffel, g: f, plural: Kartoffeln }, tags: [food], level: A1, module: M05, notes_de: "in Lateinamerika: papa" }
+  - { lemma: queso, gender: m, de: { noun: Käse, g: m }, tags: [food], level: A1, module: M05 }
+  - { lemma: huevo, gender: m, de: { noun: Ei, g: n, plural: Eier }, tags: [food], level: A1, module: M05 }
+  - { lemma: carne, gender: f, de: { noun: Fleisch, g: n }, tags: [food], level: A1, module: M05 }
+  - { lemma: pescado, gender: m, de: { noun: Fisch, g: m, plural: Fische }, tags: [food], level: A1, module: M05, notes_de: "pescado = Fisch (als Gericht), pez = Fisch (Tier)" }
+  - { lemma: pollo, gender: m, de: { noun: Hähnchen, g: n, plural: Hähnchen }, tags: [food], level: A1, module: M05 }
+  - { lemma: arroz, gender: m, de: { noun: Reis, g: m }, tags: [food], level: A1, module: M05 }
+  - { lemma: sopa, gender: f, de: { noun: Suppe, g: f, plural: Suppen }, tags: [food], level: A1, module: M05 }
+  - { lemma: ensalada, gender: f, de: { noun: Salat, g: m, plural: Salate }, tags: [food], level: A1, module: M05 }
+  - { lemma: postre, gender: m, de: { noun: Nachtisch, g: m }, tags: [food], level: A1, module: M05 }
+  - { lemma: helado, gender: m, de: { noun: Eis, g: n }, tags: [food], level: A1, module: M05, notes_de: "Speiseeis; gefrorenes Wasser = el hielo" }
+  - { lemma: azúcar, gender: m, de: { noun: Zucker, g: m }, tags: [food], level: A1, module: M05 }
+  - { lemma: sal, gender: f, de: { noun: Salz, g: n }, tags: [food], level: A1, module: M05, gender_trap: true, notes_de: "la sal — feminin (das Salz!)" }
+  - { lemma: aceite, gender: m, de: { noun: Öl, g: n, plural: Öle }, tags: [food], level: A1, module: M05, gender_trap: true, notes_de: "el aceite — maskulin; aceite de oliva = Olivenöl" }
+  - { lemma: menú, gender: m, de: { noun: Menü, g: n, plural: Menüs }, tags: [food], level: A1, module: M05, notes_de: "menú del día = Tagesmenü; die Speisekarte = la carta" }
+  - { lemma: cuenta, gender: f, de: { noun: Rechnung, g: f, plural: Rechnungen }, tags: [thing], level: A1, module: M05 }
+  - { lemma: plato, gender: m, de: { noun: Teller, g: m, plural: Teller }, tags: [thing], level: A1, module: M05, notes_de: "auch: Gericht (plato del día = Tagesgericht)" }
+  - { lemma: vaso, gender: m, de: { noun: Glas, g: n, plural: Gläser }, tags: [thing], level: A1, module: M05, notes_de: "vaso = Trinkglas, nicht Vase! (Vase = el jarrón)" }
+  - { lemma: botella, gender: f, de: { noun: Flasche, g: f, plural: Flaschen }, tags: [thing], level: A1, module: M05 }
+  - { lemma: comida, gender: f, de: { noun: Essen, g: n }, tags: [food], level: A1, module: M05, notes_de: "auch: Mittagessen" }
+
+adjectives:
+  - lemma: caliente
+    agreement: e
+    copula: estar
+    senses: [{ copula: estar, de: heiß (Zustand), applies_to: [food, drink, thing] }]
+    level: A1
+    module: M05
+    notes_de: "Zustand: la sopa está caliente"
+  - lemma: frío
+    agreement: o/a
+    copula: estar
+    senses: [{ copula: estar, de: kalt (Zustand), applies_to: [food, drink, thing] }]
+    level: A1
+    module: M05
+    notes_de: "als Zustand mit estar: el café está frío; 'es ist kalt' (Wetter) = hace frío"
+
+chunks:
+  - { es: "la cuenta, por favor", de: "die Rechnung, bitte", level: A1, module: M05 }
+  - { es: ¡que aproveche!, de: guten Appetit!, level: A1, module: M05 }
+  - { es: para mí, de: für mich, level: A1, module: M05 }
+  - { es: de primero, de: als Vorspeise, level: A1, module: M05 }
+  - { es: de segundo, de: als Hauptgericht, level: A1, module: M05 }

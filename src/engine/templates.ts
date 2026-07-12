@@ -21,6 +21,7 @@ export interface Subject {
   person: Person
   gender: Gender
   genderFree: boolean // ich/du/wir/ihr: German doesn't reveal gender → accept both agreements
+  tags: Tag[] // semantic tags of the subject (drives adjective applies_to)
   phrase?: { es: string; de: string } // visible subject (name or noun phrase)
 }
 
@@ -30,7 +31,8 @@ export interface Instance {
   negated: boolean
   subject: Subject
   fillers: Record<string, LexEntry | { es: string; de: string }>
-  verb: Verb
+  plural: Record<string, boolean> // resolved number per noun slot
+  verb?: Verb // absent for chunk-style templates without a verb slot
   adjSense?: AdjSense
 }
 
@@ -61,7 +63,9 @@ export function eligibleTemplates(content: Content, user: UserState, focusGramma
 
 export function allowedTenses(t: Template, known: Set<string>): Tense[] {
   const wanted = t.tenses ?? ['presente']
-  return wanted.filter(x => known.has(TENSE_POINT[x]))
+  // presente is gated by the template's own requires (M01 copula templates exist
+  // before presente.regular is taught); every other tense by its grammar point
+  return wanted.filter(x => x === 'presente' || known.has(TENSE_POINT[x]))
 }
 
 // ---------- filling ----------
@@ -81,17 +85,18 @@ function fillSubject(slot: SubjSlot, pool: LexEntry[], names: PersonName[], rnd:
   const persons = slot.persons ?? ['1s', '2s', '3s', '1p', '2p', '3p']
   const person = pick(persons, rnd)
   if ((person === '3s' || person === '3p') && slot.nouns?.length && rnd() < 0.6) {
-    if (rnd() < 0.5 && slot.nouns.includes('human') && names.length) {
+    if (person === '3s' && rnd() < 0.5 && slot.nouns.includes('human') && names.length) {
       const n = pick(names, rnd)
-      return { person, gender: n.gender, genderFree: false, phrase: { es: n.name, de: n.name } }
+      return { person, gender: n.gender, genderFree: false, tags: ['human'], phrase: { es: n.name, de: n.name } }
     }
     const nouns = pool.filter((e): e is Noun => e.kind === 'noun' && slot.nouns!.some(t => e.tags.includes(t)))
     if (nouns.length) {
       const n = pick(nouns, rnd)
-      const g = n.gender === 'mf' ? (rnd() < 0.5 ? 'm' : 'f') : n.gender
+      // German side has only one noun form, so pair/mf nouns appear masculine (de.fem: later)
+      const g = n.gender === 'f' ? 'f' : 'm'
       const plural = person === '3p'
       return {
-        person, gender: g, genderFree: false,
+        person, gender: g, genderFree: false, tags: n.tags,
         phrase: {
           es: `${article('def', g, plural)} ${nounForm(n, g, plural)}`,
           de: `${deArticle('def', n.de.g, plural, 'nom')} ${plural ? n.de.plural ?? n.de.noun : n.de.noun}`,
@@ -101,7 +106,7 @@ function fillSubject(slot: SubjSlot, pool: LexEntry[], names: PersonName[], rnd:
   }
   const gender = rnd() < 0.5 ? 'f' : 'm'
   const genderFree = person !== '3s' && person !== '3p'
-  return { person, gender, genderFree }
+  return { person, gender, genderFree, tags: ['human'] }
 }
 
 // ---------- rendering ----------
@@ -162,19 +167,19 @@ function renderInstance(inst: Instance, content: Content): Rendered | null {
         if ((slot.valence ?? '') === 'gustar') {
           // gustar: IO clitic from subject-axis person, verb agrees with theme
           const themeSlot = Object.entries(t.slots).find(([, s]) => s.type === 'noun')
-          const themePerson: Person = themeSlot && (t.slots[themeSlot[0]] as { number?: string }).number === 'pl' ? '3p' : '3s'
+          const themePerson: Person = themeSlot && inst.plural[themeSlot[0]] ? '3p' : '3s'
           const io = IO_CLITIC[subject.person]
           const no = inst.negated ? 'no ' : ''
-          esParts.push([no + io + ' ' + conjugate(inst.verb, inst.tense, themePerson)])
+          esParts.push([no + io + ' ' + conjugate(inst.verb!, inst.tense, themePerson)])
         } else {
-          esParts.push(verbCluster(inst.verb, inst.tense, subject, inst.negated, extra))
+          esParts.push(verbCluster(inst.verb!, inst.tense, subject, inst.negated, extra))
         }
         break
       }
       case 'noun': {
         const n = inst.fillers[name] as Noun
         const g = n.gender === 'mf' ? 'm' : n.gender
-        const plural = slot.number === 'pl'
+        const plural = !!inst.plural[name]
         const art = slot.article === 'none' ? '' : article(slot.article, g, plural) + ' '
         const personalA = slot.role === 'do' && n.tags.includes('human') ? 'a ' : ''
         esParts.push([personalA + art + nounForm(n, g, plural)])
@@ -183,18 +188,27 @@ function renderInstance(inst: Instance, content: Content): Rendered | null {
       case 'adj': {
         const a = inst.fillers[name] as Adjective
         const plural = ['1p', '2p', '3p'].includes(subject.person)
-        const forms = [adjForm(a, subject.gender, plural)]
+        // genderFree (ich/du/wir/ihr): canonical masculine, feminine accepted too
+        const g = subject.genderFree ? 'm' : subject.gender
+        const forms = [adjForm(a, g, plural)]
         if (subject.genderFree) {
-          const other = adjForm(a, subject.gender === 'm' ? 'f' : 'm', plural)
-          if (other !== forms[0]) forms.push(other)
+          const fem = adjForm(a, 'f', plural)
+          if (fem !== forms[0]) forms.push(fem)
         }
         esParts.push(forms)
         break
       }
       case 'clitic': break // rendered inside the verb cluster
-      case 'time': {
-        const time = inst.fillers[name] as { es: string; de: string }
-        esParts.push([time.es])
+      case 'time':
+      case 'lit': {
+        const pair = inst.fillers[name] as { es: string; de: string }
+        esParts.push([pair.es])
+        break
+      }
+      case 'inf': {
+        const iv = inst.fillers[name] as Verb
+        const inf = infinitive(iv)
+        esParts.push([iv.reflexive ? attachClitics(inf, [REFLEXIVE[subject.person]]) : inf])
         break
       }
     }
@@ -208,24 +222,31 @@ function renderInstance(inst: Instance, content: Content): Rendered | null {
     const slot = t.slots[name]
     if (!slot) return null
     switch (slot.type) {
-      case 'subj':
+      case 'subj': {
+        // gustar templates: German experiencer is dative (mir gefällt …)
+        const verbSlot = Object.values(t.slots).find(s => s.type === 'verb')
+        if (verbSlot && (verbSlot as { valence?: string }).valence === 'gustar' && !subject.phrase) {
+          deParts.push(DE_IO[subject.person])
+          break
+        }
         deParts.push(subject.phrase ? subject.phrase.de : deSubjectPronoun(subject.person, subject.gender))
         break
+      }
       case 'verb': {
         if ((slot.valence ?? '') === 'gustar') {
           const themeSlot = Object.entries(t.slots).find(([, s]) => s.type === 'noun')
-          const themePerson: Person = themeSlot && (t.slots[themeSlot[0]] as { number?: string }).number === 'pl' ? '3p' : '3s'
-          const f = deVerb(inst.verb, inst.tense, themePerson)
+          const themePerson: Person = themeSlot && inst.plural[themeSlot[0]] ? '3p' : '3s'
+          const f = deVerb(inst.verb!, inst.tense, themePerson)
           deParts.push(f.finite); deTail = f.tail
         } else {
-          const f = deVerb(inst.verb, inst.tense, subject.person)
+          const f = deVerb(inst.verb!, inst.tense, subject.person)
           deParts.push(f.finite); deTail = f.tail
         }
         break
       }
       case 'noun': {
         const n = inst.fillers[name] as Noun
-        const plural = slot.number === 'pl'
+        const plural = !!inst.plural[name]
         const art = deArticle(slot.article === 'none' ? 'none' : slot.article, n.de.g, plural, slot.deCase)
         deParts.push((art ? art + ' ' : '') + (plural ? n.de.plural ?? n.de.noun : n.de.noun))
         break
@@ -233,14 +254,16 @@ function renderInstance(inst: Instance, content: Content): Rendered | null {
       case 'adj':
         deParts.push(inst.adjSense!.de)
         break
-      case 'clitic': {
-        const c = inst.fillers[name] as { es: string; de: string }
-        deParts.push(c.de)
+      case 'clitic':
+      case 'time':
+      case 'lit': {
+        const pair = inst.fillers[name] as { es: string; de: string }
+        deParts.push(pair.de)
         break
       }
-      case 'time': {
-        const time = inst.fillers[name] as { es: string; de: string }
-        deParts.push(time.de)
+      case 'inf': {
+        const iv = inst.fillers[name] as Verb
+        deParts.push(iv.de.inf + (iv.de.reflexive ? ' ' + DE_REFLEXIVE[subject.person] : ''))
         break
       }
     }
@@ -269,14 +292,20 @@ const joinParts = (parts: string[]) => parts.join('').replace(/\s+/g, ' ').repla
 function finishEs(parts: string[]): string {
   let s = joinParts(parts)
   s = contract(euphony(s))
-  s = s.charAt(0) === '¿' ? '¿' + s.charAt(1).toUpperCase() + s.slice(2) : s.charAt(0).toUpperCase() + s.slice(1)
+  s = /^[¿¡]/.test(s) ? s.charAt(0) + s.charAt(1).toUpperCase() + s.slice(2) : s.charAt(0).toUpperCase() + s.slice(1)
   if (!/[.?!]$/.test(s)) s += '.'
   return s
 }
 
+const DE_CONTRACTIONS: [RegExp, string][] = [
+  [/\bin dem\b/g, 'im'], [/\bin das\b/g, 'ins'], [/\ban dem\b/g, 'am'], [/\ban das\b/g, 'ans'],
+  [/\bzu dem\b/g, 'zum'], [/\bzu der\b/g, 'zur'], [/\bbei dem\b/g, 'beim'], [/\bvon dem\b/g, 'vom'],
+]
+
 function finishDe(parts: string[], tail: string): string {
   let s = joinParts(parts)
   if (tail) s = s.replace(/([.?!])?$/, m => ' ' + tail + (m || ''))
+  for (const [re, to] of DE_CONTRACTIONS) s = s.replace(re, to)
   s = s.replace(/\s+/g, ' ').trim()
   s = s.charAt(0).toUpperCase() + s.slice(1)
   if (!/[.?!]$/.test(s)) s += '.'
@@ -314,63 +343,80 @@ export function generate(
     return cands[cands.length - 1]
   }
 
-  // tense
+  // tense & verb (templates without a verb slot — chunk-style like "me gustaría {inf}" —
+  // are fixed-presente and exercise no verb cell)
   const slotEntries = Object.entries(t.slots)
   const verbSlotEntry = slotEntries.find(([, s]) => s.type === 'verb')
-  if (!verbSlotEntry) return null
-  const verbSlot = verbSlotEntry[1] as Extract<Template['slots'][string], { type: 'verb' }>
-  const tenses = verbSlot.tense ? [verbSlot.tense] : allowedTenses(t, known)
-  if (!tenses.length) return null
-  const tense = pick(tenses, rnd)
-
-  // verb
-  let verbs = pool.filter((e): e is Verb => e.kind === 'verb')
-  if (verbSlot.lemmas) verbs = content.lexicon.filter((e): e is Verb => e.kind === 'verb' && verbSlot.lemmas!.includes(e.lemma))
-  else {
-    if (verbSlot.reflexive !== undefined) verbs = verbs.filter(v => !!v.reflexive === verbSlot.reflexive)
-    if (verbSlot.valence === 'intrans') verbs = verbs.filter(v => !v.valence.object && !v.valence.gustar && !v.valence.inf)
-    if (verbSlot.valence === 'trans') verbs = verbs.filter(v => !!v.valence.object)
-    if (verbSlot.valence === 'inf') verbs = verbs.filter(v => !!v.valence.inf)
-    if (verbSlot.valence === 'gustar') verbs = verbs.filter(v => !!v.valence.gustar)
+  let tense: Tense = 'presente'
+  let verb: Verb | undefined
+  if (verbSlotEntry) {
+    const verbSlot = verbSlotEntry[1] as Extract<Template['slots'][string], { type: 'verb' }>
+    const tenses = verbSlot.tense ? [verbSlot.tense] : allowedTenses(t, known)
+    if (!tenses.length) return null
+    tense = pick(tenses, rnd)
+    let verbs = pool.filter((e): e is Verb => e.kind === 'verb')
+    if (verbSlot.lemmas) verbs = content.lexicon.filter((e): e is Verb => e.kind === 'verb' && verbSlot.lemmas!.includes(e.lemma))
+    else {
+      if (verbSlot.reflexive !== undefined) verbs = verbs.filter(v => !!v.reflexive === verbSlot.reflexive)
+      if (verbSlot.valence === 'intrans') verbs = verbs.filter(v => !v.valence.object && !v.valence.gustar && !v.valence.inf)
+      if (verbSlot.valence === 'trans') verbs = verbs.filter(v => !!v.valence.object)
+      if (verbSlot.valence === 'inf') verbs = verbs.filter(v => !!v.valence.inf)
+      if (verbSlot.valence === 'gustar') verbs = verbs.filter(v => !!v.valence.gustar)
+    }
+    verb = weighted(verbs)
+    if (!verb) return null
   }
-  const verb = weighted(verbs)
-  if (!verb) return null
 
   // subject
   const subjSlot = slotEntries.find(([, s]) => s.type === 'subj')
   const subject: Subject = subjSlot
     ? fillSubject(subjSlot[1] as SubjSlot, pool, content.names, rnd)
-    : { person: '3s', gender: 'm', genderFree: false }
+    : { person: '3s', gender: 'm', genderFree: false, tags: ['thing'] }
   if (tense === 'imperativo' && !['2s', '2p', '3s', '3p'].includes(subject.person)) return null
 
   // other slots
   const fillers: Instance['fillers'] = {}
+  const plural: Record<string, boolean> = {}
   let adjSense: AdjSense | undefined
   for (const [name, slot] of slotEntries) {
     if (slot.type === 'noun') {
       // object must fit the verb's valence tags when the verb is lexicon-drawn
-      const want = verb.valence.object && slot.role === 'do' ? verb.valence.object.tags : slot.tags
+      const want = verb?.valence.object && slot.role === 'do' ? verb.valence.object.tags : slot.tags
       const tags = slot.tags.filter(x => want.includes(x)).length ? slot.tags.filter(x => want.includes(x)) : slot.tags
-      const nouns = pool.filter((e): e is Noun => e.kind === 'noun' && tags.some(tag => e.tags.includes(tag)))
+      const used = new Set(Object.values(fillers).map(f => (f as Noun).lemma).filter(Boolean))
+      const subjLemma = subject.phrase?.es.split(' ').pop()
+      const nouns = pool.filter((e): e is Noun =>
+        e.kind === 'noun' && tags.some(tag => e.tags.includes(tag)) && !used.has(e.lemma) && e.lemma !== subjLemma)
       const n = weighted(nouns)
       if (!n) return null
       fillers[name] = n
+      plural[name] = slot.number === 'pl' || (slot.number === 'both' && rnd() < 0.4)
     } else if (slot.type === 'adj') {
-      const copula = slot.copula ?? (verb.lemma === 'estar' ? 'estar' : 'ser')
+      const copula = slot.copula ?? (verb?.lemma === 'estar' ? 'estar' : 'ser')
       const adjs = pool.filter((e): e is Adjective => {
         if (e.kind !== 'adj') return false
+        if (slot.shiftOnly && e.copula !== 'shift') return false
+        if (slot.tags?.length && !slot.tags.some(x => e.tags?.includes(x))) return false
         if (e.gender && e.gender !== subject.gender && !subject.genderFree) return false
         const sense = e.senses.find(s => s.copula === copula) ?? (e.copula === 'both' ? e.senses[0] : undefined)
         if (!sense) return false
-        const subjTags: Tag[] = subject.phrase ? ['human'] : ['human'] // pronoun subjects are people
-        return sense.applies_to.some(x => subjTags.includes(x))
+        return sense.applies_to.some(x => subject.tags.includes(x))
       })
       const a = weighted(adjs)
       if (!a) return null
       fillers[name] = a
       adjSense = a.senses.find(s => s.copula === copula) ?? a.senses[0]
+    } else if (slot.type === 'lit') {
+      fillers[name] = pick(slot.options, rnd)
+    } else if (slot.type === 'inf') {
+      const infs = content.lexicon.filter((e): e is Verb => e.kind === 'verb' && slot.lemmas.includes(e.lemma))
+      const iv = weighted(infs)
+      if (!iv) return null
+      fillers[name] = iv
     } else if (slot.type === 'clitic') {
-      const persons = slot.persons ?? (['1s', '2s', '1p', '2p'] as Person[])
+      // never the subject's own person (te veo, not *nos escuchamos as "wir hören uns")
+      const persons = (slot.persons ?? (['1s', '2s', '1p', '2p'] as Person[])).filter(p => p !== subject.person)
+      if (!persons.length) return null
       const p = pick(persons, rnd)
       fillers[name] = slot.role === 'do'
         ? { es: doClitic(p, 'm'), de: DE_DO[p] }
@@ -384,14 +430,14 @@ export function generate(
   }
 
   const negated = !!t.polarity && rnd() < 0.3
-  const inst: Instance = { template: t, tense, negated, subject, fillers, verb, adjSense }
+  const inst: Instance = { template: t, tense, negated, subject, fillers, plural, verb, adjSense }
   const rendered = renderInstance(inst, content)
   if (!rendered) return null
 
   // both_same copula: accept the sentence with the other copula as well
   let accepted = rendered.esVariants
   const adjFillerEntry = Object.values(fillers).find(f => (f as Adjective).kind === 'adj') as Adjective | undefined
-  if (adjFillerEntry?.copula === 'both' && (verb.lemma === 'ser' || verb.lemma === 'estar')) {
+  if (adjFillerEntry?.copula === 'both' && (verb?.lemma === 'ser' || verb?.lemma === 'estar')) {
     const otherLemma = verb.lemma === 'ser' ? 'estar' : 'ser'
     const other = content.lexicon.find((e): e is Verb => e.kind === 'verb' && e.lemma === otherLemma)
     if (other) {
@@ -401,17 +447,25 @@ export function generate(
     }
   }
 
+  // future prompts: both futuro and ir a + inf are correct Spanish for plans;
+  // ir-a-inf prompts (German präsens + plan adverb) also accept plain presente
+  const alsoAccept: Tense[] = tense === 'futuro' ? ['ir-a-inf'] : tense === 'ir-a-inf' ? ['presente'] : []
+  for (const altTense of alsoAccept) {
+    const alt = renderInstance({ ...inst, tense: altTense }, content)
+    if (alt) accepted = [...accepted, ...alt.esVariants]
+  }
+
   const vocabKeys = Object.values(fillers)
     .filter((f): f is LexEntry => 'kind' in (f as object))
     .map(f => vocabKey(f as LexEntry, adjSense))
-  vocabKeys.push(vocabKey(verb))
+  if (verb) vocabKeys.push(vocabKey(verb))
 
   return {
     de: rendered.de,
     es: rendered.esVariants[0]!,
     accepted,
     vocabKeys,
-    verbCells: [{ lemma: verb.lemma, cell: `${tense}.${subject.person}` }],
+    verbCells: verb ? [{ lemma: verb.lemma, cell: `${tense}.${subject.person}` }] : [],
     templateId: t.id,
     notes_de: t.notes_de,
   }

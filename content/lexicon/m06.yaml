@@ -1,0 +1,52 @@
+# M06 — Reflexive Verben & Tagesablauf: Hygiene, Kleidung, Tageszeiten (Plan/01)
+
+nouns:
+  - { lemma: ducha, gender: f, de: { noun: Dusche, g: f, plural: Duschen }, tags: [thing], level: A1, module: M06 }
+  - { lemma: jabón, gender: m, de: { noun: Seife, g: f, plural: Seifen }, tags: [thing], level: A1, module: M06 }
+  - { lemma: champú, gender: m, de: { noun: Shampoo, g: n, plural: Shampoos }, tags: [thing], level: A1, module: M06 }
+  - { lemma: toalla, gender: f, de: { noun: Handtuch, g: n, plural: Handtücher }, tags: [thing], level: A1, module: M06 }
+  - { lemma: cepillo de dientes, gender: m, de: { noun: Zahnbürste, g: f, plural: Zahnbürsten }, tags: [thing], level: A1, module: M06 }
+  - { lemma: pasta de dientes, gender: f, de: { noun: Zahnpasta, g: f }, tags: [thing], level: A1, module: M06 }
+  - { lemma: ropa, gender: f, de: { noun: Kleidung, g: f }, tags: [clothing], level: A1, module: M06, notes_de: "im Spanischen Singular: la ropa" }
+  - { lemma: camisa, gender: f, de: { noun: Hemd, g: n, plural: Hemden }, tags: [clothing], level: A1, module: M06 }
+  - { lemma: camiseta, gender: f, de: { noun: T-Shirt, g: n, plural: T-Shirts }, tags: [clothing], level: A1, module: M06 }
+  - { lemma: pantalón, gender: m, de: { noun: Hose, g: f, plural: Hosen }, tags: [clothing], level: A1, module: M06, notes_de: "meist Plural: los pantalones — die Hose (Singular!)" }
+  - { lemma: falda, gender: f, de: { noun: Rock, g: m, plural: Röcke }, tags: [clothing], level: A1, module: M06 }
+  - { lemma: vestido, gender: m, de: { noun: Kleid, g: n, plural: Kleider }, tags: [clothing], level: A1, module: M06 }
+  - { lemma: zapato, gender: m, de: { noun: Schuh, g: m, plural: Schuhe }, tags: [clothing], level: A1, module: M06 }
+  - { lemma: calcetín, gender: m, de: { noun: Socke, g: f, plural: Socken }, tags: [clothing], level: A1, module: M06 }
+  - { lemma: abrigo, gender: m, de: { noun: Mantel, g: m, plural: Mäntel }, tags: [clothing], level: A1, module: M06 }
+  - { lemma: chaqueta, gender: f, de: { noun: Jacke, g: f, plural: Jacken }, tags: [clothing], level: A1, module: M06 }
+  - { lemma: jersey, gender: m, plural: jerséis, de: { noun: Pullover, g: m, plural: Pullover }, tags: [clothing], level: A1, module: M06 }
+  - { lemma: sombrero, gender: m, de: { noun: Hut, g: m, plural: Hüte }, tags: [clothing], level: A1, module: M06 }
+  - { lemma: bolso, gender: m, de: { noun: Handtasche, g: f, plural: Handtaschen }, tags: [thing], level: A1, module: M06, notes_de: "el bolso = Handtasche, la bolsa = Tüte/Beutel" }
+  - { lemma: gafas, gender: f, plural: gafas, de: { noun: Brille, g: f, plural: Brillen }, tags: [thing], level: A1, module: M06, notes_de: "nur Plural: las gafas — die Brille (Singular!)" }
+  - { lemma: pijama, gender: m, de: { noun: Schlafanzug, g: m, plural: Schlafanzüge }, tags: [clothing], level: A1, module: M06, gender_trap: true, notes_de: "el pijama — maskulin trotz -a!" }
+  - { lemma: rutina, gender: f, de: { noun: Routine, g: f, plural: Routinen }, tags: [abstract], level: A1, module: M06 }
+
+adjectives:
+  - lemma: limpio
+    agreement: o/a
+    copula: estar
+    senses: [{ copula: estar, de: sauber, applies_to: [thing, clothing, place] }]
+    level: A1
+    module: M06
+  - lemma: sucio
+    agreement: o/a
+    copula: estar
+    senses: [{ copula: estar, de: schmutzig, applies_to: [thing, clothing, place] }]
+    level: A1
+    module: M06
+  - lemma: cómodo
+    agreement: o/a
+    copula: ser
+    senses: [{ copula: ser, de: bequem, applies_to: [thing, clothing] }]
+    level: A1
+    module: M06
+
+chunks:
+  - { es: por la mañana, de: morgens / am Vormittag, level: A1, module: M06 }
+  - { es: por la tarde, de: nachmittags, level: A1, module: M06 }
+  - { es: por la noche, de: abends / nachts, level: A1, module: M06 }
+  - { es: temprano, de: früh, level: A1, module: M06 }
+  - { es: llegar tarde, de: zu spät kommen, level: A1, module: M06 }

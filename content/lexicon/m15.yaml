@@ -1,0 +1,39 @@
+# M15 — Indefinido vs. imperfecto: Unfälle, Zwischenfälle, Erzähl-Konnektoren (Plan/01)
+
+nouns:
+  - { lemma: accidente, gender: m, de: { noun: Unfall, g: m, plural: Unfälle }, tags: [event], level: A2, module: M15 }
+  - { lemma: coche, gender: m, de: { noun: Auto, g: n, plural: Autos }, tags: [vehicle], level: A2, module: M15, notes_de: "in Spanien coche, in Lateinamerika carro/auto" }
+  - { lemma: moto, gender: f, de: { noun: Motorrad, g: n, plural: Motorräder }, tags: [vehicle], level: A2, module: M15, gender_trap: true, notes_de: "la moto (von la motocicleta) — feminin trotz -o!" }
+  - { lemma: ambulancia, gender: f, de: { noun: Krankenwagen, g: m, plural: Krankenwagen }, tags: [vehicle], level: A2, module: M15 }
+  - { lemma: policía, gender: mf, de: { noun: Polizist, g: m, plural: Polizisten }, tags: [human, profession], level: A2, module: M15, notes_de: "el/la policía = Polizist(in); la policía = die Polizei (Behörde)" }
+  - { lemma: bombero, gender: m, fem: bombera, de: { noun: Feuerwehrmann, g: m, plural: Feuerwehrleute }, tags: [human, profession], level: A2, module: M15 }
+  - { lemma: herida, gender: f, de: { noun: Verletzung, g: f, plural: Verletzungen }, tags: [abstract], level: A2, module: M15 }
+  - { lemma: ruido, gender: m, de: { noun: Lärm, g: m }, tags: [abstract], level: A2, module: M15 }
+  - { lemma: fuego, gender: m, de: { noun: Feuer, g: n, plural: Feuer }, tags: [thing], level: A2, module: M15 }
+  - { lemma: ladrón, gender: m, fem: ladrona, de: { noun: Dieb, g: m, plural: Diebe }, tags: [human], level: A2, module: M15 }
+  - { lemma: escalera, gender: f, de: { noun: Treppe, g: f, plural: Treppen }, tags: [thing, place], level: A2, module: M15, notes_de: "auch: Leiter" }
+  - { lemma: peligro, gender: m, de: { noun: Gefahr, g: f, plural: Gefahren }, tags: [abstract], level: A2, module: M15 }
+  - { lemma: vecino, gender: m, fem: vecina, de: { noun: Nachbar, g: m, plural: Nachbarn }, tags: [human], level: A2, module: M15 }
+
+adjectives:
+  - lemma: herido
+    agreement: o/a
+    copula: estar
+    senses: [{ copula: estar, de: verletzt, applies_to: [human, animal] }]
+    level: A2
+    module: M15
+  - lemma: grave
+    agreement: e
+    copula: ser
+    senses: [{ copula: ser, de: schlimm, applies_to: [event, abstract] }]
+    level: A2
+    module: M15
+    notes_de: "estar grave = schwer krank/verletzt sein (B1)"
+
+chunks:
+  - { es: de repente, de: plötzlich, level: A2, module: M15, notes_de: "Signalwort für das indefinido im Erzählkontrast" }
+  - { es: mientras, de: während, level: A2, module: M15, notes_de: "Signalwort für das imperfecto" }
+  - { es: entonces, de: "dann, da", level: A2, module: M15 }
+  - { es: al principio, de: am Anfang, level: A2, module: M15 }
+  - { es: por suerte, de: zum Glück, level: A2, module: M15 }
+  - { es: otra vez, de: noch einmal / wieder, level: A2, module: M15 }

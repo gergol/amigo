@@ -1,0 +1,38 @@
+# M13 — Indefinido (unregelmäßig): Ausflüge & Anekdoten (Plan/01)
+
+nouns:
+  - { lemma: excursión, gender: f, de: { noun: Ausflug, g: m, plural: Ausflüge }, tags: [event], level: A2, module: M13 }
+  - { lemma: aventura, gender: f, de: { noun: Abenteuer, g: n, plural: Abenteuer }, tags: [event], level: A2, module: M13 }
+  - { lemma: paseo, gender: m, de: { noun: Spaziergang, g: m, plural: Spaziergänge }, tags: [activity], level: A2, module: M13 }
+  - { lemma: camino, gender: m, de: { noun: Weg, g: m, plural: Wege }, tags: [place], level: A2, module: M13 }
+  - { lemma: bosque, gender: m, de: { noun: Wald, g: m, plural: Wälder }, tags: [place], level: A2, module: M13 }
+  - { lemma: río, gender: m, de: { noun: Fluss, g: m, plural: Flüsse }, tags: [place], level: A2, module: M13 }
+  - { lemma: lago, gender: m, de: { noun: See, g: m, plural: Seen }, tags: [place], level: A2, module: M13, notes_de: "el lago = der See; das Meer = el mar" }
+  - { lemma: campo, gender: m, de: { noun: Land, g: n }, tags: [place], level: A2, module: M13, notes_de: "en el campo = auf dem Land; auch: Feld, Spielfeld" }
+  - { lemma: pueblo, gender: m, de: { noun: Dorf, g: n, plural: Dörfer }, tags: [place], level: A2, module: M13, notes_de: "auch: Volk" }
+  - { lemma: entrada, gender: f, de: { noun: Eintrittskarte, g: f, plural: Eintrittskarten }, tags: [thing], level: A2, module: M13, notes_de: "auch: Eingang" }
+  - { lemma: sorpresa, gender: f, de: { noun: Überraschung, g: f, plural: Überraschungen }, tags: [abstract, event], level: A2, module: M13 }
+  - { lemma: suerte, gender: f, de: { noun: Glück, g: n }, tags: [abstract], level: A2, module: M13, notes_de: "tener suerte = Glück haben" }
+  - { lemma: problema, gender: m, de: { noun: Problem, g: n, plural: Probleme }, tags: [abstract], level: A2, module: M13, gender_trap: true, notes_de: "el problema — maskulin trotz -a!" }
+
+adjectives:
+  - lemma: peligroso
+    agreement: o/a
+    copula: ser
+    senses: [{ copula: ser, de: gefährlich, applies_to: [thing, place, animal, activity] }]
+    level: A2
+    module: M13
+  - lemma: extraño
+    agreement: o/a
+    copula: ser
+    senses: [{ copula: ser, de: seltsam, applies_to: [human, thing, event] }]
+    level: A2
+    module: M13
+
+chunks:
+  - { es: ¡qué suerte!, de: so ein Glück!, level: A2, module: M13 }
+  - { es: ¡qué pena!, de: wie schade!, level: A2, module: M13 }
+  - { es: al final, de: am Ende, level: A2, module: M13 }
+  - { es: por fin, de: endlich, level: A2, module: M13 }
+  - { es: dar un paseo, de: einen Spaziergang machen, level: A2, module: M13 }
+  - { es: pasarlo bien, de: Spaß haben, level: A2, module: M13, notes_de: "lo pasé muy bien = ich hatte viel Spaß" }

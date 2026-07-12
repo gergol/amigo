@@ -1,0 +1,117 @@
+# M09 — Verlaufsform & direkte Objekte: Farben, Einkaufen, Technik (Plan/01)
+
+nouns:
+  - { lemma: color, gender: m, de: { noun: Farbe, g: f, plural: Farben }, tags: [abstract], level: A1, module: M09 }
+  - { lemma: dinero, gender: m, de: { noun: Geld, g: n }, tags: [thing], level: A1, module: M09 }
+  - { lemma: precio, gender: m, de: { noun: Preis, g: m, plural: Preise }, tags: [abstract], level: A1, module: M09 }
+  - { lemma: tarjeta, gender: f, de: { noun: Karte, g: f, plural: Karten }, tags: [thing], level: A1, module: M09, notes_de: "tarjeta de crédito = Kreditkarte; Landkarte = el mapa" }
+  - { lemma: ordenador, gender: m, de: { noun: Computer, g: m, plural: Computer }, tags: [thing], level: A1, module: M09, notes_de: "in Spanien ordenador, in Lateinamerika computadora" }
+  - { lemma: móvil, gender: m, de: { noun: Handy, g: n, plural: Handys }, tags: [thing], level: A1, module: M09, notes_de: "in Lateinamerika: celular" }
+  - { lemma: teléfono, gender: m, de: { noun: Telefon, g: n, plural: Telefone }, tags: [thing], level: A1, module: M09 }
+  - { lemma: mensaje, gender: m, de: { noun: Nachricht, g: f, plural: Nachrichten }, tags: [thing], level: A1, module: M09 }
+  - { lemma: pantalla, gender: f, de: { noun: Bildschirm, g: m, plural: Bildschirme }, tags: [thing], level: A1, module: M09 }
+  - { lemma: cámara, gender: f, de: { noun: Kamera, g: f, plural: Kameras }, tags: [thing], level: A1, module: M09 }
+  - { lemma: talla, gender: f, de: { noun: Größe, g: f, plural: Größen }, tags: [abstract], level: A1, module: M09, notes_de: "Kleidergröße; Schuhgröße = el número" }
+  - { lemma: euro, gender: m, de: { noun: Euro, g: m, plural: Euro }, tags: [thing], level: A1, module: M09 }
+  - { lemma: bolsa, gender: f, de: { noun: Tüte, g: f, plural: Tüten }, tags: [thing], level: A1, module: M09, notes_de: "la bolsa = Tüte/Beutel, el bolso = Handtasche" }
+  - { lemma: dependiente, gender: m, fem: dependienta, de: { noun: Verkäufer, g: m, plural: Verkäufer }, tags: [human, profession], level: A1, module: M09 }
+
+adjectives:
+  - lemma: rojo
+    agreement: o/a
+    copula: ser
+    senses: [{ copula: ser, de: rot, applies_to: [thing, clothing] }]
+    level: A1
+    module: M09
+  - lemma: azul
+    agreement: cons
+    copula: ser
+    senses: [{ copula: ser, de: blau, applies_to: [thing, clothing] }]
+    level: A1
+    module: M09
+  - lemma: verde
+    agreement: e
+    copula: ser
+    senses: [{ copula: ser, de: grün, applies_to: [thing, clothing] }]
+    level: A1
+    module: M09
+  - lemma: amarillo
+    agreement: o/a
+    copula: ser
+    senses: [{ copula: ser, de: gelb, applies_to: [thing, clothing] }]
+    level: A1
+    module: M09
+  - lemma: negro
+    agreement: o/a
+    copula: ser
+    senses: [{ copula: ser, de: schwarz, applies_to: [thing, clothing, animal] }]
+    level: A1
+    module: M09
+  - lemma: blanco
+    agreement: o/a
+    copula: ser
+    senses: [{ copula: ser, de: weiß, applies_to: [thing, clothing, animal] }]
+    level: A1
+    module: M09
+  - lemma: gris
+    agreement: cons
+    copula: ser
+    senses: [{ copula: ser, de: grau, applies_to: [thing, clothing, animal] }]
+    level: A1
+    module: M09
+  - lemma: marrón
+    agreement: cons
+    copula: ser
+    senses: [{ copula: ser, de: braun, applies_to: [thing, clothing, animal] }]
+    level: A1
+    module: M09
+  - lemma: naranja
+    agreement: inv
+    copula: ser
+    senses: [{ copula: ser, de: orange, applies_to: [thing, clothing] }]
+    level: A1
+    module: M09
+    notes_de: "unveränderlich: los zapatos naranja"
+  - lemma: rosa
+    agreement: inv
+    copula: ser
+    senses: [{ copula: ser, de: rosa, applies_to: [thing, clothing] }]
+    level: A1
+    module: M09
+    notes_de: "unveränderlich: la camiseta rosa"
+  - lemma: caro
+    agreement: o/a
+    copula: ser
+    senses: [{ copula: ser, de: teuer, applies_to: [thing, clothing, place] }]
+    level: A1
+    module: M09
+  - lemma: barato
+    agreement: o/a
+    copula: ser
+    senses: [{ copula: ser, de: billig, applies_to: [thing, clothing, place] }]
+    level: A1
+    module: M09
+  - lemma: abierto
+    agreement: o/a
+    copula: estar
+    senses: [{ copula: estar, de: geöffnet, applies_to: [place, thing] }]
+    level: A1
+    module: M09
+  - lemma: cerrado
+    agreement: o/a
+    copula: estar
+    senses: [{ copula: estar, de: geschlossen, applies_to: [place, thing] }]
+    level: A1
+    module: M09
+  - lemma: roto
+    agreement: o/a
+    copula: estar
+    senses: [{ copula: estar, de: kaputt, applies_to: [thing] }]
+    level: A1
+    module: M09
+
+chunks:
+  - { es: ir de compras, de: einkaufen gehen, level: A1, module: M09 }
+  - { es: ¿cuánto cuesta?, de: wie viel kostet das?, level: A1, module: M09 }
+  - { es: demasiado caro, de: zu teuer, level: A1, module: M09 }
+  - { es: pagar con tarjeta, de: mit Karte zahlen, level: A1, module: M09 }
