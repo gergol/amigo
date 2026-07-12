@@ -113,11 +113,15 @@ export function pickVerbDrill(
 ): VerbDrill | undefined {
   const mods = unlockedModules(content, user)
   const known = new Set(user.grammar.known)
-  const tenses = (Object.keys(TENSE_POINT) as Tense[])
-    .filter(t => known.has(TENSE_POINT[t]))
-    .filter(t => !focus.grammar?.length || focusMatchesPoint(focus, TENSE_POINT[t]))
-  const verbs = content.lexicon.filter((e): e is Verb =>
+  const unlocked = (Object.keys(TENSE_POINT) as Tense[]).filter(t => known.has(TENSE_POINT[t]))
+  // a tense-shaped focus narrows the tenses; any other grammar focus (e.g.
+  // verb.reflexive) leaves tenses alone and narrows the verbs instead
+  const tenseFocused = focus.grammar?.length
+    ? unlocked.filter(t => focusMatchesPoint(focus, TENSE_POINT[t])) : unlocked
+  const tenses = tenseFocused.length ? tenseFocused : unlocked
+  let verbs = content.lexicon.filter((e): e is Verb =>
     e.kind === 'verb' && e.lemma !== 'hay' && mods.has(e.module) && focusMatchesEntry(focus, e))
+  if (focus.grammar?.some(g => g === 'verb.reflexive')) verbs = verbs.filter(v => v.reflexive)
   if (!verbs.length || !tenses.length) return undefined
 
   const cells: VerbDrill[] = []
@@ -125,6 +129,8 @@ export function pickVerbDrill(
     for (const t of tenses)
       for (const p of PERSONS) {
         if (t === 'imperativo' && (p === '1s' || p === '1p')) continue
+        // gustar-type verbs: only the 3rd-person cells exist meaningfully
+        if (v.valence.gustar && (t === 'imperativo' || (p !== '3s' && p !== '3p'))) continue
         const form = conjugate(v, t, p)
         const full = v.reflexive
           ? (t === 'imperativo' ? attachClitics(form, [REFLEXIVE[p]], p) : `${REFLEXIVE[p]} ${form}`)

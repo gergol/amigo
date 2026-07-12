@@ -77,19 +77,20 @@ Inside a focus, difficulty/SRS weighting works as usual — the filter narrows *
 
 Content-building work, in order:
 
-- [ ] Finalize curriculum: module list, grammar point graph with prerequisites (01)
-- [ ] Finalize lexicon schema: feature sets per word class, semantic tag set (02)
-- [ ] Curate A1 lexicon (~700 entries) with German glosses and features (02, 03)
-- [ ] Curate A2 lexicon (~1,300 additional entries) (02, 03)
-- [ ] Build verb database: ~120 verbs, all A1/A2 forms, irregularity classes (04)
-- [ ] Author ser/estar adjective table with copula-dependent glosses (02)
-- [ ] Define morphology rule inventory (agreement, contractions, pronoun placement, …) (05)
-- [ ] Author templates: 10–20 per module, with slot constraints and variation axes (05)
-- [ ] Define vocab unit structure and SRS behavior (03)
-- [ ] Define verb drill formats and progression (04)
-- [ ] Define answer normalization (diacritic stripping, case, punctuation) and accepted-alternatives checking (05)
-- [ ] Define learner model & knowledge settings: known-marking semantics, prerequisite cascade, shortcuts (00, 01)
-- [ ] Define user.yaml schema: grammar known-set, per-word/per-cell SRS fields, presets (00)
-- [ ] Define focused-practice selectors and how each trainer applies them (00, 03, 04, 05)
-- [ ] Validation pass: generate sample sentences from every template × variation, review for correctness and naturalness (native-speaker review)
-- [ ] German-side review: prompts unambiguous, glosses idiomatic
+- [x] Finalize curriculum: module list, grammar point graph with prerequisites (01) — `content/grammar.yaml`, 56 points
+- [x] Finalize lexicon schema: feature sets per word class, semantic tag set (02) — `src/engine/types.ts`
+- [x] Curate A1 lexicon (~700 entries) with German glosses and features (02, 03) — m01–m10, ~360 entries + verbs
+- [x] Curate A2 lexicon (02, 03) — m11–m20, ~230 entries (target was larger; extend over time)
+- [x] Build verb database: A1/A2 forms, irregularity classes (04) — `content/verbs.yaml`, 66 verbs (extend toward ~120)
+- [x] Author ser/estar adjective table with copula-dependent glosses (02) — 6 shifters, estar-states, both-adjectives in m08/m20
+- [x] Define morphology rule inventory (05) — implemented in `src/engine/{conjugate,morph}.ts` incl. clitic-attachment accents, el-agua rule
+- [x] Author templates with slot constraints and variation axes (05) — 22 templates; tense axes make them grow through A2. **Still thin** vs. the 10–20/module target; two-clause templates (M15 contrast) and comparatives not yet modeled
+- [x] Define vocab unit structure and SRS behavior (03) — SM-2-lite over due/interval/ease
+- [x] Define verb drill formats and progression (04) — single-form drill implemented; paradigm sprint/pattern batch = focus presets, not yet dedicated modes
+- [x] Define answer normalization and accepted-alternatives checking (05) — `src/engine/check.ts` + generator-known alternatives
+- [x] Define learner model & knowledge settings (00, 01) — prerequisite cascade, module toggles in settings TUI
+- [x] Define user.yaml schema (00) — grammar known-set, vocab/verb-cell SRS, presets; sorted keys
+- [x] Define focused-practice selectors (00, 03, 04, 05) — grammar point (with `*`), module, tags; presets in user.yaml
+- [x] Validation pass: `npm run validate [--samples]` generates from every template; two review rounds done (this session)
+- [ ] Native-speaker review of generated Spanish across all templates × tenses
+- [ ] German-side review: prompts unambiguous, glosses idiomatic (machine-generated German is understandable but occasionally stiff)
