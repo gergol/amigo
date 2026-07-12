@@ -37,6 +37,8 @@ export interface Noun {
   gender: Gender | 'mf' // mf: el/la estudiante
   fem?: string // pair nouns: niño → niña
   plural?: string // only if irregular
+  mass?: boolean // uncountable: no indefinite article (compro pan, not *un pan)
+  plural_only?: boolean // las gafas, las vacaciones — vocab-only, excluded from template slots
   de: { noun: string; g: DeGender; plural?: string }
   tags: Tag[]
   level: Level
@@ -156,6 +158,7 @@ export interface SubjSlot {
 export interface NounSlot {
   type: 'noun'
   tags: Tag[]
+  lemmas?: string[] // explicit filler list when tags are too coarse for natural sentences
   article: 'def' | 'indef' | 'none'
   number?: 'sg' | 'pl' | 'both'
   deCase: 'nom' | 'akk' | 'dat'

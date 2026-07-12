@@ -1,5 +1,5 @@
 import { conjugate } from './conjugate'
-import { attachClitics, REFLEXIVE } from './morph'
+import { attachClitics, isElAgua, REFLEXIVE } from './morph'
 import { isDue, review, weight, fresh } from './srs'
 import { eligibleTemplates, generate, vocabKey } from './templates'
 import type { Exercise, Rng } from './templates'
@@ -44,14 +44,17 @@ export function pickVocabCard(
   for (const e of content.lexicon) {
     if (!mods.has(e.module) || !focusMatchesEntry(focus, e)) continue
     if (e.kind === 'noun') {
-      const art = e.gender === 'f' ? 'la' : 'el'
+      // las gafas (plural-only), el agua (stressed a-), el/la estudiante
+      const art = e.plural_only ? (e.gender === 'f' ? 'las' : 'los')
+        : isElAgua(e) ? 'el' : e.gender === 'f' ? 'la' : 'el'
+      const form = e.plural_only ? e.plural ?? e.lemma : e.lemma
       cards.push({
         key: e.lemma, entry: e, kind: 'production',
         prompt: `${e.de.g === 'm' ? 'der' : e.de.g === 'f' ? 'die' : 'das'} ${e.de.noun}`,
-        canonical: `${art} ${e.lemma}`,
-        accepted: e.gender === 'mf' ? [`el ${e.lemma}`, `la ${e.lemma}`] : [`${art} ${e.lemma}`],
+        canonical: `${art} ${form}`,
+        accepted: e.gender === 'mf' ? [`el ${form}`, `la ${form}`] : [`${art} ${form}`],
       })
-      cards.push({
+      if (!e.plural_only && !isElAgua(e)) cards.push({
         key: e.lemma, entry: e, kind: 'gender',
         prompt: `el oder la: … ${e.lemma}?`,
         canonical: e.gender === 'mf' ? 'el/la' : e.gender === 'f' ? 'la' : 'el',

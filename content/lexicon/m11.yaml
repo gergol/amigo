@@ -2,7 +2,7 @@
 
 nouns:
   - { lemma: viaje, gender: m, de: { noun: Reise, g: f, plural: Reisen }, tags: [event], level: A2, module: M11, notes_de: "el viaje — maskulin (die Reise!)" }
-  - { lemma: vacaciones, gender: f, plural: vacaciones, de: { noun: Urlaub, g: m, plural: Urlaube }, tags: [event, time-expr], level: A2, module: M11, notes_de: "nur Plural: las vacaciones" }
+  - { lemma: vacaciones, gender: f, plural_only: true, plural: vacaciones, de: { noun: Urlaub, g: m, plural: Urlaube }, tags: [event, time-expr], level: A2, module: M11, notes_de: "nur Plural: las vacaciones" }
   - { lemma: maleta, gender: f, de: { noun: Koffer, g: m, plural: Koffer }, tags: [thing], level: A2, module: M11 }
   - { lemma: playa, gender: f, de: { noun: Strand, g: m, plural: Strände }, tags: [place], level: A2, module: M11 }
   - { lemma: montaña, gender: f, de: { noun: Berg, g: m, plural: Berge }, tags: [place], level: A2, module: M11 }

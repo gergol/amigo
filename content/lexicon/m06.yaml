@@ -20,7 +20,7 @@ nouns:
   - { lemma: jersey, gender: m, plural: jerséis, de: { noun: Pullover, g: m, plural: Pullover }, tags: [clothing], level: A1, module: M06 }
   - { lemma: sombrero, gender: m, de: { noun: Hut, g: m, plural: Hüte }, tags: [clothing], level: A1, module: M06 }
   - { lemma: bolso, gender: m, de: { noun: Handtasche, g: f, plural: Handtaschen }, tags: [thing], level: A1, module: M06, notes_de: "el bolso = Handtasche, la bolsa = Tüte/Beutel" }
-  - { lemma: gafas, gender: f, plural: gafas, de: { noun: Brille, g: f, plural: Brillen }, tags: [thing], level: A1, module: M06, notes_de: "nur Plural: las gafas — die Brille (Singular!)" }
+  - { lemma: gafas, gender: f, plural_only: true, plural: gafas, de: { noun: Brille, g: f, plural: Brillen }, tags: [thing], level: A1, module: M06, notes_de: "nur Plural: las gafas — die Brille (Singular!)" }
   - { lemma: pijama, gender: m, de: { noun: Schlafanzug, g: m, plural: Schlafanzüge }, tags: [clothing], level: A1, module: M06, gender_trap: true, notes_de: "el pijama — maskulin trotz -a!" }
   - { lemma: rutina, gender: f, de: { noun: Routine, g: f, plural: Routinen }, tags: [abstract], level: A1, module: M06 }
 

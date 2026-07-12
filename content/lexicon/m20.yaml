@@ -11,7 +11,7 @@ nouns:
   - { lemma: consulta, gender: f, de: { noun: Praxis, g: f, plural: Praxen }, tags: [place], level: A2, module: M20, notes_de: "Arztpraxis; auch: Sprechstunde" }
   - { lemma: garganta, gender: f, de: { noun: Hals, g: m, plural: Hälse }, tags: [bodypart], level: A2, module: M20, notes_de: "Rachen/Kehle; Hals außen = el cuello" }
   - { lemma: corazón, gender: m, de: { noun: Herz, g: n, plural: Herzen }, tags: [bodypart], level: A2, module: M20 }
-  - { lemma: sangre, gender: f, de: { noun: Blut, g: n }, tags: [thing], level: A2, module: M20, notes_de: "la sangre — feminin (das Blut!)" }
+  - { lemma: sangre, gender: f, de: { noun: Blut, g: n }, tags: [bodypart], level: A2, module: M20, notes_de: "la sangre — feminin (das Blut!)" }
   - { lemma: estrés, gender: m, de: { noun: Stress, g: m }, tags: [abstract], level: A2, module: M20 }
   - { lemma: miedo, gender: m, de: { noun: Angst, g: f, plural: Ängste }, tags: [abstract], level: A2, module: M20, notes_de: "tener miedo = Angst haben" }
   - { lemma: alegría, gender: f, de: { noun: Freude, g: f }, tags: [abstract], level: A2, module: M20 }

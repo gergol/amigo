@@ -2,7 +2,7 @@
 
 nouns:
   - { lemma: color, gender: m, de: { noun: Farbe, g: f, plural: Farben }, tags: [abstract], level: A1, module: M09 }
-  - { lemma: dinero, gender: m, de: { noun: Geld, g: n }, tags: [thing], level: A1, module: M09 }
+  - { lemma: dinero, gender: m, mass: true, de: { noun: Geld, g: n }, tags: [thing], level: A1, module: M09 }
   - { lemma: precio, gender: m, de: { noun: Preis, g: m, plural: Preise }, tags: [abstract], level: A1, module: M09 }
   - { lemma: tarjeta, gender: f, de: { noun: Karte, g: f, plural: Karten }, tags: [thing], level: A1, module: M09, notes_de: "tarjeta de crédito = Kreditkarte; Landkarte = el mapa" }
   - { lemma: ordenador, gender: m, de: { noun: Computer, g: m, plural: Computer }, tags: [thing], level: A1, module: M09, notes_de: "in Spanien ordenador, in Lateinamerika computadora" }

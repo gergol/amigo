@@ -30,7 +30,7 @@ times:
   - { es: hace dos años, de: vor zwei Jahren, tenses: [indefinido] }
   - { es: antes, de: früher, tenses: [imperfecto] }
   - { es: antes siempre, de: früher immer, tenses: [imperfecto] }
-  - { es: de niño, de: als Kind, tenses: [imperfecto] }
+  - { es: todos los veranos, de: jeden Sommer damals, tenses: [imperfecto] }
   - { es: mañana, de: morgen, tenses: [futuro] }
   - { es: el año que viene, de: nächstes Jahr, tenses: [futuro] }
   - { es: pronto, de: bald, tenses: [futuro] }

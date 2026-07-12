@@ -37,10 +37,14 @@ export function nounForm(n: Noun, g: Gender, plural: boolean): string {
   return n.plural ?? pluralize(f)
 }
 
-export function article(kind: 'def' | 'indef', g: Gender, plural: boolean): string {
-  if (kind === 'def') return plural ? (g === 'm' ? 'los' : 'las') : g === 'm' ? 'el' : 'la'
-  return plural ? (g === 'm' ? 'unos' : 'unas') : g === 'm' ? 'un' : 'una'
+// elAgua: feminine noun starting with stressed a-/ha- takes el/un in the singular
+export function article(kind: 'def' | 'indef', g: Gender, plural: boolean, elAgua = false): string {
+  if (kind === 'def') return plural ? (g === 'm' ? 'los' : 'las') : g === 'm' || elAgua ? 'el' : 'la'
+  return plural ? (g === 'm' ? 'unos' : 'unas') : g === 'm' || elAgua ? 'un' : 'una'
 }
+
+export const isElAgua = (n: { lemma: string; gender: string }): boolean =>
+  n.gender === 'f' && /^h?a/.test(n.lemma) && stressIndex(n.lemma) <= 1
 
 // a+el→al, de+el→del — applied on the joined sentence
 export const contract = (s: string) => s.replace(/\ba el\b/g, 'al').replace(/\bde el\b/g, 'del')

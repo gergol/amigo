@@ -1,7 +1,7 @@
 import { conjugate, infinitive, gerund } from './conjugate'
 import { deArticle, deSubjectPronoun, deVerb, DE_REFLEXIVE } from './german'
 import {
-  adjForm, article, attachClitics, contract, doClitic, euphony, IO_CLITIC,
+  adjForm, article, attachClitics, contract, doClitic, euphony, IO_CLITIC, isElAgua,
   nounForm, REFLEXIVE, subjectPronoun,
 } from './morph'
 import { TENSE_POINT } from './types'
@@ -89,7 +89,8 @@ function fillSubject(slot: SubjSlot, pool: LexEntry[], names: PersonName[], rnd:
       const n = pick(names, rnd)
       return { person, gender: n.gender, genderFree: false, tags: ['human'], phrase: { es: n.name, de: n.name } }
     }
-    const nouns = pool.filter((e): e is Noun => e.kind === 'noun' && slot.nouns!.some(t => e.tags.includes(t)))
+    const nouns = pool.filter((e): e is Noun =>
+      e.kind === 'noun' && !e.plural_only && slot.nouns!.some(t => e.tags.includes(t)))
     if (nouns.length) {
       const n = pick(nouns, rnd)
       // German side has only one noun form, so pair/mf nouns appear masculine (de.fem: later)
@@ -98,7 +99,7 @@ function fillSubject(slot: SubjSlot, pool: LexEntry[], names: PersonName[], rnd:
       return {
         person, gender: g, genderFree: false, tags: n.tags,
         phrase: {
-          es: `${article('def', g, plural)} ${nounForm(n, g, plural)}`,
+          es: `${article('def', g, plural, isElAgua(n))} ${nounForm(n, g, plural)}`,
           de: `${deArticle('def', n.de.g, plural, 'nom')} ${plural ? n.de.plural ?? n.de.noun : n.de.noun}`,
         },
       }
@@ -180,7 +181,9 @@ function renderInstance(inst: Instance, content: Content): Rendered | null {
         const n = inst.fillers[name] as Noun
         const g = n.gender === 'mf' ? 'm' : n.gender
         const plural = !!inst.plural[name]
-        const art = slot.article === 'none' ? '' : article(slot.article, g, plural) + ' '
+        // mass nouns take no indefinite article (compro pan / ich kaufe Brot)
+        const noArt = slot.article === 'none' || (n.mass && slot.article === 'indef')
+        const art = noArt ? '' : article(slot.article as 'def' | 'indef', g, plural, isElAgua(n)) + ' '
         const personalA = slot.role === 'do' && n.tags.includes('human') ? 'a ' : ''
         esParts.push([personalA + art + nounForm(n, g, plural)])
         break
@@ -247,7 +250,8 @@ function renderInstance(inst: Instance, content: Content): Rendered | null {
       case 'noun': {
         const n = inst.fillers[name] as Noun
         const plural = !!inst.plural[name]
-        const art = deArticle(slot.article === 'none' ? 'none' : slot.article, n.de.g, plural, slot.deCase)
+        const kind = slot.article === 'none' || (n.mass && slot.article === 'indef') ? 'none' : slot.article
+        const art = deArticle(kind, n.de.g, plural, slot.deCase)
         deParts.push((art ? art + ' ' : '') + (plural ? n.de.plural ?? n.de.noun : n.de.noun))
         break
       }
@@ -386,7 +390,9 @@ export function generate(
       const used = new Set(Object.values(fillers).map(f => (f as Noun).lemma).filter(Boolean))
       const subjLemma = subject.phrase?.es.split(' ').pop()
       const nouns = pool.filter((e): e is Noun =>
-        e.kind === 'noun' && tags.some(tag => e.tags.includes(tag)) && !used.has(e.lemma) && e.lemma !== subjLemma)
+        e.kind === 'noun' && !e.plural_only
+        && tags.some(tag => e.tags.includes(tag)) && !used.has(e.lemma) && e.lemma !== subjLemma
+        && (!slot.lemmas || slot.lemmas.includes(e.lemma)))
       const n = weighted(nouns)
       if (!n) return null
       fillers[name] = n
@@ -397,7 +403,8 @@ export function generate(
         if (e.kind !== 'adj') return false
         if (slot.shiftOnly && e.copula !== 'shift') return false
         if (slot.tags?.length && !slot.tags.some(x => e.tags?.includes(x))) return false
-        if (e.gender && e.gender !== subject.gender && !subject.genderFree) return false
+        // gender-restricted adjectives need a subject with *known* matching gender
+        if (e.gender && (subject.genderFree || e.gender !== subject.gender)) return false
         const sense = e.senses.find(s => s.copula === copula) ?? (e.copula === 'both' ? e.senses[0] : undefined)
         if (!sense) return false
         return sense.applies_to.some(x => subject.tags.includes(x))
@@ -414,8 +421,9 @@ export function generate(
       if (!iv) return null
       fillers[name] = iv
     } else if (slot.type === 'clitic') {
-      // never the subject's own person (te veo, not *nos escuchamos as "wir hören uns")
-      const persons = (slot.persons ?? (['1s', '2s', '1p', '2p'] as Person[])).filter(p => p !== subject.person)
+      // never the subject's own person family (te veo — not *nos escuchamos, *du gibst euch)
+      const persons = (slot.persons ?? (['1s', '2s', '1p', '2p'] as Person[]))
+        .filter(p => p[0] !== subject.person[0])
       if (!persons.length) return null
       const p = pick(persons, rnd)
       fillers[name] = slot.role === 'do'

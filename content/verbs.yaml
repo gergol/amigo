@@ -436,7 +436,7 @@ verbs:
     module: M05
     level: A1
     gloss_de: nehmen; trinken
-    valence: { subject: [human], object: { tags: [drink, food, thing] } }
+    valence: { subject: [human], object: { tags: [drink, food] } }
     de: { inf: nehmen, partizip: genommen, praesens: { 2s: nimmst, 3s: nimmt }, imperativ2s: nimm }
   - lemma: pagar
     class: ar

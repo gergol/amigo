@@ -37,7 +37,8 @@ templates:
     slots:
       subj: { type: subj, nouns: [human] }
       v: { type: verb, lemmas: [estar] }
-      n: { type: noun, tags: [place], article: def, deCase: dat }
+      # only places where German "in + Dativ" is idiomatic (nicht: *im Bahnhof)
+      n: { type: noun, lemmas: [casa, ciudad, cine, parque, museo, restaurante, biblioteca, supermercado, escuela, hotel, jardín, cocina, dormitorio, baño, salón, oficina], tags: [place], article: def, deCase: dat }
     notes_de: "Ort → immer estar, nie ser."
 
   - id: tpl.estar.location.q
@@ -46,7 +47,7 @@ templates:
     es: "¿dónde {v} {subj}?"
     de: "wo {v} {subj}?"
     slots:
-      subj: { type: subj, persons: [3s], nouns: [human, thing] }
+      subj: { type: subj, persons: [3s], nouns: [human] }
       v: { type: verb, lemmas: [estar] }
 
   - id: tpl.hay
@@ -56,7 +57,7 @@ templates:
     de: "in {n2} {v} {n}"
     slots:
       n: { type: noun, tags: [place, thing], article: indef, deCase: akk }
-      n2: { type: noun, tags: [place], article: def, deCase: dat }
+      n2: { type: noun, lemmas: [casa, ciudad, cocina, dormitorio, salón, jardín, hotel, supermercado, pueblo], tags: [place], article: def, deCase: dat }
       v: { type: verb, lemmas: [hay], tense: presente }
     notes_de: "hay = es gibt (unbestimmt). Wo etwas Bestimmtes ist → está."
 
@@ -113,7 +114,7 @@ templates:
     slots:
       subj: { type: subj, nouns: [human] }
       v: { type: verb, lemmas: [ir] }
-      n: { type: noun, tags: [place], article: def, deCase: akk }
+      n: { type: noun, lemmas: [cine, parque, museo, restaurante, biblioteca, supermercado, escuela, ciudad, centro], tags: [place], article: def, deCase: akk }
       t: { type: time }
     notes_de: "a + el = al. Indefinido von ir: fui, fuiste, fue …"
 
@@ -122,7 +123,7 @@ templates:
     module: M05
     requires: [modal-inf]
     es: "{subj} {v} {inf} {t}"
-    de: "{subj} {v} {t} {nicht} {inf}"
+    de: "{subj} {v} {nicht} {t} {inf}"
     polarity: true
     tenses: [presente]
     slots:
@@ -140,7 +141,7 @@ templates:
     tenses: [presente, perfecto, indefinido, imperfecto, futuro]
     slots:
       subj: { type: subj, nouns: [human] }
-      v: { type: verb, reflexive: true }
+      v: { type: verb, lemmas: [levantarse, ducharse, lavarse, acostarse, despertarse, vestirse] }
       t: { type: time }
     notes_de: "Pronomen VOR dem konjugierten Verb: me levanto."
 
@@ -154,7 +155,7 @@ templates:
     tenses: [presente]
     slots:
       subj: { type: subj }
-      v: { type: verb, lemmas: [gustar, encantar], valence: gustar }
+      v: { type: verb, lemmas: [gustar], valence: gustar }
       n: { type: noun, tags: [thing, food, drink, activity], article: def, deCase: nom, number: both }
     notes_de: "Wie 'gefallen': me gusta = mir gefällt. Mehrzahl → gustan!"
 
@@ -245,8 +246,8 @@ templates:
     tenses: [imperativo]
     slots:
       subj: { type: subj, persons: [2s, 2p] }
-      v: { type: verb, lemmas: [comprar, leer, abrir, buscar, tomar] }
-      n: { type: noun, tags: [thing, food, drink], article: def, deCase: akk, role: do }
+      v: { type: verb, lemmas: [comprar, buscar, tomar, leer] }
+      n: { type: noun, lemmas: [pan, queso, libro, periódico, agua, leche, fruta, pescado, pollo, tarta], tags: [thing, food, drink], article: def, deCase: akk, role: do }
 
   - id: tpl.imperativo.reflexive
     module: M17
@@ -283,7 +284,7 @@ templates:
     slots:
       subj: { type: subj, nouns: [human] }
       v: { type: verb, lemmas: [vivir, trabajar] }
-      n: { type: noun, tags: [place], article: def, deCase: dat }
+      n: { type: noun, lemmas: [ciudad, casa, oficina, centro, pueblo], tags: [place], article: def, deCase: dat }
       lit:
         type: lit
         options:
