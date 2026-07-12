@@ -1,0 +1,66 @@
+# M19 — Vergleich, Adverbien, Gewohnheiten: Bewerten & Meinungen (Plan/01)
+
+nouns:
+  - { lemma: opinión, gender: f, de: { noun: Meinung, g: f, plural: Meinungen }, tags: [abstract], level: A2, module: M19 }
+  - { lemma: idea, gender: f, de: { noun: Idee, g: f, plural: Ideen }, tags: [abstract], level: A2, module: M19 }
+  - { lemma: razón, gender: f, de: { noun: Grund, g: m, plural: Gründe }, tags: [abstract], level: A2, module: M19, notes_de: "tener razón = recht haben" }
+  - { lemma: verdad, gender: f, de: { noun: Wahrheit, g: f }, tags: [abstract], level: A2, module: M19, notes_de: "¿verdad? = oder? / nicht wahr?" }
+  - { lemma: mentira, gender: f, de: { noun: Lüge, g: f, plural: Lügen }, tags: [abstract], level: A2, module: M19 }
+  - { lemma: ventaja, gender: f, de: { noun: Vorteil, g: m, plural: Vorteile }, tags: [abstract], level: A2, module: M19 }
+  - { lemma: desventaja, gender: f, de: { noun: Nachteil, g: m, plural: Nachteile }, tags: [abstract], level: A2, module: M19 }
+  - { lemma: diferencia, gender: f, de: { noun: Unterschied, g: m, plural: Unterschiede }, tags: [abstract], level: A2, module: M19 }
+  - { lemma: calidad, gender: f, de: { noun: Qualität, g: f, plural: Qualitäten }, tags: [abstract], level: A2, module: M19 }
+
+adjectives:
+  - lemma: interesante
+    agreement: e
+    copula: ser
+    senses: [{ copula: ser, de: interessant, applies_to: [thing, abstract, human, event] }]
+    level: A2
+    module: M19
+  - lemma: increíble
+    agreement: e
+    copula: ser
+    senses: [{ copula: ser, de: unglaublich, applies_to: [thing, event, abstract] }]
+    level: A2
+    module: M19
+  - lemma: horrible
+    agreement: e
+    copula: ser
+    senses: [{ copula: ser, de: schrecklich, applies_to: [thing, event, place] }]
+    level: A2
+    module: M19
+  - lemma: maravilloso
+    agreement: o/a
+    copula: ser
+    senses: [{ copula: ser, de: wunderbar, applies_to: [thing, place, event] }]
+    level: A2
+    module: M19
+  - lemma: perfecto
+    agreement: o/a
+    copula: ser
+    senses: [{ copula: ser, de: perfekt, applies_to: [thing, abstract, event] }]
+    level: A2
+    module: M19
+  - lemma: típico
+    agreement: o/a
+    copula: ser
+    senses: [{ copula: ser, de: typisch, applies_to: [thing, food, event] }]
+    level: A2
+    module: M19
+  - lemma: diferente
+    agreement: e
+    copula: ser
+    senses: [{ copula: ser, de: "anders, verschieden", applies_to: [thing, human, place] }]
+    level: A2
+    module: M19
+
+chunks:
+  - { es: creo que …, de: "ich glaube, dass …", level: A2, module: M19, notes_de: "mit Indikativ (kein subjuntivo auf A-Niveau)" }
+  - { es: pienso que …, de: "ich denke, dass …", level: A2, module: M19 }
+  - { es: en mi opinión, de: meiner Meinung nach, level: A2, module: M19 }
+  - { es: tener razón, de: recht haben, level: A2, module: M19 }
+  - { es: estar de acuerdo, de: einverstanden sein, level: A2, module: M19, notes_de: "estoy de acuerdo contigo = ich stimme dir zu" }
+  - { es: ¡qué va!, de: ach was!, level: A2, module: M19 }
+  - { es: más o menos, de: mehr oder weniger, level: A2, module: M19 }
+  - { es: sobre todo, de: vor allem, level: A2, module: M19 }

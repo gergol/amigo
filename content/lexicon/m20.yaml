@@ -1,0 +1,70 @@
+# M20 — Konnektoren & komplexe Sätze: Gesundheit, beim Arzt, Gefühle (Plan/01)
+
+nouns:
+  - { lemma: salud, gender: f, de: { noun: Gesundheit, g: f }, tags: [abstract], level: A2, module: M20, notes_de: "¡salud! = Gesundheit! / Prost!" }
+  - { lemma: fiebre, gender: f, de: { noun: Fieber, g: n }, tags: [abstract], level: A2, module: M20, notes_de: "la fiebre — feminin (das Fieber!)" }
+  - { lemma: gripe, gender: f, de: { noun: Grippe, g: f }, tags: [abstract], level: A2, module: M20 }
+  - { lemma: tos, gender: f, de: { noun: Husten, g: m }, tags: [abstract], level: A2, module: M20, notes_de: "la tos — feminin (der Husten!)" }
+  - { lemma: dolor, gender: m, de: { noun: Schmerz, g: m, plural: Schmerzen }, tags: [abstract], level: A2, module: M20, notes_de: "dolor de cabeza = Kopfschmerzen" }
+  - { lemma: pastilla, gender: f, de: { noun: Tablette, g: f, plural: Tabletten }, tags: [thing], level: A2, module: M20 }
+  - { lemma: medicamento, gender: m, de: { noun: Medikament, g: n, plural: Medikamente }, tags: [thing], level: A2, module: M20 }
+  - { lemma: consulta, gender: f, de: { noun: Praxis, g: f, plural: Praxen }, tags: [place], level: A2, module: M20, notes_de: "Arztpraxis; auch: Sprechstunde" }
+  - { lemma: garganta, gender: f, de: { noun: Hals, g: m, plural: Hälse }, tags: [bodypart], level: A2, module: M20, notes_de: "Rachen/Kehle; Hals außen = el cuello" }
+  - { lemma: corazón, gender: m, de: { noun: Herz, g: n, plural: Herzen }, tags: [bodypart], level: A2, module: M20 }
+  - { lemma: sangre, gender: f, de: { noun: Blut, g: n }, tags: [thing], level: A2, module: M20, notes_de: "la sangre — feminin (das Blut!)" }
+  - { lemma: estrés, gender: m, de: { noun: Stress, g: m }, tags: [abstract], level: A2, module: M20 }
+  - { lemma: miedo, gender: m, de: { noun: Angst, g: f, plural: Ängste }, tags: [abstract], level: A2, module: M20, notes_de: "tener miedo = Angst haben" }
+  - { lemma: alegría, gender: f, de: { noun: Freude, g: f }, tags: [abstract], level: A2, module: M20 }
+
+adjectives:
+  - lemma: enfermo
+    agreement: o/a
+    copula: estar
+    senses: [{ copula: estar, de: krank, applies_to: [human, animal] }]
+    level: A2
+    module: M20
+  - lemma: sano
+    agreement: o/a
+    copula: both
+    senses: [{ copula: ser, de: gesund, applies_to: [human, food] }]
+    level: A2
+    module: M20
+  - lemma: mareado
+    agreement: o/a
+    copula: estar
+    senses: [{ copula: estar, de: schwindelig, applies_to: [human] }]
+    level: A2
+    module: M20
+    notes_de: "estoy mareado = mir ist schwindelig/übel"
+  - lemma: resfriado
+    agreement: o/a
+    copula: estar
+    senses: [{ copula: estar, de: erkältet, applies_to: [human] }]
+    level: A2
+    module: M20
+  - lemma: embarazada
+    agreement: o/a
+    copula: estar
+    senses: [{ copula: estar, de: schwanger, applies_to: [human] }]
+    gender: f
+    gradable: false
+    level: A2
+    module: M20
+    notes_de: "falscher Freund: nicht 'embarrassed'! Nur feminin."
+  - lemma: seguro
+    agreement: o/a
+    copula: shift
+    senses:
+      - { copula: ser, de: sicher (ungefährlich), applies_to: [thing, place] }
+      - { copula: estar, de: sich sicher (sein), applies_to: [human] }
+    level: A2
+    module: M20
+    notes_de: "ser seguro = ungefährlich, estar seguro = sich sicher sein"
+
+chunks:
+  - { es: ¿cómo se dice …?, de: wie sagt man …?, level: A2, module: M20 }
+  - { es: desde, de: seit (Zeitpunkt), level: A2, module: M20, notes_de: "desde 2020 = seit 2020 (Zeitpunkt!)" }
+  - { es: desde hace, de: seit (Zeitdauer), level: A2, module: M20, notes_de: "desde hace dos años = seit zwei Jahren — klassischer Fehler: 'seit' ist beides!" }
+  - { es: tener fiebre, de: Fieber haben, level: A2, module: M20 }
+  - { es: ¿qué te pasa?, de: was ist los mit dir?, level: A2, module: M20 }
+  - { es: que te mejores, de: gute Besserung, level: A2, module: M20 }

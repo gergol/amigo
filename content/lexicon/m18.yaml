@@ -1,0 +1,36 @@
+# M18 — Doppelte Objektpronomen: Geschenke, Gefallen, Dienstleistungen (Plan/01)
+
+nouns:
+  - { lemma: regalo, gender: m, de: { noun: Geschenk, g: n, plural: Geschenke }, tags: [thing], level: A2, module: M18 }
+  - { lemma: favor, gender: m, de: { noun: Gefallen, g: m, plural: Gefallen }, tags: [abstract], level: A2, module: M18, notes_de: "por favor = bitte" }
+  - { lemma: paquete, gender: m, de: { noun: Paket, g: n, plural: Pakete }, tags: [thing], level: A2, module: M18 }
+  - { lemma: carta, gender: f, de: { noun: Brief, g: m, plural: Briefe }, tags: [thing], level: A2, module: M18, notes_de: "carta = Brief, nicht Landkarte! (Landkarte = el mapa); auch: Speisekarte" }
+  - { lemma: sello, gender: m, de: { noun: Briefmarke, g: f, plural: Briefmarken }, tags: [thing], level: A2, module: M18 }
+  - { lemma: sobre, gender: m, de: { noun: Umschlag, g: m, plural: Umschläge }, tags: [thing], level: A2, module: M18, notes_de: "auch Präposition: sobre = auf, über" }
+  - { lemma: oficina de correos, gender: f, de: { noun: Post, g: f }, tags: [place], level: A2, module: M18, notes_de: "das Postamt; kurz: Correos" }
+  - { lemma: peluquería, gender: f, de: { noun: Friseursalon, g: m, plural: Friseursalons }, tags: [place], level: A2, module: M18 }
+  - { lemma: peluquero, gender: m, fem: peluquera, de: { noun: Friseur, g: m, plural: Friseure }, tags: [human, profession], level: A2, module: M18 }
+  - { lemma: taller, gender: m, de: { noun: Werkstatt, g: f, plural: Werkstätten }, tags: [place], level: A2, module: M18 }
+  - { lemma: flor, gender: f, de: { noun: Blume, g: f, plural: Blumen }, tags: [thing], level: A2, module: M18 }
+  - { lemma: bombón, gender: m, de: { noun: Praline, g: f, plural: Pralinen }, tags: [food], level: A2, module: M18 }
+  - { lemma: anillo, gender: m, de: { noun: Ring, g: m, plural: Ringe }, tags: [thing], level: A2, module: M18 }
+  - { lemma: collar, gender: m, de: { noun: Halskette, g: f, plural: Halsketten }, tags: [thing], level: A2, module: M18 }
+  - { lemma: pulsera, gender: f, de: { noun: Armband, g: n, plural: Armbänder }, tags: [thing], level: A2, module: M18 }
+  - { lemma: perfume, gender: m, de: { noun: Parfüm, g: n, plural: Parfüms }, tags: [thing], level: A2, module: M18 }
+
+adjectives:
+  - lemma: gratis
+    agreement: inv
+    copula: ser
+    senses: [{ copula: ser, de: kostenlos, applies_to: [thing, event] }]
+    gradable: false
+    level: A2
+    module: M18
+    notes_de: "unveränderlich: la entrada es gratis"
+
+chunks:
+  - { es: ¿me haces un favor?, de: tust du mir einen Gefallen?, level: A2, module: M18 }
+  - { es: dar las gracias, de: sich bedanken, level: A2, module: M18 }
+  - { es: no hay de qué, de: keine Ursache, level: A2, module: M18 }
+  - { es: es para ti, de: das ist für dich, level: A2, module: M18 }
+  - { es: ¡qué detalle!, de: wie aufmerksam!, level: A2, module: M18 }
