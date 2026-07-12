@@ -1,0 +1,21 @@
+{
+  "name": "amigo",
+  "version": "0.1.0",
+  "description": "Spanish learning app (A1/A2) for German speakers — terminal trainer",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "tsx src/cli/main.ts",
+    "test": "node --import tsx --test test/*.test.ts",
+    "typecheck": "tsc --noEmit",
+    "validate": "tsx src/cli/validate.ts"
+  },
+  "dependencies": {
+    "yaml": "^2.9.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.1",
+    "tsx": "^4.23.0",
+    "typescript": "^7.0.2"
+  }
+}
