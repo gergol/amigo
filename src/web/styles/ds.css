@@ -54,7 +54,16 @@
     --color-surface: #171615;
     --color-text: #f3f2f2;
     --color-divider: color-mix(in srgb, #f3f2f2 16%, transparent);
-    --color-answer: var(--color-accent-300);
+
+    /* Lift the gold: on the dark ground the mid-gold reads muddy, so the primary
+       accent moves up the ramp, tinted surfaces (accent-100/200) invert to a dark
+       warm fill, and the text-on-tint roles (accent-800/900) flip to light gold. */
+    --color-accent: #e1ad66;
+    --color-accent-100: color-mix(in srgb, #e1ad66 15%, var(--color-bg));
+    --color-accent-200: color-mix(in srgb, #e1ad66 26%, var(--color-bg));
+    --color-accent-800: #f2d6a0;
+    --color-accent-900: #f7e6c4;
+    --color-answer: var(--color-accent-300); /* #facb8d — bright gold for Spanish targets */
     --color-wrong: #e08b7a;
     --shadow-lg: 0 12px 32px color-mix(in srgb, #000 55%, transparent);
   }

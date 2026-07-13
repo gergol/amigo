@@ -75,8 +75,12 @@ body { background: var(--color-surface); }
   border-left: 2px solid var(--color-accent); padding: 11px 13px;
   border-radius: 0 var(--radius-md) var(--radius-md) 0;
 }
-@media (prefers-color-scheme: dark) {
-  .chip[aria-pressed='true'] { color: var(--color-accent-300); }
-  .akey { color: var(--color-accent-200); }
-  .note { color: var(--color-accent-100); }
+
+/* keycap hint for physical-keyboard shortcuts — hidden on touch (no hover). */
+.kbd {
+  display: inline-grid; place-items: center; min-width: 15px; height: 15px; padding: 0 4px;
+  font-family: var(--font-body); font-size: 10px; font-weight: 600; line-height: 1;
+  border: 1px solid color-mix(in srgb, currentColor 40%, transparent);
+  border-radius: 3px; opacity: 0.72;
 }
+@media (hover: none) { .kbd { display: none; } }

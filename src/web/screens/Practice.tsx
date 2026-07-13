@@ -75,6 +75,22 @@ export function Practice({ ctx }: { ctx: AppCtx }) {
     if (s && !s.revealed && s.card?.input === 'text') inputRef.current?.focus()
   }, [s?.index, s?.revealed, s?.card?.input])
 
+  // Physical-keyboard shortcuts (desktop): 1/2 answer el/la, Enter advances the
+  // reveal. Harmless on phones (no keyboard); text submit stays on the input.
+  useEffect(() => {
+    if (!s?.card) return
+    const onKey = (e: KeyboardEvent) => {
+      if (s.revealed) {
+        if (e.key === 'Enter') { e.preventDefault(); ctx.next() }
+      } else if (s.card!.input === 'buttons') {
+        if (e.key === '1') { e.preventDefault(); ctx.submitAnswer('el') }
+        else if (e.key === '2') { e.preventDefault(); ctx.submitAnswer('la') }
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [s?.index, s?.revealed, s?.card?.input])
+
   if (!s) return null
   const card = s.card
   const filled = s.index + (s.revealed ? 1 : 0)
@@ -105,8 +121,8 @@ export function Practice({ ctx }: { ctx: AppCtx }) {
           {!s.revealed ? (
             card.input === 'buttons' ? (
               <div style="display:flex;gap:10px">
-                <button class="btn btn-secondary" style="flex:1;font-size:19px;min-height:54px;font-family:var(--font-heading)" onClick={() => ctx.submitAnswer('el')}>el</button>
-                <button class="btn btn-secondary" style="flex:1;font-size:19px;min-height:54px;font-family:var(--font-heading)" onClick={() => ctx.submitAnswer('la')}>la</button>
+                <button class="btn btn-secondary" style="flex:1;font-size:19px;min-height:54px;font-family:var(--font-heading)" onClick={() => ctx.submitAnswer('el')}>el<span class="kbd">1</span></button>
+                <button class="btn btn-secondary" style="flex:1;font-size:19px;min-height:54px;font-family:var(--font-heading)" onClick={() => ctx.submitAnswer('la')}>la<span class="kbd">2</span></button>
               </div>
             ) : (
               <div style="display:flex;flex-direction:column;gap:14px">
@@ -119,12 +135,12 @@ export function Practice({ ctx }: { ctx: AppCtx }) {
                   onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); ctx.submitAnswer(s.input) } }}
                 />
                 <AccentKeys onInsert={ctx.insertChar} />
-                <button class="btn btn-primary btn-block" style="min-height:48px" onClick={() => ctx.submitAnswer(s.input)}>Prüfen</button>
+                <button class="btn btn-primary btn-block" style="min-height:48px" onClick={() => ctx.submitAnswer(s.input)}>Prüfen<span class="kbd">↵</span></button>
               </div>
             )
           ) : (
             <button class="btn btn-primary btn-block" style="min-height:48px" onClick={ctx.next}>
-              {s.index >= SESSION - 1 ? 'Ergebnis' : 'Weiter'}
+              {s.index >= SESSION - 1 ? 'Ergebnis' : 'Weiter'}<span class="kbd">↵</span>
             </button>
           )}
         </>
