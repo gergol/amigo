@@ -136,12 +136,16 @@ export function pickVerbDrill(
 
   // most drills go German → Spanish; a configurable share ask the reverse (Plan/04)
   const de = deVerbPhrase(c.verb, c.tense, c.person)
+  // gustar cues carry an experiencer (mir gefällt) — mirror it on the Spanish side (me gusta),
+  // but still accept the bare form, since the cell drills the verb, not the clitic
+  const es = c.verb.valence.gustar ? `me ${c.es}` : c.es
+  const esAccepted = c.verb.valence.gustar ? [es, c.es] : [es]
   const reverse = rnd() < user.settings.reverseVerbShare
   return {
     verb: c.verb, cell: c.cell, direction: reverse ? 'es-de' : 'de-es',
-    prompt: reverse ? c.es : de,
-    canonical: reverse ? de : c.es,
-    accepted: reverse ? deVerbAccepted(c.verb, c.tense, c.person) : [c.es],
+    prompt: reverse ? es : de,
+    canonical: reverse ? de : es,
+    accepted: reverse ? deVerbAccepted(c.verb, c.tense, c.person) : esAccepted,
   }
 }
 

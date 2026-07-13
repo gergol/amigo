@@ -688,7 +688,7 @@ verbs:
     level: A1
     gloss_de: interessieren
     valence: { subject: [thing, abstract], gustar: true }
-    de: { inf: interessieren, partizip: interessiert }
+    de: { inf: interessieren, partizip: interessiert, experiencerAkk: true }
   - lemma: doler
     class: er
     module: M07

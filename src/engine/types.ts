@@ -81,6 +81,7 @@ export interface Verb {
     imperativ2s?: string // strong verbs: gib, lies, nimm; default = stem
     praeteritum?: Partial<Record<Person, string>> // only where needed (war, hatte)
     reflexive?: boolean // German side reflexive (sich waschen)
+    experiencerAkk?: boolean // gustar-type: experiencer is accusative (mich interessiert), not dative
   }
   gloss_de: string // display gloss for vocab cards (may differ from de.inf: 'bestellen; bitten um')
   tags?: Tag[] // rarely needed

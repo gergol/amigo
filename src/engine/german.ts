@@ -120,15 +120,27 @@ const TENSE_CUE: Partial<Record<Tense, string>> = {
 export function deVerbPhrase(v: Verb, tense: Tense, p: Person): string {
   const f = deVerb(v, tense, p)
   if (tense === 'imperativo') return [f.finite, f.tail].filter(Boolean).join(' ')
-  return [deSubjectPronoun(p, 'm'), f.finite, TENSE_CUE[tense], f.tail].filter(Boolean).join(' ')
+  const cue = TENSE_CUE[tense]
+  if (v.valence.gustar) {
+    // experiencer framing: theme is subject (das/die), experiencer a fixed pronoun in the
+    // right case — mir gefällt, mich interessiert. Insert it after the finite verb, before
+    // any bundled particle/adverb (tut … weh, gefällt … sehr).
+    const [head, ...rest] = f.finite.split(' ')
+    const exp = v.de.experiencerAkk ? 'mich' : 'mir'
+    return [p === '3p' ? 'die' : 'das', head, exp, cue, ...rest, f.tail].filter(Boolean).join(' ')
+  }
+  return [deSubjectPronoun(p, 'm'), f.finite, cue, f.tail].filter(Boolean).join(' ')
 }
 
-// Accepted answers for the reverse drill (produce the German): 3rd-person singular
-// takes any of er/sie/es — same verb form; every other cell is unambiguous.
+// Accepted answers for the reverse drill (produce the German). gustar-type: theme
+// pronoun das/es (sg) or die/sie (pl). Otherwise 3rd-person singular takes any of
+// er/sie/es — same verb form; every other cell is unambiguous.
 export function deVerbAccepted(v: Verb, tense: Tense, p: Person): string[] {
   const phrase = deVerbPhrase(v, tense, p)
-  if (p === '3s' && tense !== 'imperativo')
-    return ['er', 'sie', 'es'].map(s => phrase.replace(/^er\b/, s))
+  if (tense === 'imperativo') return [phrase]
+  if (v.valence.gustar)
+    return (p === '3p' ? ['die', 'sie'] : ['das', 'es']).map(s => phrase.replace(/^\S+/, s))
+  if (p === '3s') return ['er', 'sie', 'es'].map(s => phrase.replace(/^er\b/, s))
   return [phrase]
 }
 

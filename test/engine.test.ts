@@ -58,6 +58,14 @@ test('deVerbPhrase renders natural German cues, no doubled separable prefix', ()
   assert.equal(deVerbPhrase(verb('lavarse'), 'presente', '3s'), 'er wäscht sich')
 })
 
+test('deVerbPhrase gives gustar-type verbs an idiomatic experiencer framing', () => {
+  assert.equal(deVerbPhrase(verb('gustar'), 'presente', '3s'), 'das gefällt mir')
+  assert.equal(deVerbPhrase(verb('gustar'), 'presente', '3p'), 'die gefallen mir')
+  assert.equal(deVerbPhrase(verb('gustar'), 'perfecto', '3s'), 'das hat mir schon gefallen')
+  assert.equal(deVerbPhrase(verb('doler'), 'presente', '3s'), 'das tut mir weh')
+  assert.equal(deVerbPhrase(verb('interesar'), 'presente', '3s'), 'das interessiert mich') // accusative
+})
+
 test('verb drill: both directions accept their own canonical', () => {
   const base: UserState = { ...emptyUser(), grammar: { known: allPoints(content).map(p => p.id) } }
   for (const share of [0, 1]) {

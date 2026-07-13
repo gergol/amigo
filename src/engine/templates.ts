@@ -226,10 +226,11 @@ function renderInstance(inst: Instance, content: Content): Rendered | null {
     if (!slot) return null
     switch (slot.type) {
       case 'subj': {
-        // gustar templates: German experiencer is dative (mir gefällt …)
+        // gustar templates: German experiencer pronoun — dative (mir gefällt …), or
+        // accusative for verbs like interesar (mich interessiert …)
         const verbSlot = Object.values(t.slots).find(s => s.type === 'verb')
         if (verbSlot && (verbSlot as { valence?: string }).valence === 'gustar' && !subject.phrase) {
-          deParts.push(DE_IO[subject.person])
+          deParts.push((inst.verb?.de.experiencerAkk ? DE_DO : DE_IO)[subject.person])
           break
         }
         deParts.push(subject.phrase ? subject.phrase.de : deSubjectPronoun(subject.person, subject.gender))
