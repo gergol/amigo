@@ -1,2 +1,5 @@
 node_modules/
 user.yaml
+dist/
+dev-dist/
+src/web/content.generated.json

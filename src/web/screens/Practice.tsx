@@ -1,0 +1,134 @@
+import { useEffect, useRef } from 'preact/hooks'
+import type { AppCtx } from '../app'
+import { SESSION } from '../session'
+import type { CardVM } from '../session'
+import { ProgressSegments, AccentKeys } from '../components/ui'
+import { X } from '../components/icons'
+
+const pad = (n: number) => (n < 10 ? '0' + n : '' + n)
+
+function Prompt({ card }: { card: CardVM }) {
+  if (card.kind === 'sentence') return (
+    <>
+      <span class="kicker">Übersetze</span>
+      <div style="font-family:var(--font-heading);font-size:33px;line-height:1.16">{card.prompt}</div>
+    </>
+  )
+  if (card.kind === 'vocab') return (
+    <>
+      <div style="font-family:var(--font-heading);font-size:40px;line-height:1.12">{card.prompt}</div>
+      {card.promptHint && <span class="t45" style="font-size:11.5px;font-style:italic">{card.promptHint}</span>}
+    </>
+  )
+  if (card.kind === 'verb') return (
+    <>
+      <span class="t55" style="font-size:12px">Konjugiere auf Spanisch</span>
+      <div style="font-family:var(--font-heading);font-size:36px;line-height:1.12">{card.prompt}</div>
+    </>
+  )
+  if (card.kind === 'verbrev') return (
+    <>
+      <div class="answer" style="font-family:var(--font-heading);font-size:40px;line-height:1.12">{card.prompt}</div>
+      <span class="t55" style="font-size:12px">(auf Deutsch)</span>
+    </>
+  )
+  // gender
+  return (
+    <>
+      <span style="font-family:var(--font-heading);font-size:15px;color:color-mix(in srgb,var(--color-accent) 65%,transparent)">el · la</span>
+      <div style="font-family:var(--font-heading);font-size:32px;line-height:1.14">{card.prompt}</div>
+    </>
+  )
+}
+
+function Feedback({ ctx, card }: { ctx: AppCtx; card: CardVM }) {
+  const s = ctx.session!
+  if (s.lastCorrect) return (
+    <>
+      <div style="width:46px;height:46px;border-radius:50%;border:1.5px solid var(--color-accent);color:var(--color-accent);display:grid;place-items:center;font-size:23px">✓</div>
+      <div class="t45" style="font-size:12px">{card.prompt}</div>
+      <div class="answer" style="font-family:var(--font-heading);font-size:29px;line-height:1.18">{card.canonical}</div>
+      {s.lastAccent && <div class="t55" style="font-size:12px">Achte auf die Akzente: <span class="answer">{card.canonical}</span></div>}
+      {card.note && (
+        <>
+          <button class="btn btn-ghost" style="font-size:13px" onClick={ctx.toggleWhy}><span style="font-size:15px">›</span> warum?</button>
+          {s.whyOpen && <div class="note">{card.note}</div>}
+        </>
+      )}
+    </>
+  )
+  return (
+    <>
+      <div style="width:46px;height:46px;border-radius:50%;border:1.5px solid var(--color-wrong);color:var(--color-wrong);display:grid;place-items:center;font-size:23px">✗</div>
+      <div style="font-size:13px;color:var(--color-wrong)">deine Antwort: <span style="text-decoration:line-through;opacity:.75">{s.lastYour || '—'}</span></div>
+      <div class="kicker" style="color:color-mix(in srgb,var(--color-text) 45%,transparent);margin-top:2px">richtig</div>
+      <div class="answer" style="font-family:var(--font-heading);font-size:27px;line-height:1.2">{card.canonical}</div>
+      {card.note && <div class="note" style="margin-top:6px">{card.note}</div>}
+    </>
+  )
+}
+
+export function Practice({ ctx }: { ctx: AppCtx }) {
+  const s = ctx.session
+  const inputRef = useRef<HTMLInputElement>(null)
+  useEffect(() => {
+    if (s && !s.revealed && s.card?.input === 'text') inputRef.current?.focus()
+  }, [s?.index, s?.revealed, s?.card?.input])
+
+  if (!s) return null
+  const card = s.card
+  const filled = s.index + (s.revealed ? 1 : 0)
+
+  return (
+    <div class="screen" style="padding:18px 24px 24px">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+        <button class="iconbtn" onClick={ctx.exitSession} aria-label="Beenden" style="width:26px;height:26px;color:color-mix(in srgb,var(--color-text) 55%,transparent)"><X size={18} /></button>
+        <ProgressSegments filled={filled} />
+      </div>
+
+      {!card ? (
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:16px;padding:24px">
+          <p class="t55" style="font-size:14px;line-height:1.5">Keine passenden Übungen — erst ein Modul freischalten oder den Fokus lockern.</p>
+          <button class="btn btn-primary" style="min-height:44px" onClick={ctx.exitSession}>Zur Übersicht</button>
+        </div>
+      ) : (
+        <>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+            <span class="num t45" style="font-family:var(--font-heading);font-size:14px">{pad(s.index + 1)} / {pad(SESSION)}</span>
+            <span class="tag tag-outline">{card.tag}</span>
+          </div>
+
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px;padding:24px 4px">
+            {s.revealed ? <Feedback ctx={ctx} card={card} /> : <Prompt card={card} />}
+          </div>
+
+          {!s.revealed ? (
+            card.input === 'buttons' ? (
+              <div style="display:flex;gap:10px">
+                <button class="btn btn-secondary" style="flex:1;font-size:19px;min-height:54px;font-family:var(--font-heading)" onClick={() => ctx.submitAnswer('el')}>el</button>
+                <button class="btn btn-secondary" style="flex:1;font-size:19px;min-height:54px;font-family:var(--font-heading)" onClick={() => ctx.submitAnswer('la')}>la</button>
+              </div>
+            ) : (
+              <div style="display:flex;flex-direction:column;gap:14px">
+                <input
+                  ref={inputRef} class="input" value={s.input}
+                  placeholder={card.placeholder}
+                  autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck={false}
+                  style="text-align:center;min-height:46px;font-size:16px"
+                  onInput={(e) => ctx.setInput((e.target as HTMLInputElement).value)}
+                  onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); ctx.submitAnswer(s.input) } }}
+                />
+                <AccentKeys onInsert={ctx.insertChar} />
+                <button class="btn btn-primary btn-block" style="min-height:48px" onClick={() => ctx.submitAnswer(s.input)}>Prüfen</button>
+              </div>
+            )
+          ) : (
+            <button class="btn btn-primary btn-block" style="min-height:48px" onClick={ctx.next}>
+              {s.index >= SESSION - 1 ? 'Ergebnis' : 'Weiter'}
+            </button>
+          )}
+        </>
+      )}
+    </div>
+  )
+}

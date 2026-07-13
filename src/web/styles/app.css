@@ -1,0 +1,82 @@
+/* amigo app-specific layout on top of the Classical design system. */
+
+body { background: var(--color-surface); }
+
+.frame-outer {
+  min-height: 100vh; min-height: 100dvh;
+  display: flex; justify-content: center; align-items: stretch;
+  background: var(--color-surface);
+}
+.frame {
+  width: 100%; max-width: 468px; min-height: 100vh; min-height: 100dvh;
+  background: var(--color-bg); box-shadow: var(--shadow-lg);
+  position: relative; display: flex; flex-direction: column; overflow: hidden;
+}
+.screen { display: flex; flex-direction: column; min-height: 100vh; min-height: 100dvh; }
+
+.kicker {
+  font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-accent);
+}
+.num { font-feature-settings: 'tnum'; }
+.answer { color: var(--color-answer); }
+.mono { font-family: ui-monospace, Menlo, monospace; }
+
+/* text at reduced emphasis (design used color-mix inline everywhere) */
+.t45 { color: color-mix(in srgb, var(--color-text) 45%, transparent); }
+.t55 { color: color-mix(in srgb, var(--color-text) 55%, transparent); }
+.t62 { color: color-mix(in srgb, var(--color-text) 62%, transparent); }
+
+/* interactive rows (design used style-hover) */
+.row {
+  display: flex; align-items: center; gap: 15px; text-align: left; cursor: pointer;
+  background: transparent; border: 1px solid var(--color-divider); border-radius: var(--radius-lg);
+  padding: 15px 17px; font-family: var(--font-body); color: var(--color-text); width: 100%;
+  transition: background 0.12s;
+}
+.row:hover { background: color-mix(in srgb, var(--color-text) 4%, transparent); }
+.list-row {
+  display: flex; align-items: center; gap: 12px; text-align: left; cursor: pointer;
+  background: transparent; border: 0; border-bottom: 1px solid var(--color-divider);
+  padding: 12px 2px; font-family: var(--font-body); color: var(--color-text); width: 100%;
+}
+.list-row:hover { background: color-mix(in srgb, var(--color-text) 4%, transparent); }
+.list-row:disabled, .row:disabled { cursor: default; }
+.list-row:disabled:hover, .row:disabled:hover { background: transparent; }
+
+.iconbtn {
+  border: 0; background: none; cursor: pointer; display: grid; place-items: center;
+  color: color-mix(in srgb, var(--color-text) 58%, transparent);
+}
+.iconbtn:hover { color: var(--color-accent); }
+
+.chip {
+  cursor: pointer; white-space: nowrap; font-size: 12.5px; padding: 7px 13px;
+  border-radius: 999px; font-family: var(--font-body); border: 1px solid var(--color-divider);
+  background: transparent; color: color-mix(in srgb, var(--color-text) 70%, transparent);
+}
+.chip[aria-pressed='true'] {
+  border-color: var(--color-accent); background: var(--color-accent-100); color: var(--color-accent-800);
+}
+.chip.mono { font-family: ui-monospace, Menlo, monospace; }
+
+.akey {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 30px; height: 34px; padding: 0 8px;
+  font-family: var(--font-heading); font-size: 16px; color: var(--color-accent-800);
+  background: var(--color-accent-100); border: 1px solid color-mix(in srgb, var(--color-accent) 35%, transparent);
+  border-radius: var(--radius-md); cursor: pointer;
+}
+.akey:hover { background: var(--color-accent-200); }
+
+/* the accent-tinted grammar-note callout */
+.note {
+  text-align: left; width: 100%; font-size: 12.5px; line-height: 1.5;
+  color: var(--color-accent-900); background: var(--color-accent-100);
+  border-left: 2px solid var(--color-accent); padding: 11px 13px;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+@media (prefers-color-scheme: dark) {
+  .chip[aria-pressed='true'] { color: var(--color-accent-300); }
+  .akey { color: var(--color-accent-200); }
+  .note { color: var(--color-accent-100); }
+}

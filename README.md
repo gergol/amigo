@@ -28,6 +28,28 @@ Menü: `4` schaltet das nächste Modul frei (M01–M20), `1/2/3` startet eine Ü
 Antworten werden **ohne Akzente** geprüft (`esta` = `está`, `n` = `ñ`); die Anzeige
 zeigt immer die korrekte Schreibung.
 
+## App (Web / PWA fürs Handy)
+
+Dieselbe Engine als installierbare Progressive Web App (mobil-first, offline,
+hell/dunkel). Design & Plan: `Plan/web/`.
+
+```
+npm run dev        # Vite-Dev-Server (--host: vom Handy im WLAN erreichbar)
+npm run build      # statisches Bundle nach dist/
+npm run preview    # dist/ lokal ausliefern
+```
+
+Beide Frontends (Terminal + Web) teilen sich `src/engine/*`. Der Web-Teil liegt in
+`src/web/` (Preact); `content/*.yaml` wird von `scripts/build-content.ts` einmalig zu
+`src/web/content.generated.json` gebündelt (läuft automatisch vor `dev`/`build`).
+
+**Aufs Handy bringen:** Service Worker (Installation/Offline) brauchen HTTPS. Fürs
+schnelle Ausprobieren reicht `npm run dev` + LAN-IP im Handy-Browser (ohne Install).
+Für echte Installation das `dist/` über HTTPS ausliefern (z. B. GitHub Pages) und im
+Browser „Zum Startbildschirm hinzufügen". Der Lernstand wird als `user.yaml`-Text im
+`localStorage` gehalten und kann unter *Einstellungen → Lernstand* exportiert/importiert
+werden — deckungsgleich mit der `user.yaml` der Terminal-Version.
+
 ## Lernstand: user.yaml
 
 Der gesamte Lernstand liegt in einer `user.yaml` im Arbeitsverzeichnis — bewusst
