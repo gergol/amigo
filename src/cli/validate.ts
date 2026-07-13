@@ -74,6 +74,7 @@ for (const t of content.templates) {
 // smoke generation: everything unlocked, every template must produce output
 const allKnown: UserState = {
   grammar: { known: points.map(p => p.id) }, vocab: {}, verbs: {}, presets: {},
+  settings: { reverseVerbShare: 0.25 },
 }
 let seed = 42
 const rnd = () => { seed = (seed * 1103515245 + 12345) % 2 ** 31; return seed / 2 ** 31 }

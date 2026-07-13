@@ -76,7 +76,8 @@ export function deVerb(v: Verb, tense: Tense, p: Person): DeVerbForm {
     case 'presente':
     case 'ir-a-inf':
     case 'estar+ger':
-      return { finite: dePraesens(v, p) + refl, tail: v.de.prefix ?? '' }
+      // an irregular präsens already carries the separable prefix (fängt an, tut weh) — don't re-append it
+      return { finite: dePraesens(v, p) + refl, tail: v.de.praesens?.[p] ? '' : v.de.prefix ?? '' }
     case 'perfecto':
     case 'indefinido':
     case 'imperfecto': {
@@ -106,6 +107,30 @@ export function deVerb(v: Verb, tense: Tense, p: Person): DeVerbForm {
 }
 
 const base = (v: Verb) => (v.de.prefix ? v.de.inf.slice(v.de.prefix.length) : v.de.inf)
+
+// Standalone verb-drill cue: a natural German phrase for one (verb, tense, person)
+// cell — subject pronoun + finite verb + time-adverb + non-finite tail. The adverb
+// disambiguates Spanish tenses that share a German form (presente/estar+ger/ir-a-inf
+// → Präsens; perfecto/indefinido/imperfecto → Perfekt). Imperativ takes no subject.
+const TENSE_CUE: Partial<Record<Tense, string>> = {
+  perfecto: 'schon', indefinido: 'gestern', imperfecto: 'früher',
+  'estar+ger': 'gerade', 'ir-a-inf': 'gleich',
+}
+
+export function deVerbPhrase(v: Verb, tense: Tense, p: Person): string {
+  const f = deVerb(v, tense, p)
+  if (tense === 'imperativo') return [f.finite, f.tail].filter(Boolean).join(' ')
+  return [deSubjectPronoun(p, 'm'), f.finite, TENSE_CUE[tense], f.tail].filter(Boolean).join(' ')
+}
+
+// Accepted answers for the reverse drill (produce the German): 3rd-person singular
+// takes any of er/sie/es — same verb form; every other cell is unambiguous.
+export function deVerbAccepted(v: Verb, tense: Tense, p: Person): string[] {
+  const phrase = deVerbPhrase(v, tense, p)
+  if (p === '3s' && tense !== 'imperativo')
+    return ['er', 'sie', 'es'].map(s => phrase.replace(/^er\b/, s))
+  return [phrase]
+}
 
 const HABEN_PRAES: Record<Person, string> = {
   '1s': 'habe', '2s': 'hast', '3s': 'hat', '1p': 'haben', '2p': 'habt', '3p': 'haben',

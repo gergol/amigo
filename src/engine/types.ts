@@ -216,14 +216,22 @@ export interface Template {
 
 export interface SrsState { due: string; interval: number; ease: number } // due: YYYY-MM-DD
 
+export interface Settings {
+  reverseVerbShare: number // fraction of verb drills asked Spanish→German instead of German→Spanish
+}
+
 export interface UserState {
   grammar: { known: string[] }
   vocab: Record<string, SrsState> // key: lemma, or lemma/ser lemma/estar for shift senses
   verbs: Record<string, Record<string, SrsState>> // lemma → 'tense.person' → state
   presets: Record<string, { grammar?: string[]; tags?: Tag[]; modules?: ModuleId[] }>
+  settings: Settings
 }
 
-export const emptyUser = (): UserState => ({ grammar: { known: [] }, vocab: {}, verbs: {}, presets: {} })
+export const emptyUser = (): UserState => ({
+  grammar: { known: [] }, vocab: {}, verbs: {}, presets: {},
+  settings: { reverseVerbShare: 0.25 },
+})
 
 // ---------- assembled content ----------
 

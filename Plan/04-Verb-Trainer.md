@@ -35,7 +35,7 @@ All A1/A2 verbs from the lexicon, each with:
 
 ## Drill formats
 
-1. **Single form:** "pedir, 3ª plural, indefinido" → *pidieron*. Weighted sampling: recently unlocked tenses and known-weak cells are drawn more often.
+1. **Single form:** the cell is cued by its **German translation** — *sie sprechen* → *hablan*, *er wohnt gleich* → *va a vivir*. The German conjugation carries person and tense; a time adverb (*gestern/früher/schon/gerade/gleich*) disambiguates tenses that share a German form (perfecto/indefinido/imperfecto → Perfekt; presente/estar+ger/ir-a-inf → Präsens). A configurable share of drills (`settings.reverseVerbShare`, default 25%) run the **reverse direction** — Spanish form shown, produce the German (any of er/sie/es accepted for 3rd-person singular). Weighted sampling: recently unlocked tenses and known-weak cells are drawn more often.
 2. **Paradigm sprint:** one verb × one tense, all six persons against the clock.
 3. **Pattern batch:** all verbs sharing an irregularity class, mixed persons — cements the pattern, not the individual verb.
 4. **Tense contrast:** same verb + person, two tenses side by side (*hablé / hablaba*) with a German cue sentence deciding which is asked — direct feed-in for M15.
@@ -49,4 +49,4 @@ Per-cell (verb × tense × person) knowledge state, SRS-scheduled like vocab and
 
 - Accent = meaning: since typed input ignores accents (see 00), *hablo/habló* score identically — the asked tense is always fixed by the drill prompt, and feedback always displays the accented form, so the pair is still *seen* correctly even if never typed.
 - No auxiliary choice in perfecto (always *haber*) — contrast card vs. German *sein*-Perfekt verbs (*ir, venir, morir*: *ist gegangen* → *ha ido*).
-- Person endings make pronouns optional — drills ask for the form *without* offering the pronoun crutch.
+- Person endings make the Spanish pronoun optional — the answer is the bare form (*hablan*, not *ellos hablan*); the German cue supplies the person, so the drill is a real translation rather than a paradigm-table lookup.

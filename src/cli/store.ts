@@ -35,7 +35,7 @@ export function loadUser(path: string): UserState {
   if (!existsSync(path)) return emptyUser()
   const raw = parse(readFileSync(path, 'utf8')) ?? {}
   const u = emptyUser()
-  return { ...u, ...raw, grammar: { ...u.grammar, ...raw.grammar } }
+  return { ...u, ...raw, grammar: { ...u.grammar, ...raw.grammar }, settings: { ...u.settings, ...raw.settings } }
 }
 
 export function saveUser(path: string, user: UserState): void {

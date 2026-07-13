@@ -69,7 +69,8 @@ async function verbSession(): Promise<void> {
   while (done < SESSION) {
     const d = pickVerbDrill(content, user, focus, today, rnd)
     if (!d) { console.log('Keine passenden Verben — erst ein Modul freischalten (4).'); return }
-    const input = await ask(`\n[${done + 1}/${SESSION}] ${d.prompt}\n> `)
+    const hint = d.direction === 'es-de' ? '  (auf Deutsch)' : ''
+    const input = await ask(`\n[${done + 1}/${SESSION}] ${d.prompt}${hint}\n> `)
     const res = checkAnswer(input, d.accepted, d.canonical)
     await feedback(res.correct, d.canonical, res.correct ? undefined : d.verb.notes_de)
     gradeVerb(user, d.verb.lemma, d.cell, res.correct, today)
@@ -112,10 +113,17 @@ async function settings(): Promise<void> {
       const mark = known === m.points.length ? '✓' : known > 0 ? '~' : ' '
       console.log(`  ${String(i + 1).padStart(2)} [${mark}] ${m.id} ${m.title} (${known}/${m.points.length})`)
     })
-    console.log('Nummer = Modul umschalten · pNummer = einzelne Punkte · 0 = zurück')
+    console.log('Nummer = Modul umschalten · pNummer = einzelne Punkte · v = Verb-Rückrichtung · 0 = zurück')
     console.log('(SRS-Feinjustierung: user.yaml direkt editieren — due/interval/ease)')
     const input = (await ask('> ')).trim()
     if (input === '0' || input === '') return
+    if (input === 'v') {
+      const cur = Math.round(user.settings.reverseVerbShare * 100)
+      const s = (await ask(`Anteil Verb-Drills Spanisch→Deutsch in % (0–100, aktuell ${cur}): `)).trim()
+      const n = parseInt(s, 10)
+      if (!Number.isNaN(n) && n >= 0 && n <= 100) { user.settings.reverseVerbShare = n / 100; save() }
+      continue
+    }
     const pointMode = input.startsWith('p')
     const idx = parseInt(pointMode ? input.slice(1) : input, 10) - 1
     const m = content.modules[idx]

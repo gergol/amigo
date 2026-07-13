@@ -1,4 +1,5 @@
 import { conjugate } from './conjugate'
+import { deVerbAccepted, deVerbPhrase } from './german'
 import { attachClitics, isElAgua, REFLEXIVE } from './morph'
 import { isDue, review, weight, fresh } from './srs'
 import { eligibleTemplates, generate, vocabKey } from './templates'
@@ -89,24 +90,17 @@ export function gradeVocab(user: UserState, key: string, correct: boolean, today
 
 // ---------- verb forms ----------
 
+// de-es: German phrase shown, produce the Spanish form (default). es-de: reverse.
 export interface VerbDrill {
   verb: Verb
-  tense: Tense
-  person: Person
+  cell: string
+  direction: 'de-es' | 'es-de'
   prompt: string
   canonical: string
   accepted: string[]
-  cell: string
 }
 
-const TENSE_DE: Record<Tense, string> = {
-  'presente': 'Presente', 'perfecto': 'Pretérito perfecto', 'indefinido': 'Pretérito indefinido',
-  'imperfecto': 'Pretérito imperfecto', 'futuro': 'Futuro', 'estar+ger': 'estar + gerundio',
-  'estaba+ger': 'estaba + gerundio', 'ir-a-inf': 'ir a + infinitivo', 'imperativo': 'Imperativo',
-}
-const PERSON_DE: Record<Person, string> = {
-  '1s': 'yo', '2s': 'tú', '3s': 'él/ella/usted', '1p': 'nosotros', '2p': 'vosotros', '3p': 'ellos/ustedes',
-}
+interface VerbCell { verb: Verb; tense: Tense; person: Person; cell: string; es: string }
 
 export function pickVerbDrill(
   content: Content, user: UserState, focus: Focus, today: string, rnd: Rng,
@@ -124,7 +118,7 @@ export function pickVerbDrill(
   if (focus.grammar?.some(g => g === 'verb.reflexive')) verbs = verbs.filter(v => v.reflexive)
   if (!verbs.length || !tenses.length) return undefined
 
-  const cells: VerbDrill[] = []
+  const cells: VerbCell[] = []
   for (const v of verbs)
     for (const t of tenses)
       for (const p of PERSONS) {
@@ -135,13 +129,20 @@ export function pickVerbDrill(
         const full = v.reflexive
           ? (t === 'imperativo' ? attachClitics(form, [REFLEXIVE[p]], p) : `${REFLEXIVE[p]} ${form}`)
           : form
-        cells.push({
-          verb: v, tense: t, person: p, cell: `${t}.${p}`,
-          prompt: `${v.lemma} · ${PERSON_DE[p]} · ${TENSE_DE[t]}`,
-          canonical: full, accepted: [full],
-        })
+        cells.push({ verb: v, tense: t, person: p, cell: `${t}.${p}`, es: full })
       }
-  return weightedPick(cells, c => weight(user.verbs[c.verb.lemma]?.[c.cell], today), rnd)
+  const c = weightedPick(cells, x => weight(user.verbs[x.verb.lemma]?.[x.cell], today), rnd)
+  if (!c) return undefined
+
+  // most drills go German → Spanish; a configurable share ask the reverse (Plan/04)
+  const de = deVerbPhrase(c.verb, c.tense, c.person)
+  const reverse = rnd() < user.settings.reverseVerbShare
+  return {
+    verb: c.verb, cell: c.cell, direction: reverse ? 'es-de' : 'de-es',
+    prompt: reverse ? c.es : de,
+    canonical: reverse ? de : c.es,
+    accepted: reverse ? deVerbAccepted(c.verb, c.tense, c.person) : [c.es],
+  }
 }
 
 export function gradeVerb(user: UserState, lemma: string, cell: string, correct: boolean, today: string): void {
