@@ -7,7 +7,7 @@ import {
   startSession, grade, advance, SESSION,
 } from './session'
 import type { SessionState, Trainer } from './session'
-import { setVocabKnown, isVocabKnown } from './lexicon'
+import { setInVocab, inVocab, setEntryScore } from './lexicon'
 import type { LexEntry } from './engine'
 import { Home } from './screens/Home'
 import { Practice } from './screens/Practice'
@@ -51,8 +51,9 @@ export interface AppCtx {
   knowAllA1: () => void
   setReverse: (pct: number) => void
   // vocab editor
-  toggleVocabKnown: (e: LexEntry) => void
-  markGroupKnown: (entries: LexEntry[]) => void
+  toggleVocab: (e: LexEntry) => void
+  addGroupToVocab: (entries: LexEntry[]) => void
+  setVocabScore: (e: LexEntry, pct: number) => void
   // focus
   setFocus: (f: Focus) => void
   dismissFocus: () => void
@@ -126,8 +127,9 @@ export function App() {
     },
     setReverse: (pct) => { user.settings.reverseVerbShare = pct / 100; commit() },
 
-    toggleVocabKnown: (e) => { setVocabKnown(user, e, !isVocabKnown(user, e), today); commit() },
-    markGroupKnown: (entries) => { entries.forEach(e => setVocabKnown(user, e, true, today)); commit() },
+    toggleVocab: (e) => { setInVocab(user, e, !inVocab(user, e), today); commit() },
+    addGroupToVocab: (entries) => { entries.forEach(e => setInVocab(user, e, true, today)); commit() },
+    setVocabScore: (e, pct) => { setEntryScore(user, e, pct, today); commit() },
 
     setFocus: setFocusState,
     dismissFocus: () => setFocusState({}),

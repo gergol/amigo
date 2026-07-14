@@ -3,7 +3,7 @@
 
 export {
   pickVocabCard, pickVerbDrill, pickSentence,
-  gradeVocab, gradeVerb, gradeSentence, unlockedModules,
+  gradeVocab, gradeVerb, gradeSentence, unlockedModules, NEW_PER_SESSION,
 } from '../engine/trainer'
 export type { VocabCard, VerbDrill } from '../engine/trainer'
 
@@ -13,7 +13,7 @@ export {
 export type { Focus } from '../engine/learner'
 
 export { checkAnswer, normalize } from '../engine/check'
-export { iso, weight, isDue, fresh, mature, review, addDays } from '../engine/srs'
+export { iso, weight, isDue, fresh, review, addDays, score, setScore } from '../engine/srs'
 export { vocabKey } from '../engine/templates'
 export type { Exercise, Rng } from '../engine/templates'
 export * from '../engine/types'

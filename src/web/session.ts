@@ -1,6 +1,6 @@
 import {
   pickVocabCard, pickVerbDrill, pickSentence,
-  gradeVocab, gradeVerb, gradeSentence, checkAnswer,
+  gradeVocab, gradeVerb, gradeSentence, checkAnswer, NEW_PER_SESSION,
 } from './engine'
 import type { Focus, Exercise, Rng, UserState } from './engine'
 import { content } from './content'
@@ -48,15 +48,16 @@ export interface SessionState {
   lastYour: string
   whyOpen: boolean
   results: SessionResult[]
+  newCount: number // brand-new vocab introduced this session (capped at NEW_PER_SESSION)
 }
 
 const placeholderFor = (kind: CardVM['kind']): string =>
   kind === 'verbrev' ? 'deutsche Form …' : kind === 'verb' ? 'Verbform …' : 'spanische Antwort …'
 
 // Pick the next card for a trainer and normalize the engine result to a CardVM.
-export function pickCard(trainer: Trainer, user: UserState, focus: Focus, today: string, rnd: Rng): CardVM | null {
+export function pickCard(trainer: Trainer, user: UserState, focus: Focus, today: string, rnd: Rng, allowNew = true): CardVM | null {
   if (trainer === 'vokabeln') {
-    const c = pickVocabCard(content, user, focus, today, rnd)
+    const c = pickVocabCard(content, user, focus, today, rnd, allowNew)
     if (!c) return null
     if (c.kind === 'gender') {
       const lemma = c.entry.kind === 'noun' ? c.entry.lemma : c.canonical
@@ -69,7 +70,7 @@ export function pickCard(trainer: Trainer, user: UserState, focus: Focus, today:
     const trap = c.entry.kind === 'noun' && c.entry.gender_trap
     const hint = c.entry.kind === 'noun' ? (trap ? 'Genus-Falle' : 'mit Artikel') : undefined
     return {
-      kind: 'vocab', tag: 'Vokabeln', prompt: c.prompt, promptHint: hint,
+      kind: 'vocab', tag: user.vocab[c.key] ? 'Vokabeln' : 'Neues Wort', prompt: c.prompt, promptHint: hint,
       canonical: c.canonical, accepted: c.accepted, note: c.entry.notes_de,
       input: 'text', placeholder: placeholderFor('vocab'), grade: { t: 'vocab', key: c.key },
     }
@@ -114,6 +115,11 @@ export function grade(session: SessionState, user: UserState, answer: string, to
   return { ...session, revealed: true, lastCorrect: res.correct, lastAccent: accent, lastYour: answer }
 }
 
+// A picked card introduces a new word iff its vocab key has no SRS state yet
+// (grading creates the state, so this must be checked at pick time).
+const isNewVocab = (card: CardVM | null, user: UserState): boolean =>
+  card?.grade.t === 'vocab' && !user.vocab[card.grade.key]
+
 // Advance: record the result, then pick the next card (or finish at 8).
 export function advance(session: SessionState, user: UserState, focus: Focus, today: string, rnd: Rng): SessionState {
   const c = session.card
@@ -121,18 +127,20 @@ export function advance(session: SessionState, user: UserState, focus: Focus, to
     ? [...session.results, { de: c.prompt, es: c.canonical, correct: session.lastCorrect === true }]
     : session.results
   if (session.index >= SESSION - 1) return { ...session, results, card: null }
-  const next = pickCard(session.trainer, user, focus, today, rnd)
+  const next = pickCard(session.trainer, user, focus, today, rnd, session.newCount < NEW_PER_SESSION)
   return {
     ...session, index: session.index + 1, card: next, results,
+    newCount: session.newCount + (isNewVocab(next, user) ? 1 : 0),
     input: '', revealed: false, whyOpen: false, lastCorrect: null, lastAccent: false, lastYour: '',
   }
 }
 
 export function startSession(trainer: Trainer, user: UserState, focus: Focus, today: string, rnd: Rng): SessionState {
+  const card = pickCard(trainer, user, focus, today, rnd)
   return {
-    trainer, index: 0, card: pickCard(trainer, user, focus, today, rnd),
+    trainer, index: 0, card,
     input: '', revealed: false, lastCorrect: null, lastAccent: false, lastYour: '',
-    whyOpen: false, results: [],
+    whyOpen: false, results: [], newCount: isNewVocab(card, user) ? 1 : 0,
   }
 }
 

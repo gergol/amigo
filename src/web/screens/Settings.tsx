@@ -2,7 +2,7 @@ import { useState } from 'preact/hooks'
 import type { AppCtx } from '../app'
 import { content } from '../content'
 import { isKnown } from '../engine'
-import { knownVocabCount } from '../lexicon'
+import { vocabCount } from '../lexicon'
 import { exportYaml, importYaml } from '../store'
 import { Header, MarkSquare } from '../components/ui'
 import { ChevronRight, CheckList } from '../components/icons'
@@ -14,7 +14,7 @@ export function Settings({ ctx }: { ctx: AppCtx }) {
   const [importing, setImporting] = useState(false)
 
   const reverse = Math.round(user.settings.reverseVerbShare * 100)
-  const vocabKnown = knownVocabCount(user, content.lexicon)
+  const vocabIn = vocabCount(user, content.lexicon)
 
   return (
     <div class="screen">
@@ -50,10 +50,10 @@ export function Settings({ ctx }: { ctx: AppCtx }) {
         <button class="row" onClick={() => ctx.go('vocab')}>
           <span style="width:40px;height:40px;flex:none;border-radius:var(--radius-md);border:1px solid var(--color-divider);display:grid;place-items:center;color:var(--color-accent)"><CheckList size={21} /></span>
           <span style="flex:1">
-            <span style="display:block;font-family:var(--font-heading);font-size:17px;line-height:1.2">Vokabeln, die ich kann</span>
-            <span class="t55" style="display:block;font-size:12px;margin-top:2px">Einzelne Wörter als bekannt markieren</span>
+            <span style="display:block;font-family:var(--font-heading);font-size:17px;line-height:1.2">Mein Wortschatz</span>
+            <span class="t55" style="display:block;font-size:12px;margin-top:2px">Wörter in die Wiederholung aufnehmen, Score ansehen & anpassen</span>
           </span>
-          <span class="num t45" style="font-size:12.5px;white-space:nowrap">{vocabKnown} / {content.lexicon.length}</span>
+          <span class="num t45" style="font-size:12.5px;white-space:nowrap">{vocabIn} / {content.lexicon.length}</span>
           <ChevronRight size={18} style="color:var(--color-accent)" />
         </button>
 

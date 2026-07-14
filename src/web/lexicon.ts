@@ -1,5 +1,5 @@
 import { isElAgua } from '../engine/morph'
-import { vocabKeys, mature } from './engine'
+import { vocabKeys, fresh, score, setScore } from './engine'
 import type { LexEntry, UserState } from './engine'
 
 // Display + "known" helpers for the vocab editor and settings. displayForms mirrors
@@ -38,19 +38,33 @@ export function theme(e: LexEntry): string {
   return 'Nomen'
 }
 
-// A vocab entry counts as "known" when its SRS state is mature (interval ≥ 90),
-// which is also what marking-known sets it to.
-export function isVocabKnown(user: UserState, e: LexEntry): boolean {
-  return vocabKeys(e).every(k => (user.vocab[k]?.interval ?? 0) >= 90)
+// A word is "in my vocabulary" when it has SRS state — encountered (checked in
+// the editor or answered in a drill) and scheduled for repetition.
+export function inVocab(user: UserState, e: LexEntry): boolean {
+  return vocabKeys(e).some(k => user.vocab[k] !== undefined)
 }
 
-export function setVocabKnown(user: UserState, e: LexEntry, known: boolean, today: string): void {
+export function setInVocab(user: UserState, e: LexEntry, on: boolean, today: string): void {
   for (const k of vocabKeys(e)) {
-    if (known) user.vocab[k] = mature(today)
+    if (on) user.vocab[k] ??= fresh(today)
     else delete user.vocab[k]
   }
 }
 
-export function knownVocabCount(user: UserState, lexicon: LexEntry[]): number {
-  return lexicon.filter(e => isVocabKnown(user, e)).length
+export function vocabCount(user: UserState, lexicon: LexEntry[]): number {
+  return lexicon.filter(e => inVocab(user, e)).length
+}
+
+// Score / errors / next due aggregated over an entry's keys (shift adjectives have two).
+export const entryScore = (user: UserState, e: LexEntry): number =>
+  Math.min(...vocabKeys(e).map(k => score(user.vocab[k])))
+
+export const entryErrors = (user: UserState, e: LexEntry): number =>
+  vocabKeys(e).reduce((n, k) => n + (user.vocab[k]?.errors ?? 0), 0)
+
+export const entryDue = (user: UserState, e: LexEntry): string | undefined =>
+  vocabKeys(e).map(k => user.vocab[k]?.due).filter((d): d is string => !!d).sort()[0]
+
+export function setEntryScore(user: UserState, e: LexEntry, pct: number, today: string): void {
+  for (const k of vocabKeys(e)) user.vocab[k] = setScore(user.vocab[k] ?? fresh(today), pct, today)
 }

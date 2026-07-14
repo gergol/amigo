@@ -16,8 +16,6 @@ const daysBetween = (from: string, to: string): number =>
 
 export const fresh = (today: string): SrsState => ({ due: today, interval: 0, ease: 2.5, errors: 0 })
 
-export const mature = (today: string): SrsState => ({ due: addDays(today, 90), interval: 90, ease: 2.5 })
-
 export function review(s: SrsState, correct: boolean, today: string): SrsState {
   if (!correct) return { due: today, interval: 1, ease: Math.max(1.3, s.ease - 0.2), errors: (s.errors ?? 0) + 1 }
   const interval = s.interval === 0 ? 1 : Math.max(s.interval + 1, Math.round(s.interval * s.ease))
