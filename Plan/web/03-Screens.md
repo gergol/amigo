@@ -53,6 +53,11 @@ Header: `amigo` wordmark + `A1 · A2` kicker; gear button → `settings`.
 The shared shell for all trainers. Top: exit (✕) → `home`; ProgressSegments; row of
 `counter` (`pad(index+1)+' / 08'`) + `cTag` chip (`card.tag`).
 
+Text cards carry a mic button (Web Speech API, `src/web/speech.ts`; hidden when
+unsupported): one recognition pass per tap, `es-ES` (or `de-DE` for verbrev cards),
+interim transcript fills the input live, the final transcript is auto-checked.
+Needs a secure context (HTTPS/localhost).
+
 Center renders by `card.kind` (design's `isSentence/isVocab/isVerb/isVerbrev/isGender`):
 
 - **sentence**: "Übersetze" kicker + `card.prompt` (heading).
@@ -126,7 +131,7 @@ Header: back → `home`; "Einstellungen".
      `known = m.points.filter(p=>isKnown(user,p.id)).length`. Click → `detailModule=id`,
      `screen='detail'`.
 2. **"Vokabeln, die ich kann"** TrainerRow → `screen='vocab'`; count
-   `= knownVocabCount(user)` / `content.lexicon.length` (663).
+   `= vocabCount(user)` / `content.lexicon.length` (663).
 3. **Reverse slider** — "Anteil Verb-Drills Spanisch → Deutsch",
    `Math.round(user.settings.reverseVerbShare*100)%`; onInput →
    `reverseVerbShare = value/100`, `saveUser`.
@@ -134,9 +139,8 @@ Header: back → `home`; "Einstellungen".
    showing `exportYaml(user)`; Import opens a textarea → `importYaml` → replace `user`,
    `saveUser`. (Import can be a simple paste box; keep it minimal per brief §4.5.)
 
-`knownVocabCount`: an entry is "known" when its SRS state is mature — define
-`isVocabKnown(user, key) = (user.vocab[key]?.interval ?? 0) >= 90`. Count distinct
-known keys across `vocabKeys(entry)` for all lexicon entries.
+`vocabCount`: an entry is "in the vocabulary" when it has SRS state — define
+`inVocab(user, e) = vocabKeys(e).some(k => user.vocab[k])`. Count entries, not keys.
 
 ---
 
@@ -151,9 +155,9 @@ toggles all points at once (matches CLI whole-module toggle).
 
 ---
 
-## Vocab-known editor (`screen==='vocab'`)
+## Vocab editor / Mein Wortschatz (`screen==='vocab'`)
 
-Header: back → `settings`; title; `{knownVocabCount} bekannt`. Search input (de/es) +
+Header: back → `settings`; title; `{vocabCount} Wörter`. Search input (de/es) +
 theme filter chips + list.
 
 - **Theme chips** — derive labels from `LexEntry`:
@@ -162,12 +166,14 @@ theme filter chips + list.
   (`kind==='adj'`), `Verben` (`kind==='verb'`), `Wendungen` (`kind==='chunk'`). Provide
   a small `theme(entry)` mapping fn. `Alle` = no filter.
 - **Search** — case-insensitive substring over the German gloss and the Spanish form.
-- **Rows** (`VocabRow`) — German (noun with article / gloss), italic `notes_de` if any,
-  Spanish (`es` in `--color-answer`), checkbox = `isVocabKnown`. Toggle →
-  set `user.vocab[key] = mature(today)` (known) or `delete user.vocab[key]` (unknown),
+- **Rows** — German (noun with article / gloss), italic `notes_de` if any, Spanish
+  (`es` in `--color-answer`), checkbox = `inVocab` (has SRS state). Toggle → set
+  `user.vocab[key] = fresh(today)` (into rotation) or `delete user.vocab[key]`,
   `saveUser`. For multi-key entries (shift adjectives) toggle all `vocabKeys(entry)`.
-- Header of list: "<theme|Alle Themen> · <count>" + "Alle hier als bekannt" ghost →
-  mark every currently-filtered entry known.
+  Checked rows show a score pill (0–100, plus `✗N` error count); tapping it expands a
+  slider that edits the score (= reschedules via `setScore`) and shows errors + due date.
+- Header of list: "<theme|Alle Themen> · <count>" + "Alle hier aufnehmen" ghost →
+  put every currently-filtered entry into the vocabulary.
 - Empty filter result → "Keine Treffer."
 
 The German prompt + Spanish form for a noun come from the same construction the engine

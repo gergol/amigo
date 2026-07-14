@@ -26,7 +26,9 @@ Menü: `4` schaltet das nächste Modul frei (M01–M20), `1/2/3` startet eine Ü
 (Bekanntes an-/abhaken — Voraussetzungen werden automatisch mitgezogen).
 
 Antworten werden **ohne Akzente** geprüft (`esta` = `está`, `n` = `ñ`); die Anzeige
-zeigt immer die korrekte Schreibung.
+zeigt immer die korrekte Schreibung. In der Web-App können Antworten auch
+**gesprochen** werden (Mikrofon-Button neben dem Eingabefeld; Browser-Spracherkennung,
+braucht HTTPS oder localhost — die erkannte Antwort wird direkt geprüft).
 
 ## App (Web / PWA fürs Handy)
 
@@ -54,8 +56,16 @@ werden — deckungsgleich mit der `user.yaml` der Terminal-Version.
 
 Der gesamte Lernstand liegt in einer `user.yaml` im Arbeitsverzeichnis — bewusst
 menschenlesbar: Grammatik-Known-Set, SRS-Zustand pro Vokabel (`due`, `interval`,
-`ease`) und pro Verbform-Zelle, gespeicherte Fokus-Presets. Direkt editierbar:
-`interval` kürzen/`due` zurückdatieren → Wort kommt öfter.
+`ease`, `errors`) und pro Verbform-Zelle, gespeicherte Fokus-Presets. Direkt
+editierbar: `interval` kürzen/`due` zurückdatieren → Wort kommt öfter. In der App
+geht das über den **Score** (0–100) im Wortschatz-Editor: eine log-skalierte Sicht
+auf `interval` — niedrig = kommt oft dran. Fehler zählen mit (`errors`): fällige
+Wörter mit vielen Fehlern werden bei der Kartenwahl stark bevorzugt.
+
+**Wortschatz statt Sperrliste:** Ein Häkchen im Wortschatz-Editor bedeutet „dieses
+Wort bin ich auf meinem Weg schon begegnet — wiederhole es". Es kommt sofort in die
+Wiederholung (nicht 90 Tage Pause wie früher). Zusätzlich führt jede Session bis zu
+3 ganz neue Wörter aus freigeschalteten Modulen ein (als „Neues Wort" markiert).
 
 ## Inhalte & Entwicklung
 

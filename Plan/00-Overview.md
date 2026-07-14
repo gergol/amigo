@@ -38,7 +38,7 @@ Constraints that keep it debuggable: one file, stable key ordering (diff-friendl
 Learners with existing Spanish don't start at zero. The settings TUI exposes the learner model directly (all of it just writes `user.yaml`):
 
 - **Grammar:** a checklist mirroring the grammar point graph, grouped by module (01). Checking a point marks it known → it's unlocked for templates and drills without being introduced. Checking a point auto-checks its prerequisites (you can't know *indefinido* without *presente*); unchecking a prerequisite unchecks its dependents.
-- **Vocab:** check whole units/themes or individual words (03). "Known" doesn't delete a word — its SRS state starts as mature, so it still resurfaces occasionally and serves as template filler.
+- **Vocab:** check whole units/themes or individual words (03). Checking puts a word *into* the rotation (fresh SRS state, due today) — it means "encountered on my journey, drill it". Errors per word are counted and prioritize the word while due; an editable 0–100 score in the editor exposes the schedule.
 - **Verbs:** follow from the above — a tense is available once its grammar point is checked, a verb once its vocab entry is.
 - **Shortcuts:** "I know all of A1" (checks M01–M10 grammar + vocab), per-module one-click.
 

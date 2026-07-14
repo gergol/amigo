@@ -17,7 +17,7 @@ trainer.ts   pickVocabCard, pickVerbDrill, pickSentence,
 learner.ts   markKnown, markUnknown, isKnown, moduleKnown, currentModule,
              allPoints, vocabKeys, Focus
 check.ts     checkAnswer, normalize
-srs.ts       iso, weight, isDue, fresh, mature, review
+srs.ts       iso, weight, isDue, fresh, review, score, setScore
 templates.ts Exercise, Rng, vocabKey
 types.ts     Content, UserState, emptyUser, LexEntry, Verb, Tense, Tag, …
 ```
