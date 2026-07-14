@@ -5,7 +5,7 @@ import { markKnown, markUnknown, allPoints } from '../src/engine/learner'
 import { review, fresh, addDays, score, setScore, weight } from '../src/engine/srs'
 import { checkAnswer } from '../src/engine/check'
 import { generate, eligibleTemplates } from '../src/engine/templates'
-import { pickVerbDrill, pickVocabCard, pickSentence, gradeVocab, gradeVerb, gradeSentence } from '../src/engine/trainer'
+import { pickVerbDrill, pickVocabCard, pickSentence, gradeVocab, gradeVerb, gradeSentence, vocabHint } from '../src/engine/trainer'
 import { deVerbPhrase } from '../src/engine/german'
 import { emptyUser } from '../src/engine/types'
 import type { UserState, Verb } from '../src/engine/types'
@@ -105,10 +105,10 @@ test('pickVocabCard with allowNew=false only serves words already in the vocab',
   }
 })
 
-test('words with several Spanish translations disambiguate and cross-accept', () => {
+test('words with several Spanish translations: intended required, other sense explained', () => {
   // groß → alto (Person) / grande (Sache): the prompt carries the context hint,
-  // both words are accepted (a real translation is never marked wrong), and the
-  // reveal legend explains the split. Same shape for synonyms (lecker → rico/bueno).
+  // so the intended word is required. Typing the other valid word is wrong, but
+  // the reveal legend explains the split (a bare wrong answer just gets corrected).
   const user: UserState = { ...emptyUser(), grammar: { known: allPoints(content).map(p => p.id) } }
   let seed = 4
   const rnd = () => { seed = (seed * 1103515245 + 12345) % 2 ** 31; return seed / 2 ** 31 }
@@ -123,9 +123,13 @@ test('words with several Spanish translations disambiguate and cross-accept', ()
 
   assert.match(alto.prompt, /\(Person\)/) // prompt disambiguates
   assert.match(grande.prompt, /\(Sache\)/)
-  assert.ok(checkAnswer('grande', alto.accepted, alto.canonical).correct) // cross-accept
-  assert.ok(checkAnswer('alto', grande.accepted, grande.canonical).correct)
-  assert.ok(alto.note?.includes('alto (Person)') && alto.note.includes('grande (Sache)')) // legend
+  assert.ok(checkAnswer('alto', alto.accepted, alto.canonical).correct) // intended is correct
+  assert.ok(!checkAnswer('grande', alto.accepted, alto.canonical).correct) // sibling is wrong now
+
+  const legend = vocabHint(alto, false, 'grande') // the other sense → legend
+  assert.ok(legend?.includes('alto (Person)') && legend.includes('grande (Sache)'))
+  assert.equal(vocabHint(alto, false, 'blah'), undefined) // a plain wrong answer → no legend
+  assert.ok(vocabHint(alto, true, 'alto')?.includes('grande (Sache)')) // correct → legend behind "warum?"
 })
 
 test('the disambiguating hint stays on the card, never in a generated sentence', () => {

@@ -1,4 +1,5 @@
 import { conjugate } from './conjugate'
+import { checkAnswer } from './check'
 import { deVerbAccepted, deVerbPhrase } from './german'
 import { attachClitics, isElAgua, REFLEXIVE } from './morph'
 import { isDue, review, weight, fresh } from './srs'
@@ -37,7 +38,22 @@ export interface VocabCard {
   canonical: string
   entry: LexEntry
   kind: 'production' | 'gender'
-  note?: string // notes_de, or an auto legend for words with several Spanish translations
+  note?: string // notes_de: a trap warning shown on every reveal
+  // Words with several Spanish translations: the sibling words (valid for another
+  // sense/synonym) and a legend of the split. The intended word is still required
+  // — a sibling counts wrong, but the reveal explains why instead of a bare "wrong".
+  alsoAccept?: string[]
+  legend?: string
+}
+
+// The note to reveal after answering a vocab card. The split legend fires only
+// when the learner produced the other valid word (or asks "warum?" after a
+// correct answer); a plain wrong answer just gets the trap note, if any.
+export function vocabHint(
+  card: Pick<VocabCard, 'note' | 'legend' | 'alsoAccept'>, correct: boolean, answer: string,
+): string | undefined {
+  const sibling = !correct && !!card.alsoAccept && checkAnswer(answer, card.alsoAccept, '').correct
+  return correct || sibling ? card.legend ?? card.note : card.note
 }
 
 // Many German glosses map to more than one Spanish word — a context split
@@ -111,17 +127,18 @@ export function pickVocabCard(
     } else if (e.kind === 'adj') {
       for (const s of e.senses) {
         const key = vocabKey(e, s)
-        // Words sharing this gloss base are also valid answers; accept them and
-        // show the legend so a right-but-other-sense word is never marked wrong.
+        // Words sharing this gloss base are valid for another sense/synonym. The
+        // intended word stays required (the prompt names the context), but typing
+        // a sibling reveals the legend instead of a bare "wrong".
         const group = adjBase.get(glossBase(s.de)) ?? [{ lemma: e.lemma, de: s.de }]
         const also = group.filter(v => v.lemma !== e.lemma).map(v => v.lemma)
         cards.push({
           key, entry: e, kind: 'production',
           prompt: s.de + (e.copula === 'shift' ? ` (mit ${s.copula})` : ''),
-          canonical: e.lemma, accepted: [e.lemma, ...also],
-          note: also.length
-            ? [legendNote(glossBase(s.de), group), e.notes_de].filter(Boolean).join(' — ')
-            : e.notes_de,
+          canonical: e.lemma, accepted: [e.lemma], note: e.notes_de,
+          ...(also.length
+            ? { alsoAccept: also, legend: [legendNote(glossBase(s.de), group), e.notes_de].filter(Boolean).join(' — ') }
+            : {}),
         })
       }
     } else if (e.kind === 'verb') {

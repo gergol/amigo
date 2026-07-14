@@ -3,6 +3,7 @@ import type { AppCtx } from '../app'
 import { SESSION } from '../session'
 import type { CardVM } from '../session'
 import { speechAvailable, startListening } from '../speech'
+import { vocabHint } from '../engine'
 import { ProgressSegments, AccentKeys } from '../components/ui'
 import { X, Mic } from '../components/icons'
 
@@ -102,16 +103,19 @@ function Prompt({ card }: { card: CardVM }) {
 
 function Feedback({ ctx, card }: { ctx: AppCtx; card: CardVM }) {
   const s = ctx.session!
+  // The split legend for multi-translation words fires only when the learner
+  // produced the other valid word (or opens "warum?" after a correct answer).
+  const note = vocabHint(card, !!s.lastCorrect, s.lastYour)
   if (s.lastCorrect) return (
     <>
       <div style="width:46px;height:46px;border-radius:50%;border:1.5px solid var(--color-accent);color:var(--color-accent);display:grid;place-items:center;font-size:23px">✓</div>
       <div class="t45" style="font-size:12px">{card.prompt}</div>
       <div class="answer" style="font-family:var(--font-heading);font-size:29px;line-height:1.18">{card.canonical}</div>
       {s.lastAccent && <div class="t55" style="font-size:12px">Achte auf die Akzente: <span class="answer">{card.canonical}</span></div>}
-      {card.note && (
+      {note && (
         <>
           <button class="btn btn-ghost" style="font-size:13px" onClick={ctx.toggleWhy}><span style="font-size:15px">›</span> warum?</button>
-          {s.whyOpen && <div class="note">{card.note}</div>}
+          {s.whyOpen && <div class="note">{note}</div>}
         </>
       )}
     </>
@@ -122,7 +126,7 @@ function Feedback({ ctx, card }: { ctx: AppCtx; card: CardVM }) {
       <div style="font-size:13px;color:var(--color-wrong)">deine Antwort: <span style="text-decoration:line-through;opacity:.75">{s.lastYour || '—'}</span></div>
       <div class="kicker" style="color:color-mix(in srgb,var(--color-text) 45%,transparent);margin-top:2px">richtig</div>
       <div class="answer" style="font-family:var(--font-heading);font-size:27px;line-height:1.2">{card.canonical}</div>
-      {card.note && <div class="note" style="margin-top:6px">{card.note}</div>}
+      {note && <div class="note" style="margin-top:6px">{note}</div>}
       <button class="btn btn-secondary btn-block" style="min-height:46px;margin-top:10px;font-size:15px;gap:7px;color:var(--color-accent);border-color:var(--color-accent)" onClick={ctx.overrideCorrect}>
         <span style="font-size:18px">✓</span> Ich hatte recht — als korrekt werten
       </button>

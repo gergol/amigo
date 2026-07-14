@@ -7,7 +7,7 @@ import { markKnown, markUnknown, isKnown, currentModule } from '../engine/learne
 import type { Focus } from '../engine/learner'
 import { iso } from '../engine/srs'
 import {
-  gradeSentence, gradeVerb, gradeVocab, pickSentence, pickVerbDrill, pickVocabCard, NEW_PER_SESSION,
+  gradeSentence, gradeVerb, gradeVocab, pickSentence, pickVerbDrill, pickVocabCard, vocabHint, NEW_PER_SESSION,
 } from '../engine/trainer'
 
 // A persistent line queue instead of rl.question(): buffered lines from piped
@@ -61,7 +61,7 @@ async function vocabSession(): Promise<void> {
     prev = card.key
     const input = await ask(`\n[${done + 1}/${SESSION}] ${card.prompt}\n> `)
     const res = checkAnswer(input, card.accepted, card.canonical)
-    await feedback(res.correct, card.canonical, card.note)
+    await feedback(res.correct, card.canonical, vocabHint(card, res.correct, input))
     gradeVocab(user, card.key, res.correct, today)
     done++
   }

@@ -33,10 +33,13 @@ Satzstellung ist oft frei, der Generator kennt aber nur eine Reihenfolge).
 **Mehrere Übersetzungen:** Manche deutschen Wörter haben je nach Kontext (oder als
 Synonyme) mehrere spanische Entsprechungen. Die Vokabelfrage macht den Kontext im
 Prompt eindeutig — *groß (Person)* → `alto`, *groß (Sache)* → `grande` — und
-akzeptiert trotzdem **beide** Wörter; die Auflösung zeigt eine Legende mit der
-Unterscheidung (*groß: alto (Person) · grande (Sache)*). Das ist rein datengetrieben:
-Adjektiv-Bedeutungen mit derselben deutschen Grundbedeutung (dem Gloss ohne den
-`(…)`-Zusatz) werden automatisch verknüpft — keine Doppelpflege im Inhalt. In der Web-App können Antworten auch
+verlangt das **passende** Wort. Tippt man die andere gültige Übersetzung, ist das
+zwar falsch, aber die Auflösung erklärt den Unterschied mit einer Legende
+(*groß: alto (Person) · grande (Sache)*) statt eines nackten „falsch"; ein einfach
+falsches Wort bekommt nur die richtige Lösung. Nach einer richtigen Antwort steht
+die Legende unter *warum?*. Das ist rein datengetrieben: Adjektiv-Bedeutungen mit
+derselben deutschen Grundbedeutung (dem Gloss ohne den `(…)`-Zusatz) werden
+automatisch verknüpft — keine Doppelpflege im Inhalt. In der Web-App können Antworten auch
 **gesprochen** werden (Mikrofon-Button neben dem Eingabefeld; Browser-Spracherkennung,
 braucht HTTPS oder localhost — die erkannte Antwort wird direkt geprüft). Der
 Mikrofon-Modus bleibt über alle Fragen aktiv, bis er wieder ausgeschaltet wird;

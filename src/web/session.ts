@@ -1,5 +1,5 @@
 import {
-  pickVocabCard, pickVerbDrill, pickSentence,
+  pickVocabCard, pickVerbDrill, pickSentence, vocabHint,
   gradeVocab, gradeVerb, gradeSentence, checkAnswer, NEW_PER_SESSION,
 } from './engine'
 import type { Focus, Exercise, Rng, UserState, SrsState } from './engine'
@@ -29,7 +29,9 @@ export interface CardVM {
   promptHint?: string
   canonical: string // the correctly-accented displayed answer
   accepted: string[]
-  note?: string
+  note?: string // trap note shown on every reveal
+  alsoAccept?: string[] // valid words for another sense — wrong here, but explained (legend)
+  legend?: string
   input: 'text' | 'buttons'
   placeholder: string
   grade: GradeRef
@@ -86,7 +88,7 @@ export function pickCard(
     const hint = c.entry.kind === 'noun' ? (trap ? 'Genus-Falle' : 'mit Artikel') : undefined
     return {
       kind: 'vocab', tag: user.vocab[c.key] ? 'Vokabeln' : 'Neues Wort', prompt: c.prompt, promptHint: hint,
-      canonical: c.canonical, accepted: c.accepted, note: c.note,
+      canonical: c.canonical, accepted: c.accepted, note: c.note, alsoAccept: c.alsoAccept, legend: c.legend,
       input: 'text', placeholder: placeholderFor('vocab'), grade: { t: 'vocab', key: c.key },
     }
   }

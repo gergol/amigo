@@ -2,7 +2,7 @@
 // deep ../engine/* paths. The engine is pure and framework-agnostic (shared with the CLI).
 
 export {
-  pickVocabCard, pickVerbDrill, pickSentence,
+  pickVocabCard, pickVerbDrill, pickSentence, vocabHint,
   gradeVocab, gradeVerb, gradeSentence, unlockedModules, NEW_PER_SESSION,
 } from '../engine/trainer'
 export type { VocabCard, VerbDrill } from '../engine/trainer'
