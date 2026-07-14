@@ -32,6 +32,9 @@ braucht HTTPS oder localhost — die erkannte Antwort wird direkt geprüft).
 
 ## App (Web / PWA fürs Handy)
 
+**Live: <https://gergol.github.io/amigo/>** — wird bei jedem Push auf `main`
+automatisch deployt (der Build-Commit steht unten in den Einstellungen).
+
 Dieselbe Engine als installierbare Progressive Web App (mobil-first, offline,
 hell/dunkel). Design & Plan: `Plan/web/`.
 
