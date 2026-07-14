@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'preact/hooks'
 import type { AppCtx } from '../app'
 import { SESSION } from '../session'
 import type { CardVM } from '../session'
-import { speechSupported, startListening } from '../speech'
+import { speechAvailable, startListening } from '../speech'
 import { ProgressSegments, AccentKeys } from '../components/ui'
 import { X, Mic } from '../components/icons'
 
@@ -155,7 +155,7 @@ export function Practice({ ctx }: { ctx: AppCtx }) {
                     onInput={(e) => ctx.setInput((e.target as HTMLInputElement).value)}
                     onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); ctx.submitAnswer(s.input) } }}
                   />
-                  {speechSupported && (
+                  {speechAvailable && (
                     <button class="btn" type="button" onClick={() => toggleMic(card)}
                       aria-label={listening ? 'Aufnahme stoppen' : 'Antwort sprechen'} aria-pressed={listening}
                       style={`flex:none;width:46px;min-height:46px;border-radius:var(--radius-md);display:grid;place-items:center;border:1.5px solid ${listening ? 'var(--color-wrong)' : 'var(--color-accent)'};color:${listening ? '#fff' : 'var(--color-accent)'};background:${listening ? 'var(--color-wrong)' : 'transparent'}`}>

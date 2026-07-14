@@ -8,6 +8,10 @@ const Ctor: any = typeof window !== 'undefined'
 
 export const speechSupported: boolean = !!Ctor
 
+// Chrome exposes the constructor on insecure origins too, but starting fails there —
+// only offer the mic where it can actually work.
+export const speechAvailable: boolean = speechSupported && typeof window !== 'undefined' && window.isSecureContext
+
 export interface SpeechHandlers {
   onText: (text: string, final: boolean) => void
   onEnd: () => void // fires on result, silence, error, or denied permission
