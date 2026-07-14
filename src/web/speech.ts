@@ -46,14 +46,22 @@ export function startListening(lang: string, h: SpeechHandlers): () => void {
 
   rec.onresult = (ev: any) => {
     // Rebuild the whole utterance from every segment so far (multi-word answers
-    // arrive as several finalized chunks); show it live but don't submit yet.
+    // arrive as several chunks). Chrome sometimes finalizes a short segment
+    // ("el") and then emits a longer one that restates it ("el chico") as a
+    // separate result — blindly concatenating gives "elel chico". So merge a
+    // segment that restates/extends the running text instead of appending it.
     let full = ''
     let hasFinal = false
     for (let i = 0; i < ev.results.length; i++) {
-      full += ev.results[i][0].transcript
       if (ev.results[i].isFinal) hasFinal = true
+      const seg = ev.results[i][0].transcript.trim()
+      if (!seg) continue
+      if (!full) { full = seg; continue }
+      const lf = full.toLowerCase()
+      const ls = seg.toLowerCase()
+      if (ls.startsWith(lf)) full = seg            // seg restates and extends full
+      else if (!lf.endsWith(ls)) full += ' ' + seg // genuine continuation (else already included)
     }
-    full = full.trim()
     if (!full) return
     pending = full
     h.onText(full, false)
