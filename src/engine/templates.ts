@@ -17,6 +17,10 @@ import type {
 export interface Rng { (): number } // 0..1
 const pick = <T>(arr: T[], rnd: Rng): T => arr[Math.floor(rnd() * arr.length)]!
 
+// A disambiguating "(...)" hint on an adjective gloss (groß (Person)) belongs on
+// the vocab card, not inside a generated sentence — strip it for sentence prompts.
+export const glossBase = (de: string): string => de.replace(/\s*\([^)]*\)\s*$/, '').trim()
+
 export const weightedPick = <T>(items: T[], w: (x: T) => number, rnd: Rng): T | undefined => {
   if (!items.length) return undefined
   const ws = items.map(x => Math.max(0.01, w(x)))
@@ -266,7 +270,7 @@ function renderInstance(inst: Instance, content: Content): Rendered | null {
         break
       }
       case 'adj':
-        deParts.push(inst.adjSense!.de)
+        deParts.push(glossBase(inst.adjSense!.de))
         break
       case 'clitic':
       case 'time':

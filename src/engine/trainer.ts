@@ -2,7 +2,7 @@ import { conjugate } from './conjugate'
 import { deVerbAccepted, deVerbPhrase } from './german'
 import { attachClitics, isElAgua, REFLEXIVE } from './morph'
 import { isDue, review, weight, fresh } from './srs'
-import { eligibleTemplates, generate, vocabKey, weightedPick } from './templates'
+import { eligibleTemplates, generate, glossBase, vocabKey, weightedPick } from './templates'
 import type { Exercise, Rng } from './templates'
 import { focusMatchesEntry, focusMatchesPoint } from './learner'
 import type { Focus } from './learner'
@@ -37,7 +37,39 @@ export interface VocabCard {
   canonical: string
   entry: LexEntry
   kind: 'production' | 'gender'
+  note?: string // notes_de, or an auto legend for words with several Spanish translations
 }
+
+// Many German glosses map to more than one Spanish word — a context split
+// (groß → alto für Personen, grande für Sachen) or plain synonyms (lecker →
+// rico/bueno). Authors express this by giving the senses the same gloss, with a
+// disambiguating "(...)" hint where the choice depends on context. glossBase
+// (from templates) strips that hint so sibling senses group together; glossHint
+// reads it back out for the legend.
+const glossHint = (de: string): string | undefined =>
+  de.match(/\(([^)]*)\)\s*$/)?.[1]?.trim()
+
+interface AdjVariant { lemma: string; de: string }
+
+// Adjective senses indexed by their German gloss base. A base shared by more
+// than one lemma is a word with several valid Spanish translations.
+function adjByGlossBase(lexicon: LexEntry[]): Map<string, AdjVariant[]> {
+  const m = new Map<string, AdjVariant[]>()
+  for (const e of lexicon) {
+    if (e.kind !== 'adj') continue
+    for (const s of e.senses) {
+      const base = glossBase(s.de)
+      const arr = m.get(base) ?? m.set(base, []).get(base)!
+      if (!arr.some(v => v.lemma === e.lemma)) arr.push({ lemma: e.lemma, de: s.de })
+    }
+  }
+  return m
+}
+
+// "groß: alto (Person) · grande (Sache)" — the legend shown after answering so
+// the learner sees which word fits which context (or that both are synonyms).
+const legendNote = (base: string, group: AdjVariant[]): string =>
+  `${base}: ${group.map(v => { const h = glossHint(v.de); return h ? `${v.lemma} (${h})` : v.lemma }).join(' · ')}`
 
 // New (never-graded) words trickle into sessions a few at a time; the session
 // loop passes allowNew=false once this many have been introduced.
@@ -50,6 +82,10 @@ export function pickVocabCard(
   allowNew = true, avoid?: string,
 ): VocabCard | undefined {
   const mods = unlockedModules(content, user)
+  // Cross-acceptance is computed over the whole lexicon (not just unlocked
+  // modules), so "groß" always accepts both alto and grande and explains the
+  // split — even before the sibling's module is unlocked.
+  const adjBase = adjByGlossBase(content.lexicon)
   const cards: VocabCard[] = []
   for (const e of content.lexicon) {
     if (!mods.has(e.module) || !focusMatchesEntry(focus, e)) continue
@@ -63,26 +99,35 @@ export function pickVocabCard(
         prompt: `${e.de.g === 'm' ? 'der' : e.de.g === 'f' ? 'die' : 'das'} ${e.de.noun}`,
         canonical: `${art} ${form}`,
         accepted: e.gender === 'mf' ? [`el ${form}`, `la ${form}`] : [`${art} ${form}`],
+        note: e.notes_de,
       })
       if (!e.plural_only && !isElAgua(e)) cards.push({
         key: e.lemma, entry: e, kind: 'gender',
         prompt: `el oder la: … ${e.lemma}?`,
         canonical: e.gender === 'mf' ? 'el/la' : e.gender === 'f' ? 'la' : 'el',
         accepted: e.gender === 'mf' ? ['el', 'la', 'el/la'] : e.gender === 'f' ? ['la'] : ['el'],
+        note: e.notes_de,
       })
     } else if (e.kind === 'adj') {
       for (const s of e.senses) {
         const key = vocabKey(e, s)
+        // Words sharing this gloss base are also valid answers; accept them and
+        // show the legend so a right-but-other-sense word is never marked wrong.
+        const group = adjBase.get(glossBase(s.de)) ?? [{ lemma: e.lemma, de: s.de }]
+        const also = group.filter(v => v.lemma !== e.lemma).map(v => v.lemma)
         cards.push({
           key, entry: e, kind: 'production',
           prompt: s.de + (e.copula === 'shift' ? ` (mit ${s.copula})` : ''),
-          canonical: e.lemma, accepted: [e.lemma],
+          canonical: e.lemma, accepted: [e.lemma, ...also],
+          note: also.length
+            ? [legendNote(glossBase(s.de), group), e.notes_de].filter(Boolean).join(' — ')
+            : e.notes_de,
         })
       }
     } else if (e.kind === 'verb') {
-      cards.push({ key: e.lemma, entry: e, kind: 'production', prompt: e.gloss_de, canonical: e.lemma, accepted: [e.lemma] })
+      cards.push({ key: e.lemma, entry: e, kind: 'production', prompt: e.gloss_de, canonical: e.lemma, accepted: [e.lemma], note: e.notes_de })
     } else {
-      cards.push({ key: e.es, entry: e, kind: 'production', prompt: e.de, canonical: e.es, accepted: [e.es] })
+      cards.push({ key: e.es, entry: e, kind: 'production', prompt: e.de, canonical: e.es, accepted: [e.es], note: e.notes_de })
     }
   }
   let pool = allowNew ? cards : cards.filter(c => user.vocab[c.key])

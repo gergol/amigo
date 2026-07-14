@@ -61,7 +61,7 @@ async function vocabSession(): Promise<void> {
     prev = card.key
     const input = await ask(`\n[${done + 1}/${SESSION}] ${card.prompt}\n> `)
     const res = checkAnswer(input, card.accepted, card.canonical)
-    await feedback(res.correct, card.canonical, card.entry.notes_de)
+    await feedback(res.correct, card.canonical, card.note)
     gradeVocab(user, card.key, res.correct, today)
     done++
   }

@@ -34,7 +34,6 @@ adjectives:
     senses: [{ copula: ser, de: groß (Sache), applies_to: [thing, place] }]
     level: A1
     module: M02
-    notes_de: "grande = groß (Sache); alto = groß gewachsen (Person)"
   - lemma: pequeño
     agreement: o/a
     copula: ser

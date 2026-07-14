@@ -78,7 +78,7 @@ export function pickCard(
       const lemma = c.entry.kind === 'noun' ? c.entry.lemma : c.canonical
       return {
         kind: 'gender', tag: 'Genus-Drill', prompt: `… ${lemma}?`,
-        canonical: c.canonical, accepted: c.accepted, note: c.entry.notes_de,
+        canonical: c.canonical, accepted: c.accepted, note: c.note,
         input: 'buttons', placeholder: '', grade: { t: 'vocab', key: c.key },
       }
     }
@@ -86,7 +86,7 @@ export function pickCard(
     const hint = c.entry.kind === 'noun' ? (trap ? 'Genus-Falle' : 'mit Artikel') : undefined
     return {
       kind: 'vocab', tag: user.vocab[c.key] ? 'Vokabeln' : 'Neues Wort', prompt: c.prompt, promptHint: hint,
-      canonical: c.canonical, accepted: c.accepted, note: c.entry.notes_de,
+      canonical: c.canonical, accepted: c.accepted, note: c.note,
       input: 'text', placeholder: placeholderFor('vocab'), grade: { t: 'vocab', key: c.key },
     }
   }

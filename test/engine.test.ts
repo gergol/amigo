@@ -105,6 +105,40 @@ test('pickVocabCard with allowNew=false only serves words already in the vocab',
   }
 })
 
+test('words with several Spanish translations disambiguate and cross-accept', () => {
+  // groß → alto (Person) / grande (Sache): the prompt carries the context hint,
+  // both words are accepted (a real translation is never marked wrong), and the
+  // reveal legend explains the split. Same shape for synonyms (lecker → rico/bueno).
+  const user: UserState = { ...emptyUser(), grammar: { known: allPoints(content).map(p => p.id) } }
+  let seed = 4
+  const rnd = () => { seed = (seed * 1103515245 + 12345) % 2 ** 31; return seed / 2 ** 31 }
+  const byLemma: Record<string, ReturnType<typeof pickVocabCard>> = {}
+  for (let i = 0; i < 8000 && Object.keys(byLemma).length < 4; i++) {
+    const c = pickVocabCard(content, user, {}, '2026-07-14', rnd, true)
+    if (c?.kind === 'production' && c.entry.kind === 'adj' && ['alto', 'grande', 'bajo', 'pequeño'].includes(c.entry.lemma))
+      byLemma[c.entry.lemma] ??= c
+  }
+  const alto = byLemma['alto']!, grande = byLemma['grande']!
+  assert.ok(alto && grande && byLemma['bajo'] && byLemma['pequeño'], 'size adjectives not all served')
+
+  assert.match(alto.prompt, /\(Person\)/) // prompt disambiguates
+  assert.match(grande.prompt, /\(Sache\)/)
+  assert.ok(checkAnswer('grande', alto.accepted, alto.canonical).correct) // cross-accept
+  assert.ok(checkAnswer('alto', grande.accepted, grande.canonical).correct)
+  assert.ok(alto.note?.includes('alto (Person)') && alto.note.includes('grande (Sache)')) // legend
+})
+
+test('the disambiguating hint stays on the card, never in a generated sentence', () => {
+  const user: UserState = { ...emptyUser(), grammar: { known: allPoints(content).map(p => p.id) } }
+  let seed = 6
+  const rnd = () => { seed = (seed * 1103515245 + 12345) % 2 ** 31; return seed / 2 ** 31 }
+  for (const t of eligibleTemplates(content, user))
+    for (let i = 0; i < 40; i++) {
+      const ex = generate(t, content, user, rnd)
+      if (ex) assert.doesNotMatch(ex.de, /\((?:Person|Sache)\)/, `${t.id}: hint leaked into "${ex.de}"`)
+    }
+})
+
 test('grading a verb cell also schedules its tense constellation', () => {
   const u = emptyUser()
   gradeVerb(u, 'hablar', 'presente.1s', false, '2026-07-14')

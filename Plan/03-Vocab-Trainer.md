@@ -8,7 +8,8 @@ One vocab unit per curriculum module (see 01), ~60–80 entries each for A1, ~12
 
 ## Card content
 
-- **Front (DE→ES):** German gloss + disambiguators where needed — sense hints for shift-adjectives (*langweilig (Sache)* vs. *gelangweilt (Person)*), context word for homonym-ish glosses (*bestellen (im Restaurant)*).
+- **Front (DE→ES):** German gloss + disambiguators where needed — sense hints for shift-adjectives (*langweilig (Sache)* vs. *gelangweilt (Person)*), context word for homonym-ish glosses (*bestellen (im Restaurant)*), context split for a gloss with several Spanish words (*groß (Person)* → alto vs. *groß (Sache)* → grande).
+- **Multiple translations:** when one German gloss maps to several Spanish words — a context split (*groß* → alto/grande) or plain synonyms (*lecker* → rico/bueno) — the card **accepts them all** (a real translation is never marked wrong) and the back shows a legend of the split (*groß: alto (Person) · grande (Sache)*). Purely data-driven: adjective senses sharing a gloss base (the gloss stripped of its trailing `(…)` hint) are cross-linked automatically, so the pairing lives in one place. The hint is card-only — the sentence generator strips it, so a template never renders "*ist groß (Sache)*".
 - **Front (ES→DE):** Spanish lemma with article.
 - **Back:** full answer + `notes_de` trap warnings + one generated example sentence **from the template engine, using only unlocked grammar** — so example sentences are always comprehensible and vary between reviews.
 - Verbs link to their conjugation table (verb trainer); shift-adjectives are **two cards** (one per sense) that reference each other.

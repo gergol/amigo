@@ -28,7 +28,15 @@ Menü: `4` schaltet das nächste Modul frei (M01–M20), `1/2/3` startet eine Ü
 Antworten werden **ohne Akzente** geprüft (`esta` = `está`, `n` = `ñ`); die Anzeige
 zeigt immer die korrekte Schreibung. Bei mehrwortigen Antworten wird auch eine
 **andere Wortstellung** akzeptiert, solange es dieselben Wörter sind (spanische
-Satzstellung ist oft frei, der Generator kennt aber nur eine Reihenfolge). In der Web-App können Antworten auch
+Satzstellung ist oft frei, der Generator kennt aber nur eine Reihenfolge).
+
+**Mehrere Übersetzungen:** Manche deutschen Wörter haben je nach Kontext (oder als
+Synonyme) mehrere spanische Entsprechungen. Die Vokabelfrage macht den Kontext im
+Prompt eindeutig — *groß (Person)* → `alto`, *groß (Sache)* → `grande` — und
+akzeptiert trotzdem **beide** Wörter; die Auflösung zeigt eine Legende mit der
+Unterscheidung (*groß: alto (Person) · grande (Sache)*). Das ist rein datengetrieben:
+Adjektiv-Bedeutungen mit derselben deutschen Grundbedeutung (dem Gloss ohne den
+`(…)`-Zusatz) werden automatisch verknüpft — keine Doppelpflege im Inhalt. In der Web-App können Antworten auch
 **gesprochen** werden (Mikrofon-Button neben dem Eingabefeld; Browser-Spracherkennung,
 braucht HTTPS oder localhost — die erkannte Antwort wird direkt geprüft). Der
 Mikrofon-Modus bleibt über alle Fragen aktiv, bis er wieder ausgeschaltet wird;

@@ -68,14 +68,13 @@ adjectives:
   - lemma: alto
     agreement: o/a
     copula: ser
-    senses: [{ copula: ser, de: groß, applies_to: [human] }]
+    senses: [{ copula: ser, de: groß (Person), applies_to: [human] }]
     level: A1
     module: M01
-    notes_de: "alto = groß gewachsen; grande = groß (Sache)"
   - lemma: bajo
     agreement: o/a
     copula: ser
-    senses: [{ copula: ser, de: klein, applies_to: [human] }]
+    senses: [{ copula: ser, de: klein (Person), applies_to: [human] }]
     level: A1
     module: M01
   - lemma: joven
