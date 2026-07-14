@@ -12,17 +12,25 @@ export const speechSupported: boolean = !!Ctor
 // only offer the mic where it can actually work.
 export const speechAvailable: boolean = speechSupported && typeof window !== 'undefined' && window.isSecureContext
 
+// Errors after which restarting is pointless (denied permission, no mic, offline).
+const FATAL = ['not-allowed', 'service-not-allowed', 'audio-capture', 'network']
+
 export interface SpeechHandlers {
   onText: (text: string, final: boolean) => void
-  onEnd: () => void // fires on result, silence, error, or denied permission
+  // fires when recognition ends on its own (silence, error) — NOT after abort;
+  // fatal = don't restart (denied permission, no mic, offline)
+  onEnd: (fatal: boolean) => void
 }
 
-// Starts one recognition pass and returns an abort function (aborting also fires onEnd).
+// Starts a recognition pass and returns an abort function (aborting skips onEnd).
 export function startListening(lang: string, h: SpeechHandlers): () => void {
   const rec = new Ctor()
   rec.lang = lang
   rec.interimResults = true
+  rec.continuous = true
   rec.maxAlternatives = 1
+  let aborted = false
+  let fatal = false
   rec.onresult = (ev: any) => {
     let interim = ''
     let final = ''
@@ -34,8 +42,8 @@ export function startListening(lang: string, h: SpeechHandlers): () => void {
     if (final) h.onText(final.trim(), true)
     else if (interim) h.onText(interim.trim(), false)
   }
-  rec.onend = () => h.onEnd()
-  rec.onerror = () => h.onEnd()
+  rec.onerror = (e: any) => { fatal ||= FATAL.includes(e?.error) }
+  rec.onend = () => { if (!aborted) h.onEnd(fatal) }
   rec.start()
-  return () => { try { rec.abort() } catch { /* already stopped */ } }
+  return () => { aborted = true; try { rec.abort() } catch { /* already stopped */ } }
 }

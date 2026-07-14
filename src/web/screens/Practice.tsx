@@ -71,29 +71,31 @@ function Feedback({ ctx, card }: { ctx: AppCtx; card: CardVM }) {
 
 export function Practice({ ctx }: { ctx: AppCtx }) {
   const s = ctx.session
-  const inputRef = useRef<HTMLInputElement>(null)
-  useEffect(() => {
-    if (s && !s.revealed && s.card?.input === 'text') inputRef.current?.focus()
-  }, [s?.index, s?.revealed, s?.card?.input])
 
-  // Spoken answers: one recognition pass per tap, language follows the card
-  // (verbrev asks for German), final transcript is checked immediately.
-  const [listening, setListening] = useState(false)
-  const stopMic = useRef<(() => void) | null>(null)
-  const killMic = () => { stopMic.current?.(); stopMic.current = null }
-  useEffect(() => { killMic(); setListening(false) }, [s?.index, s?.revealed])
-  useEffect(() => killMic, [])
-  const toggleMic = (card: CardVM) => {
-    if (listening) { killMic(); setListening(false); return }
-    setListening(true)
-    stopMic.current = startListening(card.kind === 'verbrev' ? 'de-DE' : 'es-ES', {
+  // Persistent voice mode: once tapped on, the mic listens through every question
+  // until tapped off. Recognition restarts after silence; hard failures (denied
+  // permission, no mic, offline) switch the mode off. Language follows the card
+  // (verbrev asks for German), the final transcript is checked immediately.
+  const [micOn, setMicOn] = useState(false)
+  const [micTick, setMicTick] = useState(0) // bump → restart recognition
+  useEffect(() => {
+    const card = s?.card
+    if (!micOn || !card || card.input !== 'text' || s.revealed) return
+    return startListening(card.kind === 'verbrev' ? 'de-DE' : 'es-ES', {
       onText: (text, final) => {
         ctx.setInput(text)
         if (final) ctx.submitAnswer(text)
       },
-      onEnd: () => setListening(false),
+      onEnd: (fatal) => (fatal ? setMicOn(false) : setMicTick(t => t + 1)),
     })
-  }
+  }, [micOn, micTick, s?.index, s?.revealed])
+
+  // Auto-focus (= soft keyboard on phones) only in typing flow: with the mic on,
+  // the keyboard stays hidden until the field is tapped explicitly.
+  const inputRef = useRef<HTMLInputElement>(null)
+  useEffect(() => {
+    if (s && !s.revealed && s.card?.input === 'text' && !micOn) inputRef.current?.focus()
+  }, [s?.index, s?.revealed, s?.card?.input])
 
   // Auto-advance after the reveal (correct/wrong each have their own delay, 0 = off).
   // Any tap on the screen stops the timer; the Weiter button shows it as a filling bar.
@@ -162,16 +164,16 @@ export function Practice({ ctx }: { ctx: AppCtx }) {
                 <div style="display:flex;gap:9px;align-items:stretch">
                   <input
                     ref={inputRef} class="input" value={s.input}
-                    placeholder={listening ? '… ich höre zu' : card.placeholder}
+                    placeholder={micOn ? '… ich höre zu' : card.placeholder}
                     autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck={false}
                     style="flex:1;text-align:center;min-height:46px;font-size:16px"
                     onInput={(e) => ctx.setInput((e.target as HTMLInputElement).value)}
                     onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); ctx.submitAnswer(s.input) } }}
                   />
                   {speechAvailable && (
-                    <button class="btn" type="button" onClick={() => toggleMic(card)}
-                      aria-label={listening ? 'Aufnahme stoppen' : 'Antwort sprechen'} aria-pressed={listening}
-                      style={`flex:none;width:46px;min-height:46px;border-radius:var(--radius-md);display:grid;place-items:center;border:1.5px solid ${listening ? 'var(--color-wrong)' : 'var(--color-accent)'};color:${listening ? '#fff' : 'var(--color-accent)'};background:${listening ? 'var(--color-wrong)' : 'transparent'}`}>
+                    <button class="btn" type="button" onClick={() => setMicOn(on => !on)}
+                      aria-label={micOn ? 'Mikrofon ausschalten' : 'Mit Mikrofon antworten'} aria-pressed={micOn}
+                      style={`flex:none;width:46px;min-height:46px;border-radius:var(--radius-md);display:grid;place-items:center;border:1.5px solid var(--color-accent);color:${micOn ? '#fff' : 'var(--color-accent)'};background:${micOn ? 'var(--color-accent)' : 'transparent'}`}>
                       <Mic size={20} />
                     </button>
                   )}
