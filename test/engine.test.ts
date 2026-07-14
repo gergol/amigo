@@ -2,10 +2,10 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { loadContent } from '../src/cli/store'
 import { markKnown, markUnknown, allPoints } from '../src/engine/learner'
-import { review, fresh, addDays } from '../src/engine/srs'
+import { review, fresh, addDays, score, setScore, weight } from '../src/engine/srs'
 import { checkAnswer } from '../src/engine/check'
 import { generate, eligibleTemplates } from '../src/engine/templates'
-import { pickVerbDrill } from '../src/engine/trainer'
+import { pickVerbDrill, pickVocabCard } from '../src/engine/trainer'
 import { deVerbPhrase } from '../src/engine/german'
 import { emptyUser } from '../src/engine/types'
 import type { UserState, Verb } from '../src/engine/types'
@@ -42,6 +42,43 @@ test('srs: correct grows interval, wrong resets and lowers ease', () => {
   const s3 = review(s2, false, s2.due)
   assert.equal(s3.interval, 1)
   assert.ok(s3.ease < s2.ease)
+})
+
+test('srs: errors are counted and boost the pick weight', () => {
+  const today = '2026-07-14'
+  let s = fresh(today)
+  s = review(s, false, today)
+  s = review(s, false, today)
+  assert.equal(s.errors, 2)
+  assert.ok(weight(s, today) > weight({ ...s, errors: 0 }, today)) // error-prone first
+  assert.ok(weight(s, today) > weight(undefined, today)) // due beats unseen
+  const resting = { due: addDays(today, 5), interval: 40, ease: 2.5, errors: 0 }
+  assert.ok(weight(undefined, today) > weight(resting, today)) // unseen beats resting
+})
+
+test('score maps interval to 0–100 and back', () => {
+  const today = '2026-07-14'
+  assert.equal(score(undefined), 0)
+  assert.equal(score(fresh(today)), 0)
+  assert.equal(score({ due: today, interval: 90, ease: 2.5 }), 100)
+  const top = setScore(fresh(today), 100, today)
+  assert.equal(top.interval, 90)
+  assert.equal(top.due, addDays(today, 90))
+  const half = setScore(fresh(today), 50, today)
+  assert.ok(half.interval > 0 && half.interval < 90)
+  assert.ok(Math.abs(score(half) - 50) <= 2) // integer intervals → round-trip within rounding
+})
+
+test('pickVocabCard with allowNew=false only serves words already in the vocab', () => {
+  const user: UserState = { ...emptyUser(), grammar: { known: allPoints(content).map(p => p.id) } }
+  let seed = 11
+  const rnd = () => { seed = (seed * 1103515245 + 12345) % 2 ** 31; return seed / 2 ** 31 }
+  assert.equal(pickVocabCard(content, user, {}, '2026-07-14', rnd, false), undefined)
+  user.vocab['casa'] = fresh('2026-07-14')
+  for (let i = 0; i < 20; i++) {
+    const c = pickVocabCard(content, user, {}, '2026-07-14', rnd, false)
+    assert.equal(c?.key, 'casa')
+  }
 })
 
 test('checkAnswer ignores accents, case, punctuation', () => {

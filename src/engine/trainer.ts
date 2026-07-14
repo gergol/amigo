@@ -37,8 +37,12 @@ export interface VocabCard {
   kind: 'production' | 'gender'
 }
 
+// New (never-graded) words trickle into sessions a few at a time; the session
+// loop passes allowNew=false once this many have been introduced.
+export const NEW_PER_SESSION = 3
+
 export function pickVocabCard(
-  content: Content, user: UserState, focus: Focus, today: string, rnd: Rng,
+  content: Content, user: UserState, focus: Focus, today: string, rnd: Rng, allowNew = true,
 ): VocabCard | undefined {
   const mods = unlockedModules(content, user)
   const cards: VocabCard[] = []
@@ -76,8 +80,9 @@ export function pickVocabCard(
       cards.push({ key: e.es, entry: e, kind: 'production', prompt: e.de, canonical: e.es, accepted: [e.es] })
     }
   }
+  const pool = allowNew ? cards : cards.filter(c => user.vocab[c.key])
   // gender drills only for due-ish nouns, extra weight for traps
-  return weightedPick(cards, c => {
+  return weightedPick(pool, c => {
     let w = weight(user.vocab[c.key], today)
     if (c.kind === 'gender') w *= c.entry.kind === 'noun' && c.entry.gender_trap ? 1.5 : 0.3
     return w

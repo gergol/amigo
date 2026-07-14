@@ -215,7 +215,8 @@ export interface Template {
 
 // ---------- learner state (user.yaml) ----------
 
-export interface SrsState { due: string; interval: number; ease: number } // due: YYYY-MM-DD
+// due: YYYY-MM-DD; errors: lifetime wrong-answer count (optional: older user.yaml lacks it)
+export interface SrsState { due: string; interval: number; ease: number; errors?: number }
 
 export interface Settings {
   reverseVerbShare: number // fraction of verb drills asked Spanish→German instead of German→Spanish

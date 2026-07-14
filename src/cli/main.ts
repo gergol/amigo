@@ -7,7 +7,7 @@ import { markKnown, markUnknown, isKnown, currentModule } from '../engine/learne
 import type { Focus } from '../engine/learner'
 import { iso } from '../engine/srs'
 import {
-  gradeSentence, gradeVerb, gradeVocab, pickSentence, pickVerbDrill, pickVocabCard,
+  gradeSentence, gradeVerb, gradeVocab, pickSentence, pickVerbDrill, pickVocabCard, NEW_PER_SESSION,
 } from '../engine/trainer'
 
 // A persistent line queue instead of rl.question(): buffered lines from piped
@@ -52,9 +52,11 @@ async function feedback(correct: boolean, canonical: string, notes?: string): Pr
 
 async function vocabSession(): Promise<void> {
   let done = 0
+  let introduced = 0
   while (done < SESSION) {
-    const card = pickVocabCard(content, user, focus, today, rnd)
+    const card = pickVocabCard(content, user, focus, today, rnd, introduced < NEW_PER_SESSION)
     if (!card) { console.log('Keine passenden Vokabeln — erst ein Modul freischalten (4).'); return }
+    if (!user.vocab[card.key]) introduced++
     const input = await ask(`\n[${done + 1}/${SESSION}] ${card.prompt}\n> `)
     const res = checkAnswer(input, card.accepted, card.canonical)
     await feedback(res.correct, card.canonical, card.entry.notes_de)
