@@ -22,6 +22,14 @@ export interface SpeechHandlers {
   onEnd: (fatal: boolean) => void
 }
 
+// How long to wait after the last recognized speech before submitting. In
+// continuous mode the API finalizes each chunk separately ("mucho", then
+// "gusto"), so submitting on the first isFinal would cut a multi-word answer
+// short. Instead we accumulate every segment and only submit once the speaker
+// has paused — a touch longer while text is still forming (interim only).
+const SILENCE_AFTER_FINAL_MS = 900
+const SILENCE_INTERIM_MS = 1400
+
 // Starts a recognition pass and returns an abort function (aborting skips onEnd).
 export function startListening(lang: string, h: SpeechHandlers): () => void {
   const rec = new Ctor()
@@ -31,19 +39,37 @@ export function startListening(lang: string, h: SpeechHandlers): () => void {
   rec.maxAlternatives = 1
   let aborted = false
   let fatal = false
+  let pending = '' // the full accumulated transcript, not yet submitted
+  let timer: ReturnType<typeof setTimeout> | null = null
+  const clearTimer = () => { if (timer) { clearTimeout(timer); timer = null } }
+  const flush = () => { clearTimer(); if (!pending) return; const t = pending; pending = ''; h.onText(t, true) }
+
   rec.onresult = (ev: any) => {
-    let interim = ''
-    let final = ''
-    for (let i = ev.resultIndex; i < ev.results.length; i++) {
-      const r = ev.results[i]
-      if (r.isFinal) final += r[0].transcript
-      else interim += r[0].transcript
+    // Rebuild the whole utterance from every segment so far (multi-word answers
+    // arrive as several finalized chunks); show it live but don't submit yet.
+    let full = ''
+    let hasFinal = false
+    for (let i = 0; i < ev.results.length; i++) {
+      full += ev.results[i][0].transcript
+      if (ev.results[i].isFinal) hasFinal = true
     }
-    if (final) h.onText(final.trim(), true)
-    else if (interim) h.onText(interim.trim(), false)
+    full = full.trim()
+    if (!full) return
+    pending = full
+    h.onText(full, false)
+    // Restart the pause timer on every new token so the phrase finishes first.
+    clearTimer()
+    timer = setTimeout(flush, hasFinal ? SILENCE_AFTER_FINAL_MS : SILENCE_INTERIM_MS)
   }
   rec.onerror = (e: any) => { fatal ||= FATAL.includes(e?.error) }
-  rec.onend = () => { if (!aborted) h.onEnd(fatal) }
+  rec.onend = () => {
+    clearTimer()
+    if (aborted) return
+    // Silence ended the pass before the pause timer fired — submit what we have
+    // rather than dropping it, otherwise just signal end (restart / stop).
+    if (pending) flush()
+    else h.onEnd(fatal)
+  }
   rec.start()
-  return () => { aborted = true; try { rec.abort() } catch { /* already stopped */ } }
+  return () => { aborted = true; clearTimer(); try { rec.abort() } catch { /* already stopped */ } }
 }

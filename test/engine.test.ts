@@ -5,7 +5,7 @@ import { markKnown, markUnknown, allPoints } from '../src/engine/learner'
 import { review, fresh, addDays, score, setScore, weight } from '../src/engine/srs'
 import { checkAnswer } from '../src/engine/check'
 import { generate, eligibleTemplates } from '../src/engine/templates'
-import { pickVerbDrill, pickVocabCard, pickSentence, gradeVerb, gradeSentence } from '../src/engine/trainer'
+import { pickVerbDrill, pickVocabCard, pickSentence, gradeVocab, gradeVerb, gradeSentence } from '../src/engine/trainer'
 import { deVerbPhrase } from '../src/engine/german'
 import { emptyUser } from '../src/engine/types'
 import type { UserState, Verb } from '../src/engine/types'
@@ -126,6 +126,29 @@ test('verb drills stick to encountered verbs once any exist', () => {
   // empty vocab → fallback to all unlocked verbs, the trainer never goes dead
   const virgin: UserState = { ...emptyUser(), grammar: { known: allPoints(content).map(p => p.id) } }
   assert.ok(pickVerbDrill(content, virgin, {}, '2026-07-14', rnd))
+})
+
+test('overriding a wrong grade restores the schedule as if answered correctly', () => {
+  // The "I said it right" override snapshots SRS before the wrong grade, then
+  // restores it and re-grades as correct. The result must match a plain correct
+  // grade — no leftover error count or ease penalty from the wrong attempt.
+  const today = '2026-07-14'
+  const scheduled = review(fresh(today), true, today) // an item due again in 1 day
+  const day = scheduled.due
+  const key = 'casa'
+
+  const direct: UserState = { ...emptyUser(), vocab: { [key]: { ...scheduled } } }
+  gradeVocab(direct, key, true, day)
+
+  const override: UserState = { ...emptyUser(), vocab: { [key]: { ...scheduled } } }
+  const snapshot = structuredClone(override.vocab) // taken before grading (session.grade)
+  gradeVocab(override, key, false, day)
+  assert.equal(override.vocab[key]!.errors, 1, 'wrong grade records an error')
+  override.vocab = snapshot // overrideCorrect restores…
+  gradeVocab(override, key, true, day) // …then re-grades as correct
+
+  assert.deepEqual(override.vocab[key], direct.vocab[key])
+  assert.equal(override.vocab[key]!.errors ?? 0, 0, 'override leaves no lingering error')
 })
 
 test('sentence exercises schedule their grammar constellations', () => {

@@ -4,7 +4,7 @@ import { loadUser, saveUser } from './store'
 import { markKnown, markUnknown, isKnown, iso, setScore, fresh } from './engine'
 import type { Focus, Settings as SettingsState, UserState, ModuleId } from './engine'
 import {
-  startSession, grade, advance, SESSION,
+  startSession, grade, advance, overrideCorrect, SESSION,
 } from './session'
 import type { SessionState, Trainer } from './session'
 import { setInVocab, inVocab, setEntryScore } from './lexicon'
@@ -37,6 +37,7 @@ export interface AppCtx {
   setInput: (v: string) => void
   insertChar: (ch: string) => void
   submitAnswer: (answer: string) => void
+  overrideCorrect: () => void
   toggleWhy: () => void
   next: () => void
   exitSession: () => void
@@ -96,6 +97,11 @@ export function App() {
     submitAnswer: (answer) => {
       if (!session?.card || session.revealed) return
       setSession(grade(session, user, answer, today))
+      commit()
+    },
+    overrideCorrect: () => {
+      if (!session || !session.revealed || session.lastCorrect) return
+      setSession(overrideCorrect(session, user, today))
       commit()
     },
     toggleWhy: () => setSession(s => (s ? { ...s, whyOpen: !s.whyOpen } : s)),

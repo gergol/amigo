@@ -2,7 +2,7 @@ import {
   pickVocabCard, pickVerbDrill, pickSentence,
   gradeVocab, gradeVerb, gradeSentence, checkAnswer, NEW_PER_SESSION,
 } from './engine'
-import type { Focus, Exercise, Rng, UserState } from './engine'
+import type { Focus, Exercise, Rng, UserState, SrsState } from './engine'
 import { content } from './content'
 
 // A session is the CLI's pick → grade → next loop (src/cli/main.ts), run for 8 cards.
@@ -37,6 +37,15 @@ export interface CardVM {
 
 export interface SessionResult { de: string; es: string; correct: boolean }
 
+// Snapshot of the SRS state a wrong grade touched, kept so the learner can
+// override ("I said it right") and have the grade cleanly undone + re-applied
+// as correct — with no lingering error count or ease penalty.
+interface SrsSnapshot {
+  vocab: Record<string, SrsState>
+  verbs: Record<string, Record<string, SrsState>>
+  grammarSrs: Record<string, SrsState>
+}
+
 export interface SessionState {
   trainer: Trainer
   index: number
@@ -49,6 +58,7 @@ export interface SessionState {
   whyOpen: boolean
   results: SessionResult[]
   newCount: number // brand-new vocab introduced this session (capped at NEW_PER_SESSION)
+  undo: SrsSnapshot | null // pre-grade SRS snapshot, only for the last wrong answer
 }
 
 const placeholderFor = (kind: CardVM['kind']): string =>
@@ -112,13 +122,34 @@ export function gradeCard(user: UserState, g: GradeRef, correct: boolean, today:
 const stripPunct = (s: string): string =>
   s.toLowerCase().replace(/[¿¡?!.,;:]/g, '').replace(/\s+/g, ' ').trim()
 
+const snapshotSrs = (user: UserState): SrsSnapshot => ({
+  vocab: structuredClone(user.vocab),
+  verbs: structuredClone(user.verbs),
+  grammarSrs: structuredClone(user.grammar.srs ?? {}),
+})
+
 export function grade(session: SessionState, user: UserState, answer: string, today: string): SessionState {
   const c = session.card
   if (!c || session.revealed) return session
   const res = checkAnswer(answer, c.accepted, c.canonical)
   const accent = res.correct && stripPunct(answer) !== stripPunct(c.canonical)
+  // Snapshot before grading a wrong answer so an override can undo it exactly.
+  const undo = res.correct ? null : snapshotSrs(user)
   gradeCard(user, c.grade, res.correct, today)
-  return { ...session, revealed: true, lastCorrect: res.correct, lastAccent: accent, lastYour: answer }
+  return { ...session, revealed: true, lastCorrect: res.correct, lastAccent: accent, lastYour: answer, undo }
+}
+
+// Learner overrides a wrong grade ("I said the exact right thing"): restore the
+// SRS to before the wrong grade, then re-grade as correct so the item schedules
+// forward as if answered right. No-op unless the last answer was graded wrong.
+export function overrideCorrect(session: SessionState, user: UserState, today: string): SessionState {
+  const c = session.card
+  if (!c || !session.revealed || session.lastCorrect || !session.undo) return session
+  user.vocab = session.undo.vocab
+  user.verbs = session.undo.verbs
+  user.grammar.srs = session.undo.grammarSrs
+  gradeCard(user, c.grade, true, today)
+  return { ...session, lastCorrect: true, lastAccent: false, undo: null }
 }
 
 // A picked card introduces a new word iff its vocab key has no SRS state yet
@@ -138,7 +169,7 @@ export function advance(session: SessionState, user: UserState, focus: Focus, to
   return {
     ...session, index: session.index + 1, card: next, results,
     newCount: session.newCount + (isNewVocab(next, user) ? 1 : 0),
-    input: '', revealed: false, whyOpen: false, lastCorrect: null, lastAccent: false, lastYour: '',
+    input: '', revealed: false, whyOpen: false, lastCorrect: null, lastAccent: false, lastYour: '', undo: null,
   }
 }
 
@@ -147,7 +178,7 @@ export function startSession(trainer: Trainer, user: UserState, focus: Focus, to
   return {
     trainer, index: 0, card,
     input: '', revealed: false, lastCorrect: null, lastAccent: false, lastYour: '',
-    whyOpen: false, results: [], newCount: isNewVocab(card, user) ? 1 : 0,
+    whyOpen: false, results: [], newCount: isNewVocab(card, user) ? 1 : 0, undo: null,
   }
 }
 

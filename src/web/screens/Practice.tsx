@@ -65,6 +65,9 @@ function Feedback({ ctx, card }: { ctx: AppCtx; card: CardVM }) {
       <div class="kicker" style="color:color-mix(in srgb,var(--color-text) 45%,transparent);margin-top:2px">richtig</div>
       <div class="answer" style="font-family:var(--font-heading);font-size:27px;line-height:1.2">{card.canonical}</div>
       {card.note && <div class="note" style="margin-top:6px">{card.note}</div>}
+      <button class="btn btn-ghost" style="font-size:13px;margin-top:2px" onClick={ctx.overrideCorrect}>
+        <span style="font-size:15px">✓</span> das war richtig — als korrekt werten
+      </button>
     </>
   )
 }
