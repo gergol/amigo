@@ -1,9 +1,10 @@
-import { useEffect, useRef } from 'preact/hooks'
+import { useEffect, useRef, useState } from 'preact/hooks'
 import type { AppCtx } from '../app'
 import { SESSION } from '../session'
 import type { CardVM } from '../session'
+import { speechSupported, startListening } from '../speech'
 import { ProgressSegments, AccentKeys } from '../components/ui'
-import { X } from '../components/icons'
+import { X, Mic } from '../components/icons'
 
 const pad = (n: number) => (n < 10 ? '0' + n : '' + n)
 
@@ -75,6 +76,25 @@ export function Practice({ ctx }: { ctx: AppCtx }) {
     if (s && !s.revealed && s.card?.input === 'text') inputRef.current?.focus()
   }, [s?.index, s?.revealed, s?.card?.input])
 
+  // Spoken answers: one recognition pass per tap, language follows the card
+  // (verbrev asks for German), final transcript is checked immediately.
+  const [listening, setListening] = useState(false)
+  const stopMic = useRef<(() => void) | null>(null)
+  const killMic = () => { stopMic.current?.(); stopMic.current = null }
+  useEffect(() => { killMic(); setListening(false) }, [s?.index, s?.revealed])
+  useEffect(() => killMic, [])
+  const toggleMic = (card: CardVM) => {
+    if (listening) { killMic(); setListening(false); return }
+    setListening(true)
+    stopMic.current = startListening(card.kind === 'verbrev' ? 'de-DE' : 'es-ES', {
+      onText: (text, final) => {
+        ctx.setInput(text)
+        if (final) ctx.submitAnswer(text)
+      },
+      onEnd: () => setListening(false),
+    })
+  }
+
   // Physical-keyboard shortcuts (desktop): 1/2 answer el/la, Enter advances the
   // reveal. Harmless on phones (no keyboard); text submit stays on the input.
   useEffect(() => {
@@ -126,14 +146,23 @@ export function Practice({ ctx }: { ctx: AppCtx }) {
               </div>
             ) : (
               <div style="display:flex;flex-direction:column;gap:14px">
-                <input
-                  ref={inputRef} class="input" value={s.input}
-                  placeholder={card.placeholder}
-                  autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck={false}
-                  style="text-align:center;min-height:46px;font-size:16px"
-                  onInput={(e) => ctx.setInput((e.target as HTMLInputElement).value)}
-                  onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); ctx.submitAnswer(s.input) } }}
-                />
+                <div style="display:flex;gap:9px;align-items:stretch">
+                  <input
+                    ref={inputRef} class="input" value={s.input}
+                    placeholder={listening ? '… ich höre zu' : card.placeholder}
+                    autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck={false}
+                    style="flex:1;text-align:center;min-height:46px;font-size:16px"
+                    onInput={(e) => ctx.setInput((e.target as HTMLInputElement).value)}
+                    onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); ctx.submitAnswer(s.input) } }}
+                  />
+                  {speechSupported && (
+                    <button class="btn" type="button" onClick={() => toggleMic(card)}
+                      aria-label={listening ? 'Aufnahme stoppen' : 'Antwort sprechen'} aria-pressed={listening}
+                      style={`flex:none;width:46px;min-height:46px;border-radius:var(--radius-md);display:grid;place-items:center;border:1.5px solid ${listening ? 'var(--color-wrong)' : 'var(--color-accent)'};color:${listening ? '#fff' : 'var(--color-accent)'};background:${listening ? 'var(--color-wrong)' : 'transparent'}`}>
+                      <Mic size={20} />
+                    </button>
+                  )}
+                </div>
                 <AccentKeys onInsert={ctx.insertChar} />
                 <button class="btn btn-primary btn-block" style="min-height:48px" onClick={() => ctx.submitAnswer(s.input)}>Prüfen<span class="kbd">↵</span></button>
               </div>
