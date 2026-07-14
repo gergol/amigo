@@ -21,6 +21,8 @@ The glue is a **shared lexicon** (every word annotated with grammatical and sema
 ```yaml
 grammar:
   known: [presente.regular.ar, presente.regular.er, copula.estar.location]  # flat set; modules derive from it
+  srs:                                                      # per-point scheduling, created when first exercised
+    presente.regular.ar: {due: 2026-07-15, interval: 1, ease: 2.3, errors: 2}
 vocab:
   coche:      {due: 2026-08-01, interval: 30, ease: 2.5}
   aburrido/ser: {due: 2026-07-14, interval: 2, ease: 2.1}   # senses tracked separately

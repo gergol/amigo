@@ -43,6 +43,8 @@ All A1/A2 verbs from the lexicon, each with:
 
 Per-cell (verb × tense × person) knowledge state, SRS-scheduled like vocab and stored in `user.yaml` (editable like everything else). Weak cells leak into the template engine: sentences get generated that force exactly those forms.
 
+Drills draw only from verbs in the learner's Wortschatz (encountered words); before any verb is encountered they fall back to all unlocked verbs so the trainer never goes dead. Each cell's pick weight is multiplied by a factor from its tense's grammar-constellation SRS (`user.grammar.srs`, see 05): a tense the learner keeps failing boosts all of its cells. Grading a cell also grades that constellation.
+
 **Focused practice** (00) maps naturally here: a focus can select an irregularity class (strong preterites, boot-pattern verbs), a tense, a verb feature (`reflexive: true`), or a single verb — drill formats 2–5 are essentially pre-built focus presets.
 
 ## German-speaker notes baked into drills

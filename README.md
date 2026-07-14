@@ -66,6 +66,13 @@ Wörter mit vielen Fehlern werden bei der Kartenwahl stark bevorzugt.
 Wort bin ich auf meinem Weg schon begegnet — wiederhole es". Es kommt sofort in die
 Wiederholung (nicht 90 Tage Pause wie früher). Zusätzlich führt jede Session bis zu
 3 ganz neue Wörter aus freigeschalteten Modulen ein (als „Neues Wort" markiert).
+Verbformen-Drills und Satz-Füller halten sich ebenfalls an den Wortschatz.
+
+**Grammatik-Konstellationen:** Jeder Grammatikpunkt hat einen eigenen SRS-Zustand
+(`grammar.srs` in der `user.yaml`), der bei jeder Übung mitbewertet wird — Fehler in
+z. B. Indefinido-Sätzen lassen Indefinido-Zellen und -Templates öfter drankommen.
+Im Modul-Detail (Einstellungen → Modul) zeigt jeder geübte Punkt seinen Score
+(0–100, antippen zum Anpassen), analog zum Wortschatz.
 
 ## Inhalte & Entwicklung
 
