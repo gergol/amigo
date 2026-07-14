@@ -223,7 +223,9 @@ export interface Settings {
 }
 
 export interface UserState {
-  grammar: { known: string[] }
+  // known gates eligibility; srs schedules each known point by its error history
+  // (created lazily the first time a point is exercised — optional: older user.yaml lacks it)
+  grammar: { known: string[]; srs?: Record<string, SrsState> }
   vocab: Record<string, SrsState> // key: lemma, or lemma/ser lemma/estar for shift senses
   verbs: Record<string, Record<string, SrsState>> // lemma → 'tense.person' → state
   presets: Record<string, { grammar?: string[]; tags?: Tag[]; modules?: ModuleId[] }>
@@ -231,7 +233,7 @@ export interface UserState {
 }
 
 export const emptyUser = (): UserState => ({
-  grammar: { known: [] }, vocab: {}, verbs: {}, presets: {},
+  grammar: { known: [], srs: {} }, vocab: {}, verbs: {}, presets: {},
   settings: { reverseVerbShare: 0.25 },
 })
 

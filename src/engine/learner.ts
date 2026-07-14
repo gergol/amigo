@@ -32,6 +32,7 @@ export function markUnknown(user: UserState, content: Content, pointId: string):
       if (!drop.has(p.id) && p.prereqs.some(pre => drop.has(pre))) { drop.add(p.id); grew = true }
   }
   user.grammar.known = user.grammar.known.filter(id => !drop.has(id))
+  if (user.grammar.srs) for (const id of drop) delete user.grammar.srs[id]
 }
 
 export const isKnown = (user: UserState, pointId: string): boolean =>

@@ -17,6 +17,14 @@ import type {
 export interface Rng { (): number } // 0..1
 const pick = <T>(arr: T[], rnd: Rng): T => arr[Math.floor(rnd() * arr.length)]!
 
+export const weightedPick = <T>(items: T[], w: (x: T) => number, rnd: Rng): T | undefined => {
+  if (!items.length) return undefined
+  const ws = items.map(x => Math.max(0.01, w(x)))
+  let r = rnd() * ws.reduce((a, b) => a + b, 0)
+  for (let i = 0; i < items.length; i++) { r -= ws[i]!; if (r <= 0) return items[i] }
+  return items[items.length - 1]
+}
+
 export interface Subject {
   person: Person
   gender: Gender
@@ -42,6 +50,7 @@ export interface Exercise {
   accepted: string[] // all accepted answers (unnormalized; checking normalizes)
   vocabKeys: string[] // lexicon items exercised → SRS
   verbCells: { lemma: string; cell: string }[] // verb forms exercised → SRS
+  points: string[] // grammar points exercised (requires minus the tense point — that grades via verbCells)
   templateId: string
   notes_de?: string
 }
@@ -336,6 +345,7 @@ const DE_IO: Record<Person, string> = { '1s': 'mir', '2s': 'dir', '3s': 'ihm', '
 export function generate(
   t: Template, content: Content, user: UserState, rnd: Rng,
   vocabWeight?: (key: string) => number,
+  pointWeight?: (id: string) => number,
 ): Exercise | null {
   const known = new Set(user.grammar.known)
   const pool = knownEntries(content, user)
@@ -358,7 +368,8 @@ export function generate(
     const verbSlot = verbSlotEntry[1] as Extract<Template['slots'][string], { type: 'verb' }>
     const tenses = verbSlot.tense ? [verbSlot.tense] : allowedTenses(t, known)
     if (!tenses.length) return null
-    tense = pick(tenses, rnd)
+    // error-prone / due tense constellations surface more often
+    tense = (pointWeight && weightedPick(tenses, x => pointWeight(TENSE_POINT[x]), rnd)) ?? pick(tenses, rnd)
     let verbs = pool.filter((e): e is Verb => e.kind === 'verb')
     if (verbSlot.lemmas) verbs = content.lexicon.filter((e): e is Verb => e.kind === 'verb' && verbSlot.lemmas!.includes(e.lemma))
     else {
@@ -475,6 +486,7 @@ export function generate(
     accepted,
     vocabKeys,
     verbCells: verb ? [{ lemma: verb.lemma, cell: `${tense}.${subject.person}` }] : [],
+    points: t.requires.filter(r => r !== TENSE_POINT[tense]),
     templateId: t.id,
     notes_de: t.notes_de,
   }

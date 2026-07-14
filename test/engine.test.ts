@@ -5,7 +5,7 @@ import { markKnown, markUnknown, allPoints } from '../src/engine/learner'
 import { review, fresh, addDays, score, setScore, weight } from '../src/engine/srs'
 import { checkAnswer } from '../src/engine/check'
 import { generate, eligibleTemplates } from '../src/engine/templates'
-import { pickVerbDrill, pickVocabCard } from '../src/engine/trainer'
+import { pickVerbDrill, pickVocabCard, pickSentence, gradeVerb, gradeSentence } from '../src/engine/trainer'
 import { deVerbPhrase } from '../src/engine/german'
 import { emptyUser } from '../src/engine/types'
 import type { UserState, Verb } from '../src/engine/types'
@@ -79,6 +79,44 @@ test('pickVocabCard with allowNew=false only serves words already in the vocab',
     const c = pickVocabCard(content, user, {}, '2026-07-14', rnd, false)
     assert.equal(c?.key, 'casa')
   }
+})
+
+test('grading a verb cell also schedules its tense constellation', () => {
+  const u = emptyUser()
+  gradeVerb(u, 'hablar', 'presente.1s', false, '2026-07-14')
+  assert.equal(u.grammar.srs!['presente.regular']!.errors, 1)
+  gradeVerb(u, 'comer', 'indefinido.3p', true, '2026-07-14')
+  assert.ok(u.grammar.srs!['indefinido.regular'])
+  assert.equal(u.grammar.srs!['indefinido.regular']!.errors, 0)
+})
+
+test('verb drills stick to encountered verbs once any exist', () => {
+  const user: UserState = { ...emptyUser(), grammar: { known: allPoints(content).map(p => p.id) } }
+  user.vocab['hablar'] = fresh('2026-07-14')
+  let seed = 21
+  const rnd = () => { seed = (seed * 1103515245 + 12345) % 2 ** 31; return seed / 2 ** 31 }
+  for (let i = 0; i < 30; i++) {
+    const d = pickVerbDrill(content, user, {}, '2026-07-14', rnd)
+    assert.equal(d?.verb.lemma, 'hablar')
+  }
+  // empty vocab → fallback to all unlocked verbs, the trainer never goes dead
+  const virgin: UserState = { ...emptyUser(), grammar: { known: allPoints(content).map(p => p.id) } }
+  assert.ok(pickVerbDrill(content, virgin, {}, '2026-07-14', rnd))
+})
+
+test('sentence exercises schedule their grammar constellations', () => {
+  const user: UserState = { ...emptyUser(), grammar: { known: allPoints(content).map(p => p.id) } }
+  let seed = 9
+  const rnd = () => { seed = (seed * 1103515245 + 12345) % 2 ** 31; return seed / 2 ** 31 }
+  for (let i = 0; i < 50; i++) {
+    const ex = pickSentence(content, user, {}, '2026-07-14', rnd)
+    assert.ok(ex)
+    if (!ex.points.length) continue
+    gradeSentence(user, ex, false, '2026-07-14')
+    for (const p of ex.points) assert.ok((user.grammar.srs![p]!.errors ?? 0) >= 1, `${p} not punished`)
+    return
+  }
+  assert.fail('no sentence with grammar points generated')
 })
 
 test('checkAnswer ignores accents, case, punctuation', () => {
