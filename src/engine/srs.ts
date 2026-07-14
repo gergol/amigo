@@ -18,6 +18,9 @@ export const fresh = (today: string): SrsState => ({ due: today, interval: 0, ea
 
 export function review(s: SrsState, correct: boolean, today: string): SrsState {
   if (!correct) return { due: today, interval: 1, ease: Math.max(1.3, s.ease - 0.2), errors: (s.errors ?? 0) + 1 }
+  // correct before due (same-day repeats, sentence rewards): the schedule stays put —
+  // otherwise items reviewed many times a day compound their interval absurdly
+  if (s.due > today) return { ...s, errors: s.errors ?? 0 }
   const interval = s.interval === 0 ? 1 : Math.max(s.interval + 1, Math.round(s.interval * s.ease))
   return { due: addDays(today, interval), interval, ease: Math.min(2.8, s.ease + 0.02), errors: s.errors ?? 0 }
 }
