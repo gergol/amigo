@@ -15,6 +15,7 @@ export function Settings({ ctx }: { ctx: AppCtx }) {
   const [importing, setImporting] = useState(false)
 
   const reverse = Math.round(user.settings.reverseVerbShare * 100)
+  const fontPct = Math.round((user.settings.fontScale ?? 1) * 100)
   const vocabIn = vocabCount(user, content.lexicon)
 
   return (
@@ -65,7 +66,33 @@ export function Settings({ ctx }: { ctx: AppCtx }) {
             <span class="num" style="font-family:var(--font-heading);font-size:15px;color:var(--color-accent)">{reverse}%</span>
           </div>
           <input type="range" min={0} max={100} step={5} value={reverse} style="width:100%"
-            onInput={(e) => ctx.setReverse(+(e.target as HTMLInputElement).value)} />
+            onInput={(e) => ctx.setSettings({ reverseVerbShare: +(e.target as HTMLInputElement).value / 100 })} />
+        </div>
+
+        {/* font scale */}
+        <div>
+          <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:9px">
+            <span style="font-family:var(--font-heading);font-size:15px">Schriftgröße</span>
+            <span class="num" style="font-family:var(--font-heading);font-size:15px;color:var(--color-accent)">{fontPct}%</span>
+          </div>
+          <input type="range" min={100} max={160} step={5} value={fontPct} style="width:100%"
+            onInput={(e) => ctx.setSettings({ fontScale: +(e.target as HTMLInputElement).value / 100 })} />
+        </div>
+
+        {/* auto advance */}
+        <div>
+          <span style="font-family:var(--font-heading);font-size:15px">Automatisch weiter</span>
+          <p class="t55" style="font-size:12px;line-height:1.5;margin:4px 0 12px">Nach dem Aufdecken geht es von selbst zur nächsten Frage — ein Tipp irgendwo auf den Bildschirm stoppt den Timer. 0 = aus.</p>
+          {([['nach richtiger Antwort', 'autoNextCorrect'], ['nach falscher Antwort', 'autoNextWrong']] as const).map(([label, key]) => (
+            <div style="margin-bottom:10px">
+              <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:6px">
+                <span style="font-size:13px">{label}</span>
+                <span class="num" style="font-family:var(--font-heading);font-size:14px;color:var(--color-accent)">{user.settings[key] > 0 ? `${user.settings[key].toFixed(1).replace('.', ',')} s` : 'aus'}</span>
+              </div>
+              <input type="range" min={0} max={5} step={0.5} value={user.settings[key]} style="width:100%"
+                onInput={(e) => ctx.setSettings({ [key]: +(e.target as HTMLInputElement).value })} />
+            </div>
+          ))}
         </div>
 
         {/* lernstand */}

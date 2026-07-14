@@ -220,6 +220,9 @@ export interface SrsState { due: string; interval: number; ease: number; errors?
 
 export interface Settings {
   reverseVerbShare: number // fraction of verb drills asked Spanish→German instead of German→Spanish
+  fontScale: number // UI zoom factor (web app), 1 = 100%
+  autoNextCorrect: number // seconds until auto-advance after a correct answer; 0 = off
+  autoNextWrong: number // … after a wrong answer; 0 = off
 }
 
 export interface UserState {
@@ -234,7 +237,7 @@ export interface UserState {
 
 export const emptyUser = (): UserState => ({
   grammar: { known: [], srs: {} }, vocab: {}, verbs: {}, presets: {},
-  settings: { reverseVerbShare: 0.25 },
+  settings: { reverseVerbShare: 0.25, fontScale: 1.2, autoNextCorrect: 1, autoNextWrong: 3 },
 })
 
 // ---------- assembled content ----------

@@ -168,7 +168,7 @@ test('deVerbPhrase gives gustar-type verbs an idiomatic experiencer framing', ()
 test('verb drill: both directions accept their own canonical', () => {
   const base: UserState = { ...emptyUser(), grammar: { known: allPoints(content).map(p => p.id) } }
   for (const share of [0, 1]) {
-    const user: UserState = { ...base, settings: { reverseVerbShare: share } }
+    const user: UserState = { ...base, settings: { ...emptyUser().settings, reverseVerbShare: share } }
     let seed = 3
     const rnd = () => { seed = (seed * 1103515245 + 12345) % 2 ** 31; return seed / 2 ** 31 }
     for (let i = 0; i < 60; i++) {

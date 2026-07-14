@@ -1,8 +1,8 @@
-import { useState } from 'preact/hooks'
+import { useEffect, useState } from 'preact/hooks'
 import { content } from './content'
 import { loadUser, saveUser } from './store'
 import { markKnown, markUnknown, isKnown, iso, setScore, fresh } from './engine'
-import type { Focus, UserState, ModuleId } from './engine'
+import type { Focus, Settings as SettingsState, UserState, ModuleId } from './engine'
 import {
   startSession, grade, advance, SESSION,
 } from './session'
@@ -50,7 +50,7 @@ export interface AppCtx {
   setPointScore: (id: string, pct: number) => void
   toggleModuleAll: (m: ModuleId) => void
   knowAllA1: () => void
-  setReverse: (pct: number) => void
+  setSettings: (patch: Partial<SettingsState>) => void
   // vocab editor
   toggleVocab: (e: LexEntry) => void
   addGroupToVocab: (entries: LexEntry[]) => void
@@ -73,6 +73,11 @@ export function App() {
   const [detailModule, setDetailModule] = useState<ModuleId | null>(null)
   const [unlockOpen, setUnlockOpen] = useState<ModuleId | null>(null)
   const [today] = useState(() => iso(new Date()))
+
+  // Global font scaling: everything is laid out in px, so zoom scales the whole UI.
+  useEffect(() => {
+    document.documentElement.style.zoom = String(user.settings.fontScale ?? 1)
+  }, [user.settings.fontScale])
 
   // Engine grade/mark functions mutate `user` in place; persist + re-render.
   const commit = () => { saveUser(user); setUserState({ ...user }) }
@@ -131,7 +136,7 @@ export function App() {
         .forEach(m => m.points.forEach(p => markKnown(user, content, p.id)))
       commit()
     },
-    setReverse: (pct) => { user.settings.reverseVerbShare = pct / 100; commit() },
+    setSettings: (patch) => { Object.assign(user.settings, patch); commit() },
 
     toggleVocab: (e) => { setInVocab(user, e, !inVocab(user, e), today); commit() },
     addGroupToVocab: (entries) => { entries.forEach(e => setInVocab(user, e, true, today)); commit() },
