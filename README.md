@@ -60,7 +60,12 @@ menschenlesbar: Grammatik-Known-Set, SRS-Zustand pro Vokabel (`due`, `interval`,
 editierbar: `interval` kürzen/`due` zurückdatieren → Wort kommt öfter. In der App
 geht das über den **Score** (0–100) im Wortschatz-Editor: eine log-skalierte Sicht
 auf `interval` — niedrig = kommt oft dran. Fehler zählen mit (`errors`): fällige
-Wörter mit vielen Fehlern werden bei der Kartenwahl stark bevorzugt.
+Wörter mit vielen Fehlern werden bei der Kartenwahl stark bevorzugt. Die Auswahl
+ist dabei immer eine Wahrscheinlichkeit, kein Filter: das Fälligkeitsdatum formt
+eine stetige Bereitschaftskurve (frisch geübt 0,2 → fällig 5, dann Überfälligkeits-
+und Fehler-Bonus) — „keine Wörter mehr für heute" gibt es nicht, an intensiven Tagen
+kommen einfach die am ehesten vergessenen Wörter dran. Dieselbe Karte kommt nie
+zweimal direkt hintereinander.
 
 **Wortschatz statt Sperrliste:** Ein Häkchen im Wortschatz-Editor bedeutet „dieses
 Wort bin ich auf meinem Weg schon begegnet — wiederhole es". Es kommt sofort in die
