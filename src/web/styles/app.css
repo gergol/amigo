@@ -14,6 +14,9 @@ body { background: var(--color-surface); }
 }
 .screen { display: flex; flex-direction: column; min-height: 100vh; min-height: 100dvh; }
 
+/* auto-advance indicator: fills the Weiter button over the timer's duration */
+@keyframes autofill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
 .kicker {
   font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-accent);
 }

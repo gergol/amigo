@@ -95,6 +95,19 @@ export function Practice({ ctx }: { ctx: AppCtx }) {
     })
   }
 
+  // Auto-advance after the reveal (correct/wrong each have their own delay, 0 = off).
+  // Any tap on the screen stops the timer; the Weiter button shows it as a filling bar.
+  const [autoStop, setAutoStop] = useState(false)
+  useEffect(() => setAutoStop(false), [s?.index])
+  const autoDur = s?.revealed && s.card
+    ? (s.lastCorrect ? ctx.user.settings.autoNextCorrect : ctx.user.settings.autoNextWrong)
+    : 0
+  useEffect(() => {
+    if (!autoDur || autoStop) return
+    const id = setTimeout(ctx.next, autoDur * 1000)
+    return () => clearTimeout(id)
+  }, [s?.index, s?.revealed, autoStop, autoDur])
+
   // Physical-keyboard shortcuts (desktop): 1/2 answer el/la, Enter advances the
   // reveal. Harmless on phones (no keyboard); text submit stays on the input.
   useEffect(() => {
@@ -116,7 +129,7 @@ export function Practice({ ctx }: { ctx: AppCtx }) {
   const filled = s.index + (s.revealed ? 1 : 0)
 
   return (
-    <div class="screen" style="padding:18px 24px 24px">
+    <div class="screen" style="padding:18px 24px 24px" onClick={() => { if (s.revealed) setAutoStop(true) }}>
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
         <button class="iconbtn" onClick={ctx.exitSession} aria-label="Beenden" style="width:26px;height:26px;color:color-mix(in srgb,var(--color-text) 55%,transparent)"><X size={18} /></button>
         <ProgressSegments filled={filled} />
@@ -168,8 +181,11 @@ export function Practice({ ctx }: { ctx: AppCtx }) {
               </div>
             )
           ) : (
-            <button class="btn btn-primary btn-block" style="min-height:48px" onClick={ctx.next}>
-              {s.index >= SESSION - 1 ? 'Ergebnis' : 'Weiter'}<span class="kbd">↵</span>
+            <button class="btn btn-primary btn-block" style="min-height:48px;position:relative;overflow:hidden" onClick={ctx.next}>
+              {autoDur > 0 && !autoStop && (
+                <span style={`position:absolute;inset:0;transform-origin:left;background:color-mix(in srgb,var(--color-accent) 22%,transparent);animation:autofill ${autoDur}s linear forwards`} />
+              )}
+              <span style="position:relative">{s.index >= SESSION - 1 ? 'Ergebnis' : 'Weiter'}<span class="kbd">↵</span></span>
             </button>
           )}
         </>
