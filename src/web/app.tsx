@@ -1,7 +1,7 @@
 import { useState } from 'preact/hooks'
 import { content } from './content'
 import { loadUser, saveUser } from './store'
-import { markKnown, markUnknown, isKnown, iso } from './engine'
+import { markKnown, markUnknown, isKnown, iso, setScore, fresh } from './engine'
 import type { Focus, UserState, ModuleId } from './engine'
 import {
   startSession, grade, advance, SESSION,
@@ -47,6 +47,7 @@ export interface AppCtx {
   doUnlock: (m: ModuleId) => void
   // knowledge editor
   togglePoint: (id: string) => void
+  setPointScore: (id: string, pct: number) => void
   toggleModuleAll: (m: ModuleId) => void
   knowAllA1: () => void
   setReverse: (pct: number) => void
@@ -111,6 +112,11 @@ export function App() {
 
     togglePoint: (id) => {
       isKnown(user, id) ? markUnknown(user, content, id) : markKnown(user, content, id)
+      commit()
+    },
+    setPointScore: (id, pct) => {
+      const srs = (user.grammar.srs ??= {})
+      srs[id] = setScore(srs[id] ?? fresh(today), pct, today)
       commit()
     },
     toggleModuleAll: (id) => {
