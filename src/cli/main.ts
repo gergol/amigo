@@ -53,10 +53,12 @@ async function feedback(correct: boolean, canonical: string, notes?: string): Pr
 async function vocabSession(): Promise<void> {
   let done = 0
   let introduced = 0
+  let prev: string | undefined
   while (done < SESSION) {
-    const card = pickVocabCard(content, user, focus, today, rnd, introduced < NEW_PER_SESSION)
+    const card = pickVocabCard(content, user, focus, today, rnd, introduced < NEW_PER_SESSION, prev)
     if (!card) { console.log('Keine passenden Vokabeln — erst ein Modul freischalten (4).'); return }
     if (!user.vocab[card.key]) introduced++
+    prev = card.key
     const input = await ask(`\n[${done + 1}/${SESSION}] ${card.prompt}\n> `)
     const res = checkAnswer(input, card.accepted, card.canonical)
     await feedback(res.correct, card.canonical, card.entry.notes_de)
@@ -68,9 +70,11 @@ async function vocabSession(): Promise<void> {
 
 async function verbSession(): Promise<void> {
   let done = 0
+  let prev: string | undefined
   while (done < SESSION) {
-    const d = pickVerbDrill(content, user, focus, today, rnd)
+    const d = pickVerbDrill(content, user, focus, today, rnd, prev)
     if (!d) { console.log('Keine passenden Verben — erst ein Modul freischalten (4).'); return }
+    prev = `${d.verb.lemma}.${d.cell}`
     const hint = d.direction === 'es-de' ? '  (auf Deutsch)' : ''
     const input = await ask(`\n[${done + 1}/${SESSION}] ${d.prompt}${hint}\n> `)
     const res = checkAnswer(input, d.accepted, d.canonical)

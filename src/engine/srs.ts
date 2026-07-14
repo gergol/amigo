@@ -27,12 +27,18 @@ export function review(s: SrsState, correct: boolean, today: string): SrsState {
 
 export const isDue = (s: SrsState | undefined, today: string): boolean => !s || s.due <= today
 
-// Weight for exercise selection: overdue and error-prone items dominate, unseen
-// items trickle in when little is due, everything else rests until its due date.
+// Weight for exercise selection: smooth readiness instead of a due-day cliff.
+// Probability rises quadratically as an item moves through its interval (just
+// reviewed 0.2 → due 5), then overdue days and errors boost it further — so on
+// heavy practice days the items closest to forgetting surface next. Unseen items
+// sit at 1.5: ahead of freshly-reviewed, behind anything near-due.
 export function weight(s: SrsState | undefined, today: string): number {
   if (!s) return 1.5
-  if (s.due <= today) return 5 + Math.min(daysBetween(s.due, today), 14) * 0.5 + Math.min(s.errors ?? 0, 5)
-  return s.interval >= 30 ? 0.3 : 0.8
+  const over = daysBetween(s.due, today) // positive = overdue
+  if (s.interval <= 0 || over >= 0)
+    return 5 + Math.min(Math.max(over, 0), 14) * 0.5 + Math.min(s.errors ?? 0, 5)
+  const r = Math.max(0, 1 + over / s.interval) // 0 = just reviewed … 1 = due
+  return 0.2 + 4.8 * r * r
 }
 
 // The 0–100 score shown and edited in the vocab list: a log-scaled view of the

@@ -55,9 +55,14 @@ const placeholderFor = (kind: CardVM['kind']): string =>
   kind === 'verbrev' ? 'deutsche Form …' : kind === 'verb' ? 'Verbform …' : 'spanische Antwort …'
 
 // Pick the next card for a trainer and normalize the engine result to a CardVM.
-export function pickCard(trainer: Trainer, user: UserState, focus: Focus, today: string, rnd: Rng, allowNew = true): CardVM | null {
+// avoid = the previous card's grade ref: the same word/cell never repeats back-to-back.
+export function pickCard(
+  trainer: Trainer, user: UserState, focus: Focus, today: string, rnd: Rng,
+  allowNew = true, avoid?: GradeRef,
+): CardVM | null {
   if (trainer === 'vokabeln') {
-    const c = pickVocabCard(content, user, focus, today, rnd, allowNew)
+    const c = pickVocabCard(content, user, focus, today, rnd, allowNew,
+      avoid?.t === 'vocab' ? avoid.key : undefined)
     if (!c) return null
     if (c.kind === 'gender') {
       const lemma = c.entry.kind === 'noun' ? c.entry.lemma : c.canonical
@@ -76,7 +81,8 @@ export function pickCard(trainer: Trainer, user: UserState, focus: Focus, today:
     }
   }
   if (trainer === 'verbformen') {
-    const d = pickVerbDrill(content, user, focus, today, rnd)
+    const d = pickVerbDrill(content, user, focus, today, rnd,
+      avoid?.t === 'verb' ? `${avoid.lemma}.${avoid.cell}` : undefined)
     if (!d) return null
     const rev = d.direction === 'es-de'
     return {
@@ -127,7 +133,8 @@ export function advance(session: SessionState, user: UserState, focus: Focus, to
     ? [...session.results, { de: c.prompt, es: c.canonical, correct: session.lastCorrect === true }]
     : session.results
   if (session.index >= SESSION - 1) return { ...session, results, card: null }
-  const next = pickCard(session.trainer, user, focus, today, rnd, session.newCount < NEW_PER_SESSION)
+  const next = pickCard(session.trainer, user, focus, today, rnd,
+    session.newCount < NEW_PER_SESSION, c?.grade)
   return {
     ...session, index: session.index + 1, card: next, results,
     newCount: session.newCount + (isNewVocab(next, user) ? 1 : 0),

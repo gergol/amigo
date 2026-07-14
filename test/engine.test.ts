@@ -52,8 +52,32 @@ test('srs: errors are counted and boost the pick weight', () => {
   assert.equal(s.errors, 2)
   assert.ok(weight(s, today) > weight({ ...s, errors: 0 }, today)) // error-prone first
   assert.ok(weight(s, today) > weight(undefined, today)) // due beats unseen
-  const resting = { due: addDays(today, 5), interval: 40, ease: 2.5, errors: 0 }
-  assert.ok(weight(undefined, today) > weight(resting, today)) // unseen beats resting
+})
+
+test('weight is a smooth readiness ramp, not a due-day cliff', () => {
+  const today = '2026-07-14'
+  const at = (daysLeft: number) => weight({ due: addDays(today, daysLeft), interval: 40, ease: 2.5, errors: 0 }, today)
+  assert.ok(at(35) < at(20) && at(20) < at(5) && at(5) < at(0)) // rises toward due
+  assert.ok(weight(undefined, today) > at(35)) // unseen beats freshly reviewed …
+  assert.ok(weight(undefined, today) < at(5)) // … but not almost-due
+  assert.ok(at(0) - at(1) < 2) // no cliff at the due date
+})
+
+test('the previous card never repeats back-to-back', () => {
+  const user: UserState = { ...emptyUser(), grammar: { known: allPoints(content).map(p => p.id) } }
+  user.vocab['casa'] = fresh('2026-07-14')
+  user.vocab['perro'] = fresh('2026-07-14')
+  let seed = 17
+  const rnd = () => { seed = (seed * 1103515245 + 12345) % 2 ** 31; return seed / 2 ** 31 }
+  let prev: string | undefined
+  for (let i = 0; i < 40; i++) {
+    const c = pickVocabCard(content, user, {}, '2026-07-14', rnd, false, prev)!
+    assert.notEqual(c.key, prev)
+    prev = c.key
+  }
+  // sole candidate → the block yields rather than starving the session
+  delete user.vocab['perro']
+  assert.equal(pickVocabCard(content, user, {}, '2026-07-14', rnd, false, 'casa')?.key, 'casa')
 })
 
 test('score maps interval to 0–100 and back', () => {

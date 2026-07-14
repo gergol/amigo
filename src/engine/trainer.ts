@@ -43,8 +43,11 @@ export interface VocabCard {
 // loop passes allowNew=false once this many have been introduced.
 export const NEW_PER_SESSION = 3
 
+// avoid: vocab key of the previous card — never repeat a word back-to-back
+// (unless it's the only candidate left).
 export function pickVocabCard(
-  content: Content, user: UserState, focus: Focus, today: string, rnd: Rng, allowNew = true,
+  content: Content, user: UserState, focus: Focus, today: string, rnd: Rng,
+  allowNew = true, avoid?: string,
 ): VocabCard | undefined {
   const mods = unlockedModules(content, user)
   const cards: VocabCard[] = []
@@ -82,7 +85,11 @@ export function pickVocabCard(
       cards.push({ key: e.es, entry: e, kind: 'production', prompt: e.de, canonical: e.es, accepted: [e.es] })
     }
   }
-  const pool = allowNew ? cards : cards.filter(c => user.vocab[c.key])
+  let pool = allowNew ? cards : cards.filter(c => user.vocab[c.key])
+  if (avoid) {
+    const rest = pool.filter(c => c.key !== avoid)
+    if (rest.length) pool = rest
+  }
   // gender drills only for due-ish nouns, extra weight for traps
   return weightedPick(pool, c => {
     let w = weight(user.vocab[c.key], today)
@@ -109,8 +116,9 @@ export interface VerbDrill {
 
 interface VerbCell { verb: Verb; tense: Tense; person: Person; cell: string; es: string }
 
+// avoid: `${lemma}.${cell}` of the previous drill — never repeat back-to-back.
 export function pickVerbDrill(
-  content: Content, user: UserState, focus: Focus, today: string, rnd: Rng,
+  content: Content, user: UserState, focus: Focus, today: string, rnd: Rng, avoid?: string,
 ): VerbDrill | undefined {
   const mods = unlockedModules(content, user)
   const known = new Set(user.grammar.known)
@@ -129,7 +137,7 @@ export function pickVerbDrill(
   if (encountered.length) verbs = encountered
   if (!verbs.length || !tenses.length) return undefined
 
-  const cells: VerbCell[] = []
+  let cells: VerbCell[] = []
   for (const v of verbs)
     for (const t of tenses)
       for (const p of PERSONS) {
@@ -142,6 +150,10 @@ export function pickVerbDrill(
           : form
         cells.push({ verb: v, tense: t, person: p, cell: `${t}.${p}`, es: full })
       }
+  if (avoid) {
+    const rest = cells.filter(x => `${x.verb.lemma}.${x.cell}` !== avoid)
+    if (rest.length) cells = rest
+  }
   // cell weight × constellation factor: an error-prone tense boosts all its cells
   const pw = pointWeightFn(user, today)
   const c = weightedPick(cells, x =>
