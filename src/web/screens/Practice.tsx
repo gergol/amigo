@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'preact/hooks'
+import { useEffect, useLayoutEffect, useRef, useState } from 'preact/hooks'
 import type { AppCtx } from '../app'
 import { SESSION } from '../session'
 import type { CardVM } from '../session'
@@ -7,6 +7,64 @@ import { ProgressSegments, AccentKeys } from '../components/ui'
 import { X, Mic } from '../components/icons'
 
 const pad = (n: number) => (n < 10 ? '0' + n : '' + n)
+
+// Height actually visible to the user. On phones the on-screen keyboard shrinks
+// the visual viewport but NOT the layout viewport (100dvh), so the browser
+// scrolls the focused input into view and pushes the prompt off the top. Binding
+// the practice screen to visualViewport.height keeps the whole card — prompt and
+// input — inside the visible area, so nothing has to scroll away. fontScale is
+// the CSS `zoom` on <html>; visualViewport reports device-CSS px, so divide it
+// back into the zoomed coordinate space the layout uses.
+function useVisibleHeight(fontScale: number): number | null {
+  const [h, setH] = useState<number | null>(null)
+  useEffect(() => {
+    const vv = window.visualViewport
+    if (!vv) return
+    const update = () => setH(vv.height / (fontScale || 1))
+    update()
+    vv.addEventListener('resize', update)
+    vv.addEventListener('scroll', update)
+    return () => { vv.removeEventListener('resize', update); vv.removeEventListener('scroll', update) }
+  }, [fontScale])
+  return h
+}
+
+// Shrinks the prompt/feedback to fit the space between the header and the answer
+// field: measures the natural content height (transform doesn't change layout, so
+// scrollHeight stays truthful) against the available box and scales down when it
+// would overflow. Re-fits both on the `deps` that change layout (new card, viewport
+// height, why-note) and via a ResizeObserver for async reflow (web-font load).
+function AutoFit({ children, deps }: { children: any; deps: any[] }) {
+  const box = useRef<HTMLDivElement>(null)
+  const inner = useRef<HTMLDivElement>(null)
+  const [scale, setScale] = useState(1)
+  const fit = () => {
+    const b = box.current, i = inner.current
+    if (!b || !i) return
+    // Compare in layout px: clientHeight is where overflow clips, scrollHeight is
+    // the content's natural (transform-independent) size. A small margin keeps the
+    // edges (kicker, descenders) off the clip line.
+    const tall = (b.clientHeight * 0.92) / (i.scrollHeight || 1)
+    const wide = b.clientWidth / (i.scrollWidth || 1)
+    const s = Math.min(tall, wide)
+    setScale(isFinite(s) && s > 0 ? Math.min(1, Math.max(0.35, s)) : 1)
+  }
+  useLayoutEffect(fit, deps)
+  useLayoutEffect(() => {
+    const b = box.current, i = inner.current
+    if (!b || !i) return
+    const ro = new ResizeObserver(fit)
+    ro.observe(b); ro.observe(i)
+    return () => ro.disconnect()
+  }, [])
+  return (
+    <div ref={box} style="flex:0 1 auto;min-height:0;width:100%;display:flex;align-items:center;justify-content:center;overflow:hidden">
+      <div ref={inner} style={`display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;transform:scale(${scale});transform-origin:center;transition:transform .08s`}>
+        {children}
+      </div>
+    </div>
+  )
+}
 
 function Prompt({ card }: { card: CardVM }) {
   if (card.kind === 'sentence') return (
@@ -129,12 +187,19 @@ export function Practice({ ctx }: { ctx: AppCtx }) {
     return () => window.removeEventListener('keydown', onKey)
   }, [s?.index, s?.revealed, s?.card?.input])
 
+  const visH = useVisibleHeight(ctx.user.settings.fontScale ?? 1)
+
   if (!s) return null
   const card = s.card
   const filled = s.index + (s.revealed ? 1 : 0)
 
+  // Pin the screen to the visible height so the keyboard can't scroll the prompt
+  // out of view; overflow-auto is a graceful fallback if a tiny viewport still
+  // can't hold everything even after the prompt has scaled down.
+  const screenStyle = `padding:14px 24px 16px;overflow-y:auto${visH ? `;height:${visH}px;min-height:0` : ''}`
+
   return (
-    <div class="screen" style="padding:18px 24px 24px" onClick={() => { if (s.revealed) setAutoStop(true) }}>
+    <div class="screen" style={screenStyle} onClick={() => { if (s.revealed) setAutoStop(true) }}>
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
         <button class="iconbtn" onClick={ctx.exitSession} aria-label="Beenden" style="width:26px;height:26px;color:color-mix(in srgb,var(--color-text) 55%,transparent)"><X size={18} /></button>
         <ProgressSegments filled={filled} />
@@ -152,18 +217,21 @@ export function Practice({ ctx }: { ctx: AppCtx }) {
             <span class="tag tag-outline">{card.tag}</span>
           </div>
 
-          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px;padding:24px 4px">
+          {/* Prompt and answer controls form one vertically-centred block, so the
+              question sits just above the field (no big gap) and stays visible. */}
+          <div style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:18px">
+          <AutoFit deps={[card, s.revealed, s.whyOpen, s.lastCorrect, visH]}>
             {s.revealed ? <Feedback ctx={ctx} card={card} /> : <Prompt card={card} />}
-          </div>
+          </AutoFit>
 
           {!s.revealed ? (
             card.input === 'buttons' ? (
-              <div style="display:flex;gap:10px">
+              <div style="flex:none;display:flex;gap:10px">
                 <button class="btn btn-secondary" style="flex:1;font-size:19px;min-height:54px;font-family:var(--font-heading)" onClick={() => ctx.submitAnswer('el')}>el<span class="kbd">1</span></button>
                 <button class="btn btn-secondary" style="flex:1;font-size:19px;min-height:54px;font-family:var(--font-heading)" onClick={() => ctx.submitAnswer('la')}>la<span class="kbd">2</span></button>
               </div>
             ) : (
-              <div style="display:flex;flex-direction:column;gap:14px">
+              <div style="flex:none;display:flex;flex-direction:column;gap:14px">
                 <div style="display:flex;gap:9px;align-items:stretch">
                   <input
                     ref={inputRef} class="input" value={s.input}
@@ -186,13 +254,14 @@ export function Practice({ ctx }: { ctx: AppCtx }) {
               </div>
             )
           ) : (
-            <button class="btn btn-primary btn-block" style="min-height:48px;position:relative;overflow:hidden" onClick={ctx.next}>
+            <button class="btn btn-primary btn-block" style="flex:none;min-height:48px;position:relative;overflow:hidden" onClick={ctx.next}>
               {autoDur > 0 && !autoStop && (
                 <span style={`position:absolute;inset:0;transform-origin:left;background:color-mix(in srgb,var(--color-accent) 22%,transparent);animation:autofill ${autoDur}s linear forwards`} />
               )}
               <span style="position:relative">{s.index >= SESSION - 1 ? 'Ergebnis' : 'Weiter'}<span class="kbd">↵</span></span>
             </button>
           )}
+          </div>
         </>
       )}
     </div>

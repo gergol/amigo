@@ -26,7 +26,9 @@ Menü: `4` schaltet das nächste Modul frei (M01–M20), `1/2/3` startet eine Ü
 (Bekanntes an-/abhaken — Voraussetzungen werden automatisch mitgezogen).
 
 Antworten werden **ohne Akzente** geprüft (`esta` = `está`, `n` = `ñ`); die Anzeige
-zeigt immer die korrekte Schreibung. In der Web-App können Antworten auch
+zeigt immer die korrekte Schreibung. Bei mehrwortigen Antworten wird auch eine
+**andere Wortstellung** akzeptiert, solange es dieselben Wörter sind (spanische
+Satzstellung ist oft frei, der Generator kennt aber nur eine Reihenfolge). In der Web-App können Antworten auch
 **gesprochen** werden (Mikrofon-Button neben dem Eingabefeld; Browser-Spracherkennung,
 braucht HTTPS oder localhost — die erkannte Antwort wird direkt geprüft). Der
 Mikrofon-Modus bleibt über alle Fragen aktiv, bis er wieder ausgeschaltet wird;
@@ -41,6 +43,11 @@ Dieselbe Engine als installierbare Progressive Web App (mobil-first, offline,
 hell/dunkel). Design & Plan: `Plan/web/`. Schriftgröße (Standard 120 %) und
 Auto-Weiter (richtig 1 s / falsch 3 s, Tipp auf den Bildschirm stoppt den Timer,
 0 = aus) sind in den Einstellungen konfigurierbar.
+
+Beim Üben bindet sich der Bildschirm an die **sichtbare Höhe** (`visualViewport`):
+öffnet sich am Handy die Tastatur, bleiben Frage *und* Eingabefeld sichtbar,
+statt dass die Frage nach oben weggeschoben wird. Ist der Platz knapp, wird die
+Frage automatisch kleiner skaliert, damit sie immer ganz zu sehen ist.
 
 ```
 npm run dev        # Vite-Dev-Server (--host: vom Handy im WLAN erreichbar)

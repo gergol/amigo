@@ -172,6 +172,15 @@ test('checkAnswer ignores accents, case, punctuation', () => {
   assert.ok(!checkAnswer('donde estas maria', ['¿Dónde está María?'], 'x').correct)
 })
 
+test('checkAnswer accepts a different word order (same words)', () => {
+  // Spanish word order is flexible; the generator emits only one ordering.
+  assert.ok(checkAnswer('Hoy como pan.', ['Como pan hoy.'], 'Como pan hoy.').correct)
+  assert.ok(checkAnswer('el gato negro', ['negro el gato'], 'x').correct)
+  // A different word set is still wrong, and single-word answers stay exact.
+  assert.ok(!checkAnswer('como carne hoy', ['Como pan hoy.'], 'x').correct)
+  assert.ok(!checkAnswer('gatos', ['gato'], 'x').correct)
+})
+
 test('deVerbPhrase renders natural German cues, no doubled separable prefix', () => {
   assert.equal(deVerbPhrase(verb('hablar'), 'presente', '3p'), 'sie sprechen')
   assert.equal(deVerbPhrase(verb('hablar'), 'indefinido', '3p'), 'sie haben gestern gesprochen')

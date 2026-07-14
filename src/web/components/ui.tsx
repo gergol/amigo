@@ -36,13 +36,15 @@ export function MarkSquare({ mark, state }: { mark: string; state: 'on' | 'parti
   )
 }
 
-// The á é í … helper row above the keyboard.
+// The á é í … helper row above the keyboard. Single non-wrapping row (scrolls
+// horizontally if narrow) so it stays one line tall — vertical space is scarce
+// when the soft keyboard is open.
 const ACCENT_KEYS = ['á', 'é', 'í', 'ó', 'ú', 'ñ', 'ü', '¿', '¡']
 export function AccentKeys({ onInsert }: { onInsert: (ch: string) => void }) {
   return (
-    <div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center">
+    <div style="display:flex;gap:6px;justify-content:flex-start;overflow-x:auto;flex-none;scrollbar-width:none;-webkit-overflow-scrolling:touch">
       {ACCENT_KEYS.map(ch => (
-        <button class="akey" type="button" onClick={() => onInsert(ch)} tabIndex={-1}>{ch}</button>
+        <button class="akey" type="button" onClick={() => onInsert(ch)} tabIndex={-1} style="flex:none">{ch}</button>
       ))}
     </div>
   )
