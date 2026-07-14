@@ -1,10 +1,16 @@
+import { execSync } from 'node:child_process'
 import { defineConfig } from 'vite'
 import preact from '@preact/preset-vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
+const commit = (() => {
+  try { return execSync('git rev-parse --short HEAD').toString().trim() } catch { return 'unbekannt' }
+})()
+
 export default defineConfig({
   // '/' locally; the CI workflow passes BASE_PATH=/<repo>/ for the GitHub Pages subpath.
   base: process.env.BASE_PATH || '/',
+  define: { __COMMIT__: JSON.stringify(commit) },
   plugins: [
     preact(),
     VitePWA({

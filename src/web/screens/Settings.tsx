@@ -4,6 +4,7 @@ import { content } from '../content'
 import { isKnown } from '../engine'
 import { vocabCount } from '../lexicon'
 import { exportYaml, importYaml } from '../store'
+import { speechSupported } from '../speech'
 import { Header, MarkSquare } from '../components/ui'
 import { ChevronRight, CheckList } from '../components/icons'
 
@@ -89,6 +90,17 @@ export function Settings({ ctx }: { ctx: AppCtx }) {
             </div>
           )}
         </div>
+
+        {/* build + capability info */}
+        <p class="t45" style="font-size:11.5px;line-height:1.6;text-align:center;margin:0">
+          Build <span class="mono" style="font-size:11px">{__COMMIT__}</span>
+          <br />
+          Spracheingabe: {!speechSupported
+            ? 'von diesem Browser nicht unterstützt (Chrome/Android oder iOS Safari nötig)'
+            : !window.isSecureContext
+              ? 'braucht HTTPS oder localhost'
+              : 'verfügbar — Mikrofon-Knopf neben dem Eingabefeld beim Üben'}
+        </p>
       </div>
     </div>
   )
