@@ -36,7 +36,9 @@ braucht HTTPS oder localhost — die erkannte Antwort wird direkt geprüft).
 automatisch deployt (der Build-Commit steht unten in den Einstellungen).
 
 Dieselbe Engine als installierbare Progressive Web App (mobil-first, offline,
-hell/dunkel). Design & Plan: `Plan/web/`.
+hell/dunkel). Design & Plan: `Plan/web/`. Schriftgröße (Standard 120 %) und
+Auto-Weiter (richtig 1 s / falsch 3 s, Tipp auf den Bildschirm stoppt den Timer,
+0 = aus) sind in den Einstellungen konfigurierbar.
 
 ```
 npm run dev        # Vite-Dev-Server (--host: vom Handy im WLAN erreichbar)

@@ -58,6 +58,12 @@ unsupported): one recognition pass per tap, `es-ES` (or `de-DE` for verbrev card
 interim transcript fills the input live, the final transcript is auto-checked.
 Needs a secure context (HTTPS/localhost).
 
+After the reveal the session auto-advances (`settings.autoNextCorrect` /
+`autoNextWrong` seconds, 0 = off). Any tap on the screen cancels the pending
+advance; the Weiter button shows the countdown as a left-to-right fill
+(`@keyframes autofill`). Font scaling: `settings.fontScale` is applied as CSS
+`zoom` on the document root (everything is px-based), slider in Settings.
+
 Center renders by `card.kind` (design's `isSentence/isVocab/isVerb/isVerbrev/isGender`):
 
 - **sentence**: "Übersetze" kicker + `card.prompt` (heading).
