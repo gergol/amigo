@@ -28,7 +28,9 @@ Menü: `4` schaltet das nächste Modul frei (M01–M20), `1/2/3` startet eine Ü
 Antworten werden **ohne Akzente** geprüft (`esta` = `está`, `n` = `ñ`); die Anzeige
 zeigt immer die korrekte Schreibung. In der Web-App können Antworten auch
 **gesprochen** werden (Mikrofon-Button neben dem Eingabefeld; Browser-Spracherkennung,
-braucht HTTPS oder localhost — die erkannte Antwort wird direkt geprüft).
+braucht HTTPS oder localhost — die erkannte Antwort wird direkt geprüft). Der
+Mikrofon-Modus bleibt über alle Fragen aktiv, bis er wieder ausgeschaltet wird;
+solange er an ist, öffnet sich die Tastatur nur nach Tipp aufs Eingabefeld.
 
 ## App (Web / PWA fürs Handy)
 

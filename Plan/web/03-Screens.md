@@ -54,9 +54,12 @@ The shared shell for all trainers. Top: exit (✕) → `home`; ProgressSegments;
 `counter` (`pad(index+1)+' / 08'`) + `cTag` chip (`card.tag`).
 
 Text cards carry a mic button (Web Speech API, `src/web/speech.ts`; hidden when
-unsupported): one recognition pass per tap, `es-ES` (or `de-DE` for verbrev cards),
-interim transcript fills the input live, the final transcript is auto-checked.
-Needs a secure context (HTTPS/localhost).
+unsupported): a persistent voice mode — once on, it listens through every question
+(restarting after silence) until tapped off; hard failures (denied permission, no
+mic, offline) switch it off. `es-ES` (or `de-DE` for verbrev cards), interim
+transcript fills the input live, the final transcript is auto-checked. While the
+mode is on, the input is not auto-focused, so the phone keyboard only opens on an
+explicit tap. Needs a secure context (HTTPS/localhost).
 
 After the reveal the session auto-advances (`settings.autoNextCorrect` /
 `autoNextWrong` seconds, 0 = off). Any tap on the screen cancels the pending
