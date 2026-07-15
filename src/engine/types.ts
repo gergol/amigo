@@ -44,6 +44,7 @@ export interface Noun {
   level: Level
   module: ModuleId
   gender_trap?: boolean
+  alt?: string[] // extra accepted Spanish forms (e.g. pantalón → "los pantalones")
   notes_de?: string
 }
 
@@ -85,6 +86,7 @@ export interface Verb {
   }
   gloss_de: string // display gloss for vocab cards (may differ from de.inf: 'bestellen; bitten um')
   tags?: Tag[] // rarely needed
+  alt?: string[] // extra accepted Spanish infinitives (synonyms)
   level: Level
   module: ModuleId
   notes_de?: string
@@ -107,6 +109,7 @@ export interface Adjective {
   gradable?: boolean // default true
   gender?: Gender // gender-restricted (embarazada)
   tags?: Tag[] // classification for slot filters (nationality …)
+  alt?: string[] // extra accepted Spanish forms (synonyms)
   level: Level
   module: ModuleId
   notes_de?: string
@@ -116,6 +119,7 @@ export interface Chunk {
   kind: 'chunk'
   es: string
   de: string
+  alt?: string[] // extra accepted Spanish forms (synonyms)
   level: Level
   module: ModuleId
   notes_de?: string
@@ -191,7 +195,7 @@ export interface CliticSlot {
 // is what makes past-tense prompts unambiguous (Plan/01 M12–M15).
 export interface TimeSlot { type: 'time' }
 
-export interface TimeExpr { es: string; de: string; tenses: Tense[] }
+export interface TimeExpr { es: string; de: string; tenses: Tense[]; alt?: string[] } // alt: synonym forms accepted in sentence answers
 
 // Fixed es/de pairs the template picks from (tener hambre/Hunger haben, me gustaría/ich würde gern)
 export interface LitSlot { type: 'lit'; options: { es: string; de: string }[] }

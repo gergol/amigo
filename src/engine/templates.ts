@@ -38,7 +38,7 @@ export interface Instance {
   tense: Tense
   negated: boolean
   subject: Subject
-  fillers: Record<string, LexEntry | { es: string; de: string }>
+  fillers: Record<string, LexEntry | { es: string; de: string; alt?: string[] }>
   plural: Record<string, boolean> // resolved number per noun slot
   verb?: Verb // absent for chunk-style templates without a verb slot
   adjSense?: AdjSense
@@ -211,7 +211,11 @@ function renderInstance(inst: Instance, content: Content): Rendered | null {
         break
       }
       case 'clitic': break // rendered inside the verb cluster
-      case 'time':
+      case 'time': {
+        const pair = inst.fillers[name] as { es: string; de: string; alt?: string[] }
+        esParts.push([pair.es, ...(pair.alt ?? [])])
+        break
+      }
       case 'lit': {
         const pair = inst.fillers[name] as { es: string; de: string }
         esParts.push([pair.es])
@@ -445,7 +449,7 @@ export function generate(
       const times = content.times.filter(x => x.tenses.includes(tense))
       if (!times.length) return null
       const time = pick(times, rnd)
-      fillers[name] = { es: time.es, de: time.de }
+      fillers[name] = { es: time.es, de: time.de, alt: time.alt }
     }
   }
 

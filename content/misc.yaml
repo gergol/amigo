@@ -17,7 +17,7 @@ names:
 times:
   - { es: todos los días, de: jeden Tag, tenses: [presente] }
   - { es: normalmente, de: normalerweise, tenses: [presente] }
-  - { es: a menudo, de: oft, tenses: [presente] }
+  - { es: a menudo, de: oft, tenses: [presente], alt: [muchas veces] }
   - { es: los lunes, de: montags, tenses: [presente] }
   - { es: ahora mismo, de: gerade, tenses: [estar+ger] }
   - { es: hoy, de: heute, tenses: [perfecto] }

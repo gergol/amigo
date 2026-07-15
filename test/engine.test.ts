@@ -181,6 +181,41 @@ test('checkAnswer accepts a different word order (same words)', () => {
   assert.ok(!checkAnswer('gatos', ['gato'], 'x').correct)
 })
 
+test('vocab card accepts alt forms (los pantalones for die Hose)', () => {
+  const user: UserState = { ...emptyUser(), grammar: { known: allPoints(content).map(p => p.id) } }
+  user.vocab['pantalón'] = fresh('2026-07-14')
+  let seed = 5
+  const rnd = () => { seed = (seed * 1103515245 + 12345) % 2 ** 31; return seed / 2 ** 31 }
+  let prod: ReturnType<typeof pickVocabCard>
+  for (let i = 0; i < 60 && !(prod && prod.kind === 'production'); i++) {
+    const c = pickVocabCard(content, user, {}, '2026-07-14', rnd, false)
+    if (c?.key === 'pantalón') prod = c
+  }
+  assert.ok(prod && prod.kind === 'production', 'no pantalón production card')
+  assert.ok(prod.prompt.includes('Hose'))
+  assert.ok(checkAnswer('el pantalón', prod.accepted, prod.canonical).correct) // singular still fine
+  assert.ok(checkAnswer('los pantalones', prod.accepted, prod.canonical).correct) // common plural now accepted
+})
+
+test('sentence accepts synonym time expressions (muchas veces for a menudo)', () => {
+  const user: UserState = { ...emptyUser(), grammar: { known: allPoints(content).map(p => p.id) } }
+  let seed = 23
+  const rnd = () => { seed = (seed * 1103515245 + 12345) % 2 ** 31; return seed / 2 ** 31 }
+  const eligible = eligibleTemplates(content, user)
+  let checked = false
+  for (const t of eligible) {
+    for (let i = 0; i < 60; i++) {
+      const ex = generate(t, content, user, rnd)
+      if (!ex || !ex.es.toLowerCase().includes('a menudo')) continue
+      const swapped = ex.es.replace(/a menudo/i, 'muchas veces')
+      assert.ok(checkAnswer(swapped, ex.accepted, ex.es).correct, `synonym rejected: ${swapped}`)
+      checked = true
+    }
+    if (checked) break
+  }
+  assert.ok(checked, 'never generated an "a menudo" sentence to check')
+})
+
 test('deVerbPhrase renders natural German cues, no doubled separable prefix', () => {
   assert.equal(deVerbPhrase(verb('hablar'), 'presente', '3p'), 'sie sprechen')
   assert.equal(deVerbPhrase(verb('hablar'), 'indefinido', '3p'), 'sie haben gestern gesprochen')

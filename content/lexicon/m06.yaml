@@ -10,7 +10,7 @@ nouns:
   - { lemma: ropa, gender: f, de: { noun: Kleidung, g: f }, tags: [clothing], level: A1, module: M06, notes_de: "im Spanischen Singular: la ropa" }
   - { lemma: camisa, gender: f, de: { noun: Hemd, g: n, plural: Hemden }, tags: [clothing], level: A1, module: M06 }
   - { lemma: camiseta, gender: f, de: { noun: T-Shirt, g: n, plural: T-Shirts }, tags: [clothing], level: A1, module: M06 }
-  - { lemma: pantalón, gender: m, de: { noun: Hose, g: f, plural: Hosen }, tags: [clothing], level: A1, module: M06, notes_de: "meist Plural: los pantalones — die Hose (Singular!)" }
+  - { lemma: pantalón, gender: m, de: { noun: Hose, g: f, plural: Hosen }, tags: [clothing], level: A1, module: M06, alt: [los pantalones], notes_de: "meist Plural: los pantalones — die Hose (Singular!)" }
   - { lemma: falda, gender: f, de: { noun: Rock, g: m, plural: Röcke }, tags: [clothing], level: A1, module: M06 }
   - { lemma: vestido, gender: m, de: { noun: Kleid, g: n, plural: Kleider }, tags: [clothing], level: A1, module: M06 }
   - { lemma: zapato, gender: m, de: { noun: Schuh, g: m, plural: Schuhe }, tags: [clothing], level: A1, module: M06 }

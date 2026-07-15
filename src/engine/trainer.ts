@@ -62,7 +62,7 @@ export function pickVocabCard(
         key: e.lemma, entry: e, kind: 'production',
         prompt: `${e.de.g === 'm' ? 'der' : e.de.g === 'f' ? 'die' : 'das'} ${e.de.noun}`,
         canonical: `${art} ${form}`,
-        accepted: e.gender === 'mf' ? [`el ${form}`, `la ${form}`] : [`${art} ${form}`],
+        accepted: [...(e.gender === 'mf' ? [`el ${form}`, `la ${form}`] : [`${art} ${form}`]), ...(e.alt ?? [])],
       })
       if (!e.plural_only && !isElAgua(e)) cards.push({
         key: e.lemma, entry: e, kind: 'gender',
@@ -76,13 +76,13 @@ export function pickVocabCard(
         cards.push({
           key, entry: e, kind: 'production',
           prompt: s.de + (e.copula === 'shift' ? ` (mit ${s.copula})` : ''),
-          canonical: e.lemma, accepted: [e.lemma],
+          canonical: e.lemma, accepted: [e.lemma, ...(e.alt ?? [])],
         })
       }
     } else if (e.kind === 'verb') {
-      cards.push({ key: e.lemma, entry: e, kind: 'production', prompt: e.gloss_de, canonical: e.lemma, accepted: [e.lemma] })
+      cards.push({ key: e.lemma, entry: e, kind: 'production', prompt: e.gloss_de, canonical: e.lemma, accepted: [e.lemma, ...(e.alt ?? [])] })
     } else {
-      cards.push({ key: e.es, entry: e, kind: 'production', prompt: e.de, canonical: e.es, accepted: [e.es] })
+      cards.push({ key: e.es, entry: e, kind: 'production', prompt: e.de, canonical: e.es, accepted: [e.es, ...(e.alt ?? [])] })
     }
   }
   let pool = allowNew ? cards : cards.filter(c => user.vocab[c.key])
