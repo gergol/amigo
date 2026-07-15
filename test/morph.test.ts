@@ -63,4 +63,8 @@ test('clitic attachment with accent shift', () => {
 test('normalization for answer checking', () => {
   assert.equal(normalize('¿Dónde está el niño?'), 'donde esta el nino')
   assert.equal(normalize('  Sí,   claro. '), 'si claro')
+  // the "…" placeholder is dropped: the phrase matches with or without it
+  assert.equal(normalize('delante de …'), 'delante de')
+  assert.equal(normalize('me llamo …'), 'me llamo')
+  assert.equal(normalize('tener … años'), 'tener anos')
 })

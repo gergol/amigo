@@ -216,6 +216,14 @@ test('sentence accepts synonym time expressions (muchas veces for a menudo)', ()
   assert.ok(checked, 'never generated an "a menudo" sentence to check')
 })
 
+test('checkAnswer accepts a placeholder chunk without its "…"', () => {
+  // "vor … (örtlich)" prompt; stored answer "delante de …" — typing the bare
+  // phrase must count (the … marks a slot, not required text).
+  assert.ok(checkAnswer('delante de', ['delante de …'], 'delante de …').correct)
+  assert.ok(checkAnswer('delante de …', ['delante de …'], 'delante de …').correct)
+  assert.ok(checkAnswer('me llamo', ['me llamo …'], 'me llamo …').correct)
+})
+
 test('deVerbPhrase renders natural German cues, no doubled separable prefix', () => {
   assert.equal(deVerbPhrase(verb('hablar'), 'presente', '3p'), 'sie sprechen')
   assert.equal(deVerbPhrase(verb('hablar'), 'indefinido', '3p'), 'sie haben gestern gesprochen')

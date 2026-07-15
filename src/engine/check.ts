@@ -1,10 +1,14 @@
 // Answer normalization & checking (Plan/00, 05): compare after stripping
 // diacritics (incl. ñ→n), case, and punctuation. Feedback shows the real form.
+// The "…" placeholder (delante de …, me llamo …) marks a slot the learner
+// fills with their own words, so it's dropped — typing the phrase without it
+// still counts.
 
 export function normalize(s: string): string {
   return s
     .normalize('NFD').replace(/[̀-ͯ]/g, '') // á→a, ñ→n, ü→u
     .toLowerCase()
+    .replace(/…/g, ' ')
     .replace(/[¿?¡!.,;:'"„“”()\-]/g, ' ')
     .replace(/\s+/g, ' ')
     .trim()
